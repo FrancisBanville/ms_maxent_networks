@@ -4,7 +4,7 @@ bibliography: [references.bib]
 
 # Introduction
 
-# Methodology
+# Methodology 
 
 # Results
 
