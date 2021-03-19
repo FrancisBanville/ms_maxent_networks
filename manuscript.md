@@ -93,7 +93,7 @@ $$p(k_{in},k) = {k\choose k_{in}}q^{k_{in}}(1-q)^{k-k_{in}}c r^{k},$${#eq:jointd
 
 which gives, after substitution and simplification:
 
-$$p(k_{in},k_{out}) = {k_{in}+k_{out}\choose k_{in}}c \left(\frac{r}{2}\right)^{k_{in}+k_{out}}$${#eq:jointdd3}
+$$p(k_{in},k_{out}) = {k_{in}+k_{out}\choose k_{in}}c \left(\frac{r}{2}\right)^{k_{in}+k_{out}}$${#eq:jointdd4}
 
 ### Predicting the adjacency matrix
 
