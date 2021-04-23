@@ -122,14 +122,13 @@ function dd_maxent(S::Int64, L::Int64)
 end
 
 
-# Small test
-S = 69
+# Example 1
+S = 110
 L = predict_links(chain, S, nsim)
 L = convert(Int64, round(median(L)))
 ddist = dd_maxent(S, L)
 sum(ddist)
 L*2
-
 
 
 ## Predict the joint degree distribution of maximum entropy (analytical approximation)
@@ -140,20 +139,77 @@ function p_kin_kout(S::Int64, L::Int64, kin::Int64, kout::Int64)
   # kin: Species in-degree
   # Kout: Species out-degree
 
+  # A species cannot have a degree of k = 0
+  if (kin + kout == 0 || kin + kout > S)
+    p_kin_kout = 0
+  else
+
   # Mean degree constraint
   kavg = 2L/S 
 
-  # Degree distribution of maximum entropy
+  # Joint degree distribution of maximum entropy
   k = kin + kout
   c = 1/(kavg - 1)
   r = (kavg - 1)/kavg
-  p_kin_kout = binomial(k, kin)*c*(r/2)^k
+  p_kin_kout = binomial(BigInt(k), BigInt(kin))*c*(r/2)^k
  
-   # Return the probability that a species has k links
+   # Return the probability that a species has a kin predators and kout preys
    return p_kin_kout
+
+  end
  end
 
 
+ function jdd_maxent_prob(S::Int64, L::Int64)
+  # S: Number of species
+  # L: Number of interactions
+
+  jdd_maxent_prob = zeros(Float64, S+1, S+1)
+  
+  for kin in 0:S, kout in 0:S
+    jdd_maxent_prob[kin+1, kout+1] = p_kin_kout(S, L, kin, kout)
+  end
+  
+  # Return the joint degree distribution (probabilistic)
+  return jdd_maxent_prob
+end
+
+
+
+function jdd_maxent(S::Int64, L::Int64)
+  # S: Number of species
+  # L: Number of interactions
+
+  # Predict the degree distribution (probabilistic)
+  jdd_maxent_proba = jdd_maxent_prob(S, L)
+
+  # Cumulative number of species expected to have an in-degree kin or lower
+  jdd_maxent_cum = cumsum(sum.(eachcol(jdd_maxent_proba))) .* S
+
+  # Number of species expected to have an in-degree k
+  jdd_maxent = zeros(Int64, S+1)
+
+  Kin = 0:S
+
+  for kin in Kin
+    jdd_maxent[kin+1] = convert(Int64, round(jdd_maxent_cum[kin+1] - sum(jdd_maxent)))
+  end
+  
+  # Return the expected in-degree for all species (ordered)
+  jdd_maxent = vcat(fill.(Kin, jdd_maxent)...)
+
+  return jdd_maxent
+
+end
+
+
+# Example 2
+S = 225
+L = predict_links(chain, S, nsim)
+L = convert(Int64, round(median(L)))
+ddist = dd_maxent(S, L)
+jddin = jdd_maxent(S, L)
+jddout = ddist .- jddin
 
 
 
