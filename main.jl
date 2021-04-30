@@ -255,6 +255,13 @@ function predict_adjacency_matrix(S::T, L::T, n::T) where {T <: Int64}
 end
 
 
+# Plot attributes
+theme(:mute)
+default(; frame=:box)
+Plots.scalefontsizes(1.3)
+fonts=font("Arial",7)
+
+
 # Load scripts
 include("src/01_import_mangal_metadata.jl")
 include("src/02_predict_networks.jl")
