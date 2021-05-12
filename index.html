@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>First Estimates of Food-Web Structure Derived from Species Richness</title>
+    <script src="https://hypothes.is/embed.js" async></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+    integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
+        :root {
+            --citation: #1976D2;
+            --structure: hsl(210, 61%, 43%);
+            
+            --light: #474747;
+            --pale: #a5a5a5;
+            --grey: #e0e0e0;
+            --nav: #fdfdfd;
+
+            --width: 820px;
+            --inner-space: 1.2em;
+        }
+
+        body {
+            font-family: "Roboto", sans-serif;
+            margin: 0 0;
+            padding: 0 0;
+        }
+
+        article > p {
+            line-height: 135%;
+        }
+        article > h1 {
+            padding-top: 3em;
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+            border-bottom: 1px solid var(--structure);
+        }
+        a:hover {
+            font-weight: 500;
+        }
+        .citation {
+            color: var(--citation);
+        }
+        .container {
+            margin: 0em auto;
+            max-width: var(--width);
+            padding: var(--inner-space);
+        }
+        header > .container {
+            margin-top: 4em;
+        }
+        code, pre {
+            font-family: "Roboto Mono", monospace;
+        }
+        pre {
+            white-space: pre-wrap;
+        }
+        h1, h2, h3 {
+            color: var(--structure);
+            font-family: "Roboto Condensed", sans-serif;
+            font-weight: 400;
+        }
+        header {
+            font-family: "Roboto Condensed", sans-serif;
+            z-index: 5;
+            color: black;
+            margin-top: 4rem;
+        }
+        .header--title {
+            font-weight: 400;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .header--authors > span {
+            color: var(--light);
+            font-weight: 400;
+        }
+        main {
+            padding-top: 8em !important;
+            padding-bottom: 8em !important;
+        }
+        footer {
+            background-color: var(--grey);
+            font-weight: 300;
+        }
+        .abstract {
+            color: var(--light);
+            margin-bottom: 5em;
+        }
+        figure {
+            max-width: 100%;
+            border: 1px solid var(--pale);
+            border-radius: 2px;
+            margin: 1em 0.5em;
+        }
+        figure > img {
+            max-width: 100%;
+            display: block;
+            margin: 0em auto;
+        }
+        figure > figcaption {
+            padding: var(--inner-space);
+        }
+        table {
+            width: 100%;
+            min-width: 100%;
+            border-collapse: collapse;
+        }
+        table > caption {
+            padding: var(--inner-space);
+        }
+        figcaption, caption {
+            color: var(--light);
+            font-weight: 300;
+        }
+        thead {
+            color: var(--structure);
+        }
+        td, th {
+            padding: 3px;
+        }
+        tr {
+            border-top: 1px solid var(--structure);
+            border-bottom: 1px solid var(--structure);
+        }
+        tbody > tr:nth-child(even) {background: var(--grey)};
+        tbody {
+            border-bottom: 1px solid var(--structure);
+        }
+        #refs {
+            font-size: 90%;
+            column-count: 2;
+        }
+        #refs > .csl-entry {
+            padding-bottom: 0.2em;
+            padding-top: 0.2em;
+        }
+        .hanging-indent > .csl-entry {
+            padding-left: 15px ;
+            text-indent: -15px ;
+        }    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css"
+    integrity="sha384-D+9gmBxUQogRLqvARvNLmA9hS2x//eK1FhVb9PiU86gmcrBrJAQT8okdJ4LMp2uv" crossorigin="anonymous" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.js"
+    integrity="sha384-483A6DwYfKeDa0Q52fJmxFXkcPCFfnXMoXblOkJ4JcA8zATN6Tm78UNL72AKk+0O"
+    crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/contrib/auto-render.min.js"
+    integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF"
+    crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            renderMathInElement(document.body, {
+                delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false }
+                ]
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header--title">First Estimates of Food-Web Structure Derived from Species Richness</div>
+            <div class="header--authors">
+                                <span class="header--author">
+                                        <a href="https://orcid.org/0000-0001-9051-0597" target="_blank">
+                        Francis Banville
+                    </a>
+                                                                <sup class="affilcode">1</sup>
+                                            <sup class="affilcode">2</sup>
+                                            <sup class="affilcode">3</sup>
+                                    </span>
+                                <span class="header--author">
+                                        <a href="https://orcid.org/0000-0002-4498-7076" target="_blank">
+                        Dominique Gravel
+                    </a>
+                                                                <sup class="affilcode">2</sup>
+                                            <sup class="affilcode">3</sup>
+                                    </span>
+                                <span class="header--author">
+                                        <a href="https://orcid.org/0000-0002-0735-5184" target="_blank">
+                        Timothée Poisot
+                    </a>
+                                                                <sup class="affilcode">1</sup>
+                                            <sup class="affilcode">3</sup>
+                                    </span>
+                            </div>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="abstract">
+            <b>Abstract:</b> <br />
+            <div class="artifacts">
+                <a href="draft.pdf" title="Draft PDF" target="_blank">draft</a>
+                <a href="preprint.pdf" title="Preprint PDF" target="_blank">preprint</a>
+            </div>
+        </section>
+        
+        <article>
+            <h1 id="introduction">Introduction</h1>
+            <h1 id="methods">Methods</h1>
+            <h2 id="a-maximum-entropy-model-for-predicting-food-web-structure">A maximum entropy model for predicting food-web structure</h2>
+            <p>Our mathematical model predicts the structure of species-based food webs from their number of species. Our model involves three main steps: (i) the prediction of the number of links from the number of species using the flexible links model; (ii) the derivation of the joint degree distribution using a maximum entropy approach; and (iii) the prediction of the adjacency matrix using simulations and maximum entropy. The next subsections describe each of these steps in detail.</p>
+            <h3 id="predicting-the-number-of-links">Predicting the number of links</h3>
+            <p>In order to derive the joint degree distribution of maximum entropy, we need two network-level measures: the number of species <span class="math inline"><em>S</em></span> and the number of interactions <span class="math inline"><em>L</em></span>. While the number of species is a well-described measure of biodiversity for many taxa and locations, the number of interactions is currently difficult to estimate empirically without sampling all pairwise interactions in a biological community. We thus used a predictive statistical model to simulate the number of interactions from the number of species in food webs.</p>
+            <p>To do so, we used the flexible links model of <span class="citation" data-cites="MacDonald2020RevLina">MacDonald, Banville, and Poisot (2020)</span>. The flexible links model incorporates meaningful ecological constraints into the prediction of <span class="math inline"><em>L</em></span>, namely the minimum <span class="math inline"><em>S</em> − 1</span> and maximum <span class="math inline"><em>S</em><sup>2</sup></span> numbers of interactions in food webs, and estimates the proportion of the <span class="math inline"><em>S</em><sup>2</sup> − (<em>S</em> − 1)</span> <em>flexible links</em> that are realized. More precisely, this model states that the number of <em>realized</em> flexible links <span class="math inline"><em>L</em><sub><em>F</em><em>L</em></sub></span> in a food web represents the number of realized interactions above the minimum (i.e. <span class="math inline"><em>L</em> = <em>L</em><sub><em>F</em><em>L</em></sub> + <em>S</em> − 1</span>) and is obtained from a beta-binomial distribution with <span class="math inline"><em>S</em><sup>2</sup> − (<em>S</em> − 1)</span> trials and parameters <span class="math inline"><em>α</em> = <em>μ</em><em>e</em><sup><em>ϕ</em></sup></span> and <span class="math inline"><em>β</em> = (1 − <em>μ</em>)<em>e</em><sup><em>ϕ</em></sup></span>:</p>
+            <p><span id="eq:BB"><span class="math display"><em>L</em><sub><em>F</em><em>L</em></sub> ∼ <em>B</em><em>B</em>(<em>S</em><sup>2</sup> − (<em>S</em> − 1), <em>μ</em><em>e</em><sup><em>ϕ</em></sup>, (1 − <em>μ</em>)<em>e</em><sup><em>ϕ</em></sup>),   (1)</span></span></p>
+            <p>where <span class="math inline"><em>μ</em></span> is the average probability across food webs that a flexible link is realized, and <span class="math inline"><em>ϕ</em></span> the concentration parameter around <span class="math inline"><em>μ</em></span>.</p>
+            <p>We fitted the flexible links model on all food webs archived on Mangal, an ecological interactions database <span class="citation" data-cites="Poisot2016ManMak">(Poisot et al. 2016)</span>. Ecological networks archived on Mangal are multilayer networks, i.e. networks that describe different types of interactions. We considered as food webs all networks mainly composed of trophic interactions (predation and herbivory types). We estimated the parameters of eq. 1 using a Hamiltonian Monte Carlo sampler with static trajectory (1 chain and 3000 iterations):</p>
+            <p><span id="eq:BBpost"><span class="math display">$$
+            [\mu, \phi| \textbf{L}, \textbf{S}] \propto \prod_{i = 1}^{m} \mathrm{BB}(L_i - (S_i - 1) | S_i^2 - (S_i - 1)), \mu e^{\phi}, (1 - \mu) e^\phi) \times \mathrm{B}(\mu| 3 , 7 ) \times \mathcal{N}(\phi | 3, 0.5),
+            \qquad(2)$$</span></span></p>
+            <p>where <span class="math inline"><em>m</em></span> is the number of food webs archived on Mangal (<span class="math inline"><em>m</em> = 235</span>) and <span class="math inline"><strong>L</strong></span> and <span class="math inline"><strong>S</strong></span> are respectively the vectors of their numbers of interactions and numbers of species. Our weakly-informative prior distributions were chosen following <span class="citation" data-cites="MacDonald2020RevLina">MacDonald, Banville, and Poisot (2020)</span>, i.e. a beta distribution for <span class="math inline"><em>μ</em></span> and a normal distribution for <span class="math inline"><em>ϕ</em></span>. The Monte Carlo sampling of the posterior distribution was conducted using the Julia library <code>Turing</code> v0.15.12 <span class="citation" data-cites="Ge2018TurLan">(Ge, Xu, and Ghahramani 2018)</span>.</p>
+            <p>The flexible links model is a generative model, i.e. it can generate plausible values of the predicted variable. We thus simulated 1000 values of <span class="math inline"><em>L</em></span> for each value of <span class="math inline"><em>S</em></span> ranging between 5 and 1000 species using the joint posterior distribution of our model parameters.</p>
+            <h3 id="deriving-the-joint-degree-distribution">Deriving the joint degree distribution</h3>
+            <p>The number of species and the number of interactions are state variables whose ratio was directly used to obtain the least-biased degree distribution <span class="math inline"><em>p</em>(<em>k</em>)</span>. This discrete probability distribution represents the probability that a species have <span class="math inline"><em>k</em></span> interactions in its food web, <span class="math inline"><em>k</em></span> ranging between 1 and <span class="math inline"><em>S</em></span>. The least-biased of these distributions, considering our limited knowledge of the system, can be derived using the principle of maximum entropy, i.e. by maximizing Shannon’s entropy</p>
+            <p><span id="eq:entropy"><span class="math display"><em>H</em> =  − ∑<sub><em>k</em></sub><em>p</em>(<em>k</em>)log <em>p</em>(<em>k</em>)   (3)</span></span></p>
+            <p>while respecting a set of constraints on the degree distribution. We used two such constraints:</p>
+            <p><span id="eq:g1"><span class="math display">$$g_1 = \sum_{k=1}^{S} p(k) = 1\qquad(4)$$</span></span></p>
+            <p>and</p>
+            <p><span id="eq:g2"><span class="math display">$$g_2 = \langle k \rangle = \sum_{k=1}^{S} k p(k) = \frac{2L}{S}\qquad(5)$$</span></span></p>
+            <p>The first constraint <span class="math inline"><em>g</em><sub>1</sub></span> is a normalizing constraint that ensures that all probabilities sum to 1. In addition, the second constraint <span class="math inline"><em>g</em><sub>2</sub></span> fixes the average of the degree distribution to the mean degree <span class="math inline">⟨<em>k</em>⟩</span>. The mean degree is twice the value of the linkage density <span class="math inline"><em>L</em>/<em>S</em></span> since each interaction must be counted twice when summing all species’ degrees. We used each simulated value of <span class="math inline"><em>L</em></span> to compute the mean degree constraint. As a result, we derived 1000 maximum entropy degree distributions for each value of <span class="math inline"><em>S</em></span>.</p>
+            <p>Finding probability distributions of maximum entropy is typically done using the method of Lagrange multipliers:</p>
+            <p><span id="eq:lagrange1"><span class="math display">$$\frac{\partial H}{\partial p(k)} = \lambda_1 \frac{\partial g_1}{\partial p(k)} + \lambda_2 \frac{\partial g_2}{\partial p(k)},\qquad(6)$$</span></span></p>
+            <p>where <span class="math inline"><em>λ</em><sub>1</sub></span> and <span class="math inline"><em>λ</em><sub>2</sub></span> are the Lagrange multipliers. Probability distributions of maximum entropy are derived by finding these values. Evaluating the partial derivatives with respect to <span class="math inline"><em>p</em>(<em>k</em>)</span>, we obtained:</p>
+            <p><span id="eq:lagrange2"><span class="math display"> − log <em>p</em>(<em>k</em>) − 1 = <em>λ</em><sub>1</sub> + <em>λ</em><sub>2</sub><em>k</em>   (7)</span></span></p>
+            <p>Then, solving eq. 7 for <span class="math inline"><em>p</em>(<em>k</em>)</span>, we obtained</p>
+            <p><span id="eq:lagrange3"><span class="math display">$$p(k) = \frac{e^{-\lambda_2k}}{z},\qquad(8)$$</span></span></p>
+            <p>where <span class="math inline"><em>z</em> = <em>e</em><sup>1 + <em>λ</em><sub>1</sub></sup></span>.</p>
+            <p>After substituting <span class="math inline"><em>p</em>(<em>k</em>)</span> in eq. 4 and eq. 5, we got a nonlinear system of two equations and two unknowns:</p>
+            <p><span id="eq:lagrange4"><span class="math display">$$\frac{1}{z}\sum_{k=1}^{S}e^{-\lambda_2k} = 1\qquad(9)$$</span></span> <span id="eq:lagrange5"><span class="math display">$$\frac{1}{z}\sum_{k=1}^{S}ke^{-\lambda_2k} = \frac{2L}{S},\qquad(10)$$</span></span></p>
+            <p>which implies that <span class="math inline">$z = \sum_{k=1}^{S}e^{-\lambda_2k}$</span>.</p>
+            <p>We solved eq. 10 numerically using the Julia library <code>NLsolve</code> v4.5.1 (TK). However, in figure TK, we show how an analytical solution in the limit <span class="math inline"><em>S</em> → ∞</span> yields very similar results. For large food webs (TK), the degree distribution of maximum entropy approaches</p>
+            <p><span id="eq:maxent"><span class="math display"><em>p</em>(<em>k</em>) = <em>c</em><em>r</em><sup><em>k</em></sup>,   (11)</span></span></p>
+            <p>with</p>
+            <p><span class="math display">$$c = \frac{{1}}{\langle k \rangle-1},$$</span></p>
+            <p>and</p>
+            <p><span class="math display">$$r = \frac{{\langle k \rangle-1}}{\langle k \rangle}.$$</span></p>
+            <p>Next, the joint degree distribution <span class="math inline"><em>p</em>(<em>k</em><sub><em>i</em><em>n</em></sub>, <em>k</em><sub><em>o</em><em>u</em><em>t</em></sub>)</span> of maximum entropy was derived using this analytical solution. The joint degree distribution is the probability of finding a species with <span class="math inline"><em>k</em><sub><em>i</em><em>n</em></sub></span> predators and <span class="math inline"><em>k</em><sub><em>o</em><em>u</em><em>t</em></sub></span> preys in a food web, with <span class="math inline"><em>k</em> = <em>k</em><sub><em>i</em><em>n</em></sub> + <em>k</em><sub><em>o</em><em>u</em><em>t</em></sub></span>. We first observed that the joint degree distribution is identical to the probability of a species having <span class="math inline"><em>k</em><sub><em>i</em><em>n</em></sub></span> predators and a total of <span class="math inline"><em>k</em></span> interactions:</p>
+            <p><span id="eq:jointdd"><span class="math display"><em>p</em>(<em>k</em><sub><em>i</em><em>n</em></sub>, <em>k</em><sub><em>o</em><em>u</em><em>t</em></sub>) = <em>p</em>(<em>k</em><sub><em>i</em><em>n</em></sub>, <em>k</em>)   (12)</span></span></p>
+            <p>Using Bayes’ theorem, we expressed the joint degree distribution as follows:</p>
+            <p><span id="eq:jointdd2"><span class="math display"><em>p</em>(<em>k</em><sub><em>i</em><em>n</em></sub>, <em>k</em>) = <em>p</em>(<em>k</em><sub><em>i</em><em>n</em></sub>|<em>k</em>)<em>p</em>(<em>k</em>),   (13)</span></span></p>
+            <p>where <span class="math inline"><em>p</em>(<em>k</em>)</span> is the degree distribution of maximum entropy derived above. An unbiased way to estimate <span class="math inline"><em>p</em>(<em>k</em><sub><em>i</em><em>n</em></sub>|<em>k</em>)</span> is by considering all <span class="math inline"><em>k</em></span> interactions as Bernoulli trials with a probability <span class="math inline"><em>q</em></span> of 0.5 of being incoming interactions. As a result, the joint probability distribution of maximum entropy of a food web with <span class="math inline"><em>S</em></span> species and a total of <span class="math inline"><em>L</em></span> interactions is given by:</p>
+            <p><span id="eq:jointdd3"><span class="math display">$$p(k_{in},k) = {k\choose k_{in}}q^{k_{in}}(1-q)^{k-k_{in}}c r^{k},\qquad(14)$$</span></span></p>
+            <p>which gives, after substitution and simplification:</p>
+            <p><span id="eq:jointdd4"><span class="math display">$$p(k_{in},k_{out}) = {k_{in}+k_{out}\choose k_{in}}c \left(\frac{r}{2}\right)^{k_{in}+k_{out}}\qquad(15)$$</span></span></p>
+            <h3 id="predicting-the-adjacency-matrix">Predicting the adjacency matrix</h3>
+            <p>The number of species <span class="math inline"><em>S</em></span>, the number of interactions <span class="math inline"><em>L</em></span>, and the joint degree distribution <span class="math inline"><em>p</em>(<em>k</em><sub><em>i</em><em>n</em></sub>, <em>k</em><sub><em>o</em><em>u</em><em>t</em></sub>)</span> are further constraints on the adjacency matrix of food webs. Directly deriving a network of maximum entropy considering these constraints is beyond our mathematical abilities. However, we worked around this issue by first simulating many networks of <span class="math inline"><em>S</em></span> species whose joint degree distribution was identical to the one obtained above. We next measured the entropy of all these potential networks and kept the one with maximum entropy.</p>
+            <p>Network simulations were conducted in two steps. First, we simulated the number of species among <span class="math inline"><em>S</em></span> species with <span class="math inline"><em>k</em><sub><em>i</em><em>n</em></sub></span> in-degrees and <span class="math inline"><em>k</em><sub><em>o</em><em>u</em><em>t</em></sub></span> out-degrees using the joint probability distribution (TK). We removed all occurrences with a total number of interactions different from <span class="math inline"><em>L</em></span>. Next, we generated <em>a maximum</em> of 1000 random Boolean matrices that maintain the numbers of in and out-degrees for all species in the food web. To do so, we used the curveball algorithm of <span class="citation" data-cites="Strona2014FasUnb">Strona et al. (2014)</span> implemented in the Julia library <code>RandomBooleanMatrices</code> v0.1.1. In order to respect biological constraints, we removed all occurrences with species having no interactions</p>
+            <p>We then computed the entropy of all simulated networks using an entropy measure for binary matrices (TK). We kept the network with the greatest entropy value. As a result, for each value of <span class="math inline"><em>S</em></span> we obtained 1000 networks of maximum entropy having different predicted total numbers of interactions <span class="math inline"><em>L</em></span>.</p>
+            <h2 id="worldwide-spatial-variation-of-food-web-structure">Worldwide spatial variation of food-web structure</h2>
+            <p>A main application of our model is the spatial analysis of food-web structure at very large spatial scales. We used data from <a href="https://biodiversitymapping.org/">BiodiversityMapping</a> to estimate the number of terrestrial vertebrate species (mammals, birds, and amphibians) in 10 km x 10 km grids worldwide. For illustrative purposes, we considered that all species present in a grid were part of the same food web and interacted with at least one species in their community.</p>
+            <p>We predicted the structure of all food webs using our model. We first generated networks of maximum entropy for the range of species richness encountered in the dataset (TK). We then computed a set of emerging properties (i.e. nestedness, maximum trophic level, network diameter, and entropy) for all of these networks, and mapped the spatial variation of these measures according to the number of species in each grid. In figure TK, we present the structure of networks having a number of interactions <span class="math inline"><em>L</em></span> of maximum a posteriori (MAP) probability.</p>
+            <h2 id="data-and-code-availability">Data and code availability</h2>
+            <p>All code and data to reproduce this article are available at the Open Science Framework (TK). Our analyses and simulations were conducted in Julia v1.5.4.</p>
+            <h1 id="results">Results</h1>
+            <p>Anticipated figures: - Conceptual figure (maybe) - Numerical solutions as a function of analytical solutions for the maximum entropy degree distributions - Probability distribution of mean-degree constraints for a food-web of <span class="math inline"><em>S</em></span> species (maybe) - Maximum entropy distributions of a food web of <span class="math inline"><em>S</em></span> species and different numbers of links <span class="math inline"><em>L</em></span> - Maxent against empirical degree distributions - Predicted as a function of empirical measures of network structure - Predicted and empirical measures of network structure as a function of species richness - 4 worldwide maps of predicted network properties (nestedness, maximum trophic level, network diameter, entropy)</p>
+            <h1 id="discussion">Discussion</h1>
+            <h1 id="conclusions">Conclusions</h1>
+            <h1 id="acknowledgments">Acknowledgments</h1>
+            <p>This work was supported by the Institute for Data Valorisation (IVADO).</p>
+            <p>We wrote this article on land located within the traditional unceded territory of the Saint Lawrence Iroquoian, Anishinabewaki, Mohawk, Huron-Wendat, and Omàmiwininiwak nations.</p>
+            <h1 class="unnumbered" id="references">References</h1>
+            <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+            <div id="ref-Ge2018TurLan" class="csl-entry" role="doc-biblioentry">
+            Ge, Hong, Kai Xu, and Zoubin Ghahramani. 2018. <span>“Turing: A Language for Flexible Probabilistic Inference.”</span> In <em>International Conference on Artificial Intelligence and Statistics</em>, 1682–90. PMLR. <a href="http://proceedings.mlr.press/v84/ge18b.html">http://proceedings.mlr.press/v84/ge18b.html</a>.
+            </div>
+            <div id="ref-MacDonald2020RevLina" class="csl-entry" role="doc-biblioentry">
+            MacDonald, Arthur Andrew Meahan, Francis Banville, and Timothée Poisot. 2020. <span>“Revisiting the Links-Species Scaling Relationship in Food Webs.”</span> <em>Patterns</em> 1 (7): 100079. <a href="https://doi.org/10.1016/j.patter.2020.100079">https://doi.org/10.1016/j.patter.2020.100079</a>.
+            </div>
+            <div id="ref-Poisot2016ManMak" class="csl-entry" role="doc-biblioentry">
+            Poisot, Timothee, Benjamin Baiser, Jennifer A. Dunne, Sonia Kefi, Francois Massol, Nicolas Mouquet, Tamara N. Romanuk, Daniel B. Stouffer, Spencer A. Wood, and Dominique Gravel. 2016. <span>“Mangal - Making Ecological Network Analysis Simple.”</span> <em>Ecography</em> 39 (4): 384–90. <a href="https://doi.org/10.1111/ecog.00976">https://doi.org/10.1111/ecog.00976</a>.
+            </div>
+            <div id="ref-Strona2014FasUnb" class="csl-entry" role="doc-biblioentry">
+            Strona, Giovanni, Domenico Nappo, Francesco Boccacci, Simone Fattorini, and Jesus San-Miguel-Ayanz. 2014. <span>“A Fast and Unbiased Procedure to Randomize Ecological Binary Matrices with Fixed Row and Column Totals.”</span> <em>Nature Communications</em> 5 (1, 1): 4114. <a href="https://doi.org/10.1038/ncomms5114">https://doi.org/10.1038/ncomms5114</a>.
+            </div>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <h2>Affiliations</h2> 
+            <sup>1</sup>&nbsp;Université de Montréal; <sup>2</sup>&nbsp;Université de Sherbrooke; <sup>3</sup>&nbsp;Quebec Centre for Biodiversity Science
+            <br />
+            
+        </div>
+    </footer>
+    
+</body>
+</html>

@@ -1,0 +1,250 @@
+[
+    {
+        "DOI": "10.1111/brv.12433",
+        "URL": "https://onlinelibrary.wiley.com/doi/abs/10.1111/brv.12433",
+        "author": [
+            {
+                "family": "Delmas",
+                "given": "Eva"
+            },
+            {
+                "family": "Besson",
+                "given": "Mathilde"
+            },
+            {
+                "family": "Brice",
+                "given": "Marie-H\u00e9l\u00e8ne"
+            },
+            {
+                "family": "Burkle",
+                "given": "Laura A."
+            },
+            {
+                "family": "Riva",
+                "given": "Giulio V. Dalla"
+            },
+            {
+                "family": "Fortin",
+                "given": "Marie-Jos\u00e9e"
+            },
+            {
+                "family": "Gravel",
+                "given": "Dominique"
+            },
+            {
+                "family": "Guimar\u00e3es",
+                "given": "Paulo R."
+            },
+            {
+                "family": "Hembry",
+                "given": "David H."
+            },
+            {
+                "family": "Newman",
+                "given": "Erica A."
+            },
+            {
+                "family": "Olesen",
+                "given": "Jens M."
+            },
+            {
+                "family": "Pires",
+                "given": "Mathias M."
+            },
+            {
+                "family": "Yeakel",
+                "given": "Justin D."
+            },
+            {
+                "family": "Poisot",
+                "given": "Timoth\u00e9e"
+            }
+        ],
+        "container-title": "Biological Reviews",
+        "id": "Delmas2019AnaEco",
+        "issue": "1",
+        "issued": {
+            "date-parts": [
+                [
+                    2019
+                ]
+            ]
+        },
+        "page": "16-36",
+        "title": "Analysing ecological networks of species interactions",
+        "type": "article-journal",
+        "volume": "94"
+    },
+    {
+        "URL": "http://proceedings.mlr.press/v84/ge18b.html",
+        "author": [
+            {
+                "family": "Ge",
+                "given": "Hong"
+            },
+            {
+                "family": "Xu",
+                "given": "Kai"
+            },
+            {
+                "family": "Ghahramani",
+                "given": "Zoubin"
+            }
+        ],
+        "container-title": "International Conference on Artificial Intelligence and Statistics",
+        "event": "International Conference on Artificial Intelligence and Statistics",
+        "id": "Ge2018TurLan",
+        "issued": {
+            "date-parts": [
+                [
+                    2018,
+                    3,
+                    31
+                ]
+            ]
+        },
+        "page": "1682-1690",
+        "publisher": "PMLR",
+        "title": "Turing: A Language for Flexible Probabilistic Inference",
+        "type": "paper-conference"
+    },
+    {
+        "DOI": "10.1016/j.patter.2020.100079",
+        "URL": "https://www.sciencedirect.com/science/article/pii/S2666389920301070",
+        "author": [
+            {
+                "family": "MacDonald",
+                "given": "Arthur Andrew Meahan"
+            },
+            {
+                "family": "Banville",
+                "given": "Francis"
+            },
+            {
+                "family": "Poisot",
+                "given": "Timoth\u00e9e"
+            }
+        ],
+        "container-title": "Patterns",
+        "id": "MacDonald2020RevLina",
+        "issue": "7",
+        "issued": {
+            "date-parts": [
+                [
+                    2020,
+                    10,
+                    9
+                ]
+            ]
+        },
+        "page": "100079",
+        "title": "Revisiting the Links-Species Scaling Relationship in Food Webs",
+        "type": "article-journal",
+        "volume": "1"
+    },
+    {
+        "DOI": "10.1111/ecog.00976",
+        "author": [
+            {
+                "family": "Poisot",
+                "given": "Timothee"
+            },
+            {
+                "family": "Baiser",
+                "given": "Benjamin"
+            },
+            {
+                "family": "Dunne",
+                "given": "Jennifer A."
+            },
+            {
+                "family": "Kefi",
+                "given": "Sonia"
+            },
+            {
+                "family": "Massol",
+                "given": "Francois"
+            },
+            {
+                "family": "Mouquet",
+                "given": "Nicolas"
+            },
+            {
+                "family": "Romanuk",
+                "given": "Tamara N."
+            },
+            {
+                "family": "Stouffer",
+                "given": "Daniel B."
+            },
+            {
+                "family": "Wood",
+                "given": "Spencer A."
+            },
+            {
+                "family": "Gravel",
+                "given": "Dominique"
+            }
+        ],
+        "container-title": "Ecography",
+        "id": "Poisot2016ManMak",
+        "issue": "4",
+        "issued": {
+            "date-parts": [
+                [
+                    2016,
+                    4
+                ]
+            ]
+        },
+        "page": "384-390",
+        "publisher": "Wiley",
+        "publisher-place": "Hoboken",
+        "title": "Mangal - making ecological network analysis simple",
+        "type": "article-journal",
+        "volume": "39"
+    },
+    {
+        "DOI": "10.1038/ncomms5114",
+        "URL": "https://www.nature.com/articles/ncomms5114",
+        "author": [
+            {
+                "family": "Strona",
+                "given": "Giovanni"
+            },
+            {
+                "family": "Nappo",
+                "given": "Domenico"
+            },
+            {
+                "family": "Boccacci",
+                "given": "Francesco"
+            },
+            {
+                "family": "Fattorini",
+                "given": "Simone"
+            },
+            {
+                "family": "San-Miguel-Ayanz",
+                "given": "Jesus"
+            }
+        ],
+        "container-title": "Nature Communications",
+        "id": "Strona2014FasUnb",
+        "issue": "1, 1",
+        "issued": {
+            "date-parts": [
+                [
+                    2014,
+                    6,
+                    11
+                ]
+            ]
+        },
+        "page": "4114",
+        "publisher": "Nature Publishing Group",
+        "title": "A fast and unbiased procedure to randomize ecological binary matrices with fixed row and column totals",
+        "type": "article-journal",
+        "volume": "5"
+    }
+]
