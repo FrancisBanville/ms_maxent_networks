@@ -114,6 +114,18 @@ git-tree-sha1 = "88a1303ee10c24b6df86eeafb98e502115c7be58"
 uuid = "76274a88-744f-5084-9051-94815aaf08c4"
 version = "0.8.16"
 
+[[Blosc]]
+deps = ["Blosc_jll"]
+git-tree-sha1 = "84cf7d0f8fd46ca6f1b3e0305b4b4a37afe50fd6"
+uuid = "a74b3585-a348-5f62-a45c-50e91977d574"
+version = "0.7.0"
+
+[[Blosc_jll]]
+deps = ["Libdl", "Lz4_jll", "Pkg", "Zlib_jll", "Zstd_jll"]
+git-tree-sha1 = "aa9ef39b54a168c3df1b2911e7797e4feee50fbe"
+uuid = "0b7ba130-8d10-5ba8-a3d6-c5182647fed9"
+version = "1.14.3+1"
+
 [[Bzip2_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "c3598e525718abcc440f69cc6d5f60dda0a1b61e"
@@ -379,6 +391,12 @@ git-tree-sha1 = "5a0d4b6a22a34d17d53543bd124f4b08ed78e8b0"
 uuid = "f5851436-0d7a-5f13-b9de-f02708fd171a"
 version = "3.3.9+7"
 
+[[FileIO]]
+deps = ["Pkg", "Requires", "UUIDs"]
+git-tree-sha1 = "d74fd0dae131104471c849f25ba1179fe0fadf47"
+uuid = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
+version = "1.8.2"
+
 [[FillArrays]]
 deps = ["LinearAlgebra", "Random", "SparseArrays"]
 git-tree-sha1 = "31939159aeb8ffad1d4d8ee44d07f8558273120a"
@@ -484,6 +502,18 @@ git-tree-sha1 = "03d381f65183cb2d0af8b3425fde97263ce9a995"
 uuid = "42e2da0e-8278-4e71-bc24-59509adca0fe"
 version = "1.0.0"
 
+[[HDF5]]
+deps = ["Blosc", "Compat", "HDF5_jll", "Libdl", "Mmap", "Random", "Requires"]
+git-tree-sha1 = "8a21f34a34491833bcda29a3ec2188b4ec6e558f"
+uuid = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
+version = "0.15.4"
+
+[[HDF5_jll]]
+deps = ["Artifacts", "JLLWrappers", "LibCURL_jll", "Libdl", "OpenSSL_jll", "Pkg", "Zlib_jll"]
+git-tree-sha1 = "fd83fa0bde42e01952757f01149dd968c06c4dba"
+uuid = "0234f1f7-429e-5d53-9886-15a909be8d59"
+version = "1.12.0+1"
+
 [[HTTP]]
 deps = ["Base64", "Dates", "IniFile", "MbedTLS", "NetworkOptions", "Sockets", "URIs"]
 git-tree-sha1 = "c9f380c76d8aaa1fa7ea9cf97bddbc0d5b15adc2"
@@ -567,6 +597,12 @@ version = "0.9.0"
 git-tree-sha1 = "a3f24677c21f5bbe9d2a714f95dcd58337fb2856"
 uuid = "82899510-4779-5014-852e-03e436cf321d"
 version = "1.0.0"
+
+[[JLD]]
+deps = ["FileIO", "HDF5", "Printf"]
+git-tree-sha1 = "1d291ba1730de859903b480e6f85a0dc40c19dcb"
+uuid = "4138dd39-2aa7-5051-a626-17a0bb65d9c8"
+version = "0.12.3"
 
 [[JLLWrappers]]
 deps = ["Preferences"]
@@ -734,6 +770,12 @@ deps = ["ArrayInterface", "CheapThreads", "DocStringExtensions", "IfElse", "Line
 git-tree-sha1 = "da82a865158e1d62e013fa72657fda7e92820a90"
 uuid = "bdcacae8-1622-11e9-2a5c-532679323890"
 version = "0.12.12"
+
+[[Lz4_jll]]
+deps = ["Libdl", "Pkg"]
+git-tree-sha1 = "51b1db0732bbdcfabb60e36095cc3ed9c0016932"
+uuid = "5ced341a-0733-55b8-9ab6-a4889d929147"
+version = "1.9.2+2"
 
 [[MCMCChains]]
 deps = ["AbstractFFTs", "AbstractMCMC", "AxisArrays", "Compat", "Distributions", "Formatting", "IteratorInterfaceExtensions", "LinearAlgebra", "MLJModelInterface", "NaturalSort", "PrettyTables", "Random", "RecipesBase", "Serialization", "SpecialFunctions", "Statistics", "StatsBase", "TableTraits", "Tables"]
