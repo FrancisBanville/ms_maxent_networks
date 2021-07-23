@@ -67,7 +67,7 @@ $$\frac{1}{z}\sum_{k=1}^{S}ke^{-\lambda_2k} = \frac{2L}{S},$${#eq:lagrange5}
 
 which implies that $z = \sum_{k=1}^{S}e^{-\lambda_2k}$.
 
-We solved @eq:lagrange5 numerically using the Julia library  `NLsolve` v4.5.1 (TK). However, in figure TK, we show how an analytical solution in the limit $S \rightarrow \infty$ yields very similar results. For large food webs (TK), the degree distribution of maximum entropy approaches
+We solved @eq:lagrange5 numerically using the Julia library  `JuMP` v0.21.8. However, in @fig:solutions, we show how an analytical solution yields very similar results for most empirical values of species richness. For large food webs (of approx. 20 species and more), the degree distribution of maximum entropy approaches
 
 $$p(k) = c r^{k},$${#eq:maxent}
 
@@ -78,6 +78,12 @@ $$c = \frac{{1}}{\langle k \rangle-1},$$
 and
 
 $$r = \frac{{\langle k \rangle-1}}{\langle k \rangle}.$$
+
+![Divergence between numerical and analytical solutions of the degree distribution of maximum entropy, for a range of species richness. All solutions were obtained using the median predicted numbers of links from the flexible links model. The divergence was calculated as the sum of absolute differences between the two solutions. The grey area shows the 97% percentile interval of species richness for all food webs archived on Mangal, along with the median (dotted line).](figures/divergence_numerical_analytical.png){#fig:solutions}
+
+In @fig:maxent_dd, we illustrate that food webs have many distributions of maximum entropy, with some more likely than others. 
+
+![Left panel: Probability densities of mean degrees for different levels of species richness. These correspond to the median (27 species) and 97% PI (7 and 85 species) of species richness for all food webs archived on Mangal. Mean degrees were computed using these values of species richness and the numbers of links (n = 1000) predicted from the flexible links model.Right panel: Different degree distributions of maximum entropy can be derived for a food web of a given size (here 27 species) by using different values of the mean degree constraint. The degree distributions were obtained using the 67%, 89%, and 97% PI, as well as the median, of the corresponding distribution of mean degrees.](figures/maxent_degree_distributions.png){#fig:maxent_dd}
 
 Next, the joint degree distribution $p(k_{in},k_{out})$ of maximum entropy was derived using this analytical solution. The joint degree distribution is the probability of finding a species with $k_{in}$ predators and $k_{out}$ preys in a food web, with $k = k_{in} + k_{out}$. We first observed that the joint degree distribution is identical to the probability of a species having $k_{in}$ predators and a total of $k$ interactions:
 
@@ -115,25 +121,12 @@ All code and data to reproduce this article are available at the Open Science Fr
 
 # Results
 
-Anticipated figures:
-- Conceptual figure (maybe)
-- Numerical solutions as a function of analytical solutions for the maximum entropy degree distributions
-- Probability distribution of mean-degree constraints for a food-web of $S$ species (maybe)
-- Maximum entropy distributions of a food web of $S$ species and different numbers of links $L$
-- Maxent against empirical degree distributions
-- Predicted as a function of empirical measures of network structure
-- Predicted and empirical measures of network structure as a function of species richness
-- 4 worldwide maps of predicted network properties (nestedness, maximum trophic level, network diameter, entropy)
-
 # Discussion
 
 # Conclusions
 
 # Acknowledgments
 
-This work was supported by the Institute for Data Valorisation (IVADO).
-
-We wrote this article on land located within the traditional unceded territory of the Saint Lawrence Iroquoian, Anishinabewaki, Mohawk, Huron-Wendat, and Omàmiwininiwak nations.
-
+We acknowledge that this study was conducted on land within the traditional unceded territory of the Saint Lawrence Iroquoian, Anishinabewaki, Mohawk, Huron-Wendat, and Omàmiwininiwak nations. This work was supported by the Institute for Data Valorisation (IVADO) and the NSERC BIOS2 CREATE program.
 
 # References
