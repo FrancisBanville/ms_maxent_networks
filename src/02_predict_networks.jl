@@ -1,5 +1,4 @@
 ## Read metadata of all food webs archived on mangal.io (generated from 01_import_mangal_metadata.jl)
-
 mangal_foodwebs = DataFrame(CSV.File(joinpath("data", "mangal_foodwebs.csv")))
 
 
@@ -56,20 +55,22 @@ Threads.@threads for s in sp
     next!(p)
 end
 
-# predicted number of links (median) for species richness in S
+save(joinpath("data", "sim", "predicted_links.jld"), "data", predicted_links)
+
+# predicted number of links (median) for species richness in sp
 L_med = convert.(Int64, round.(median.(eachcol(predicted_links))))
 
 ## Predict the adjacency matrix of maximum entropy for a range of species richness and median predicted number of links
 i = findall(in(S).(sp))
 Sp = sort(unique(S))
 
-predicted_matrices = predict_adjacency_matrix.(Sp, L_med[i], 100)
+predicted_matrices = predict_adjacency_matrix.(Sp, L_med[i], 500)
 predicted_networks = UnipartiteNetwork.(predicted_matrices)
 
 save(joinpath("data", "sim", "predicted_networks.jld"), "data", predicted_networks)
 
 ## Predict the adjacency matrix of maximum entropy for networks with empirical numbers of links
-predicted_matrices_empL = predict_adjacency_matrix.(S, L, 100)
+predicted_matrices_empL = predict_adjacency_matrix.(S, L, 500)
 predicted_networks_empL = UnipartiteNetwork.(predicted_matrices_empL)
 
 save(joinpath("data", "sim", "predicted_networks_empL.jld"), "data", predicted_networks_empL)
