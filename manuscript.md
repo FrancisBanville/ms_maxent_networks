@@ -121,6 +121,10 @@ All code and data to reproduce this article are available at the Open Science Fr
 
 # Results
 
+![Degree distributions of food webs archived on Mangal (dotted lines) and of maximum entropy (solid lines). Within each panel, food webs have the same number of species but a different number of links. Black and blue dotted lines correspond to empirical food webs with the smallest and biggest size (i.e. number of interactions), respectively. Black and blue solid lines correspond to food webs derived using these same numbers of interactions, whereas red solid lines correspond to food webs derived using the median number of interactions given by the flexible links model. Left panel: $S=7$ species (lower bound of the 97% PI of species richness for all food webs archived on Mangal). Food webs in black and blue have 8 and 12 links, respectively, whereas the food web in red has a total of 8 interactions. Here, the black solid line is hidden behind the blue solid one. Middle panel: $S=27$ species (median of species richness for all food webs archived on Mangal). Food webs in black and blue have 41 and 132 links, respectively, whereas the food web in red has a total of 77 interactions. Right panel: $S=81$ species (higher bound of the 97% PI of species richness for all food webs archived on Mangal). Food webs in blue have 250 links, whereas the food web in red has a total of 581 interactions. Here, black lines were not plotted, since a single food web archived on Mangal had 81 species. In all panels, note that simulated food webs in black and blue might not have the exact same numbers of interactions as their corresponding empirical webs because of rounding.](figures/mangal_maxent_degree_distributions.png){#fig:mangal_maxent_dd}
+
+
+
 # Discussion
 
 # Conclusions
