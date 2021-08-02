@@ -162,11 +162,11 @@ Ns_mangal985 = mangal_foodwebs[mangal_foodwebs.S .== species985, :]
 
 # Get food webs with minimum and maximum numbers of links (from food webs with median and 97% PI of species richness) (arbitrary criteria to select networks that will be plotted)
 N_mangal500min = Ns_mangal500[Ns_mangal500.L .== minimum(Ns_mangal500.L), :][1,:]
-N_mangal500max = Ns_mangal500[Ns_mangal500.L .== maximum(Ns_mangal500.L), :]
+N_mangal500max = Ns_mangal500[Ns_mangal500.L .== maximum(Ns_mangal500.L), :][1,:]
 N_mangal015min = Ns_mangal015[Ns_mangal015.L .== minimum(Ns_mangal015.L), :][2,:] # 2 food webs with 7 species and 8 links (get the one with predatory links)
-N_mangal015max = Ns_mangal015[Ns_mangal015.L .== maximum(Ns_mangal015.L), :]
-N_mangal985min = Ns_mangal985[Ns_mangal985.L .== minimum(Ns_mangal985.L), :]
-N_mangal985max = Ns_mangal985[Ns_mangal985.L .== maximum(Ns_mangal985.L), :]
+N_mangal015max = Ns_mangal015[Ns_mangal015.L .== maximum(Ns_mangal015.L), :][1,:]
+N_mangal985min = Ns_mangal985[Ns_mangal985.L .== minimum(Ns_mangal985.L), :][1,:]
+N_mangal985max = Ns_mangal985[Ns_mangal985.L .== maximum(Ns_mangal985.L), :][1,:]
 
 """
 get_ranked_dd(N::DataFrameRow)
@@ -460,3 +460,56 @@ plot(plotA, plotB, plotC, plotD,
      titleloc=:right, titlefont=fonts)
 
 savefig(joinpath("figures", "measures_richness.png"))
+
+# Plot nestedness as a function of maximum entropy
+scatter(tl_max_maxent_empL, nestedness_maxent_empL, alpha=0.5, label="Empirical L", smooth=true, markersize=4, linestyle=:dot, linealpha=1,
+      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
+      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
+      foreground_color_legend=nothing, background_color_legend=:white,
+      legend=:topright, legendfont=fonts,
+      xticks=[2,4,6,8,10,12],
+      xlabel="Maximum trophic level",
+      ylabel="Nestedness")
+scatter!(tl_max_maxent_fl, nestedness_maxent_fl, alpha=0.5, label="Median L", smooth=true, markersize=4, linestyle=:dot, linealpha=1)
+scatter!(tl_max_mangal, nestedness_mangal, alpha=0.5, label="Mangal", smooth=true, markersize=4, linestyle=:dot, linealpha=1)
+
+savefig(joinpath("figures", "maxtrophiclevel_nestedness.png"))
+
+
+## Figure: Distribution of entropy and z-scores of empirical food webs
+
+plotA = density(entropy_maxent_empL, label="Empirical L",
+      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
+      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
+      foreground_color_legend=nothing, background_color_legend=:white,
+      legend=:topright, legendfont=fonts,
+      ylims=(0,30),
+      xlabel="SVD-entropy",
+      ylabel="Density")
+density!(entropy_maxent_fl, label="Median L")
+density!(entropy_mangal, label="Mangal")
+
+entropy_maxent_fl_avg = mean(entropy_maxent_fl)
+entropy_maxent_fl_std = std(entropy_maxent_fl)
+entropy_mangal_zscores = (entropy_mangal .- entropy_maxent_fl_avg) ./ entropy_maxent_fl_std
+
+entropy_mangal_zscores_500 = quantile(entropy_mangal_zscores, 0.500)
+entropy_mangal_zscores_015 = quantile(entropy_mangal_zscores, 0.015)
+entropy_mangal_zscores_985 = quantile(entropy_mangal_zscores, 0.985)
+
+plotB = density(entropy_mangal_zscores, label="",
+      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
+      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
+      foreground_color_legend=nothing, background_color_legend=:white,
+      legend=:topright, legendfont=fonts,
+      color=:grey,
+      ylims=(0,0.16),
+      xlabel="z-score of SVD-entropy",
+      ylabel="Density")
+plot!([entropy_mangal_zscores_500], seriestype=:vline, color=:grey, ls=:dash, lab="")
+
+plot(plotA, plotB,
+     title = ["(a)" "(b)"],
+     titleloc=:right, titlefont=fonts)
+
+savefig(joinpath("figures", "entropy_distribution.png"))
