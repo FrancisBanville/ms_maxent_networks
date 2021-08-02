@@ -513,3 +513,75 @@ plot(plotA, plotB,
      titleloc=:right, titlefont=fonts)
 
 savefig(joinpath("figures", "entropy_distribution.png"))
+
+
+## Figure: Motif distribution
+
+"""
+count_motifs(N::T) where {T <: UnipartiteNetwork}
+    N: unipartite network
+Returns the number of times each motif was found in the unipartite network
+"""
+function count_motifs(N::T) where {T <: UnipartiteNetwork}
+  ms = unipartitemotifs() # list motifs
+  ms_count = [length(find_motif(N, ms[i])) for i in 1:13]
+end
+
+"""
+count_motifs(Ns::T) where {T <: Union{Vector{UnipartiteNetwork{Bool, String}}, Vector{UnipartiteNetwork{Bool, MangalNode}}}}
+    Ns: vector of unipartite networks
+Returns the proportion of each motif in each unipartite network
+Rows are networks and columns are different motifs
+"""
+function count_motifs(Ns::T) where {T <: Union{Vector{UnipartiteNetwork{Bool, String}}, Vector{UnipartiteNetwork{Bool, MangalNode}}}}
+  # remove the biggest network (too long to find all motifs in networks that are too large)
+  Ns_small = Ns[richness.(Ns) .!== maximum(richness.(Ns))]
+  # count each of the 13 possible motifs for all networks in Ns
+  motifs_count = zeros(Float64, length(Ns_small), length(unipartitemotifs()))
+  
+  for i in 1:length(Ns_small)
+    motifs_count[i,:] = count_motifs(Ns_small[i]) 
+  end
+
+  # returns the proportion of each motif for all networks
+  return motifs_count ./ sum.(eachrow(motifs_count))
+end
+
+# Get the proportion of motifs for all food webs (empirical and predicted)
+motifs_prop_mangal = count_motifs(Ns_mangal)
+motifs_prop_maxent_empL = count_motifs(Ns_maxent_empL)
+motifs_prop_maxent_fl = count_motifs(Ns_maxent_fl)
+
+"""
+plot_motifs(ms::T) where {T <: Matrix{Float64}}
+    ms: matrix of proportions of motifs in networks (rows = networks, columns = motifs)
+Returns the plot of the distribution of all motifs in a set of food webs 
+Gives a violon plot, boxplot and dotplot
+"""
+function plot_motifs(ms::T) where {T <: Matrix{Float64}}
+  
+  # change data format for plotting
+  ms_df = convert(DataFrame, ms)
+  rename!(ms_df, vcat(["S$i" for i in 1:5],["D$j" for j in 1:8]))
+  ms_df = DataFrames.stack(ms_df)
+  
+  # plot proportions of all modules
+  @df ms_df violin(string.(:variable), :value, linewidth=0, label="",
+              framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
+              guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
+              ylims=(0,1),
+              xaxis="Motifs", yaxis="Proportion")
+  @df ms_df boxplot!(string.(:variable), :value, fillalpha=0.5, markersize=4, linewidth=2, color=:darkred, label="")
+  @df ms_df dotplot!(string.(:variable), :value, color=:black, markersize=1.5, alpha=0.15, label="")
+end
+
+# Plot the proportions of all motifs for empirical and predicted food webs 
+# Food webs with median L are not plotted since their distribution is very similar to the one of MaxEnt food webs with empirical L
+plotA = plot_motifs(motifs_prop_mangal)
+plotB = plot_motifs(motifs_prop_maxent_empL)
+
+plot(plotA, plotB,
+     title = ["(a) Empirical food webs" "(b) MaxEnt food webs"],
+     titleloc=:right, titlefont=fonts)
+
+savefig(joinpath("figures", "motifs_distribution.png"))
