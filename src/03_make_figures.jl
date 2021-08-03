@@ -630,7 +630,7 @@ function plot_motifs(ms::T) where {T <: Matrix{Float64}}
               guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
               ylims=(0,1),
               xaxis="Motifs", yaxis="Proportion")
-  @df ms_df boxplot!(string.(:variable), :value, fillalpha=0.5, markersize=4, linewidth=2, color=:grey, label="")
+  @df ms_df boxplot!(string.(:variable), :value, fillalpha=0.2, markersize=3, linewidth=1, color=:grey, label="")
   @df ms_df dotplot!(string.(:variable), :value, color=:black, markersize=1.5, alpha=0.15, label="")
 end
 
