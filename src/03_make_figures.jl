@@ -476,6 +476,65 @@ scatter!(tl_max_mangal, nestedness_mangal, alpha=0.5, label="Mangal", smooth=tru
 savefig(joinpath("figures", "maxtrophiclevel_nestedness.png"))
 
 
+## Figure: Entropy and divergence of degree distributions
+
+"""
+get_divergence_dd(N1::UnipartiteNetwork{Bool, MangalNode}, N2::UnipartiteNetwork{Bool, String})  
+    N1: Empirical food web
+    N2: MaxEnt food web 
+Returns the divergence in probabilistic degree distributions between the two networks
+"""
+function get_divergence_dd(N1::UnipartiteNetwork{Bool, MangalNode}, N2::UnipartiteNetwork{Bool, String})  
+  # Maximum in species richness between the two networks (since some predicted networks didn't have the exact same number of species as their empirical counterpart)
+  S = maximum(vcat(richness(N1), richness(N2)))
+
+  # Get the probabilistic degree distributions (proportion of species with degree k) of the two networks
+  dd_N1 = get_ranked_dd(N1)
+  dd_N2 = get_ranked_dd(N2)
+
+  dd_prob_N1 = zeros(Float64, S)
+  dd_prob_N2 = zeros(Float64, S)
+
+  for k in 1:S
+    dd_prob_N1[k] = sum(dd_N1 .== k) / S
+    dd_prob_N2[k] = sum(dd_N2 .== k) / S
+  end
+
+  # Compute the divergence in degree distributions between the two networks (sum of absolute differences)
+  divergence = sum(abs.(dd_prob_N1 .- dd_prob_N2))
+
+  return divergence
+end
+
+# Compute the divergence in degree distributions between food webs archived on Mangal and MaxEnt food webs (empirical L)
+divergence_dd = get_divergence_dd.(Ns_mangal, Ns_maxent_empL)
+
+# Plot the divergence in degree distributions as a function of entropy
+plotA = scatter(entropy_maxent_empL, divergence_dd, alpha=0.3, label="", smooth=true, markersize=3, linestyle=:dot, linealpha=1,
+      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
+      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
+      foreground_color_legend=nothing, background_color_legend=:white,
+      legend=:topright, legendfont=fonts, 
+      xlabel="SVD-entropy (MaxEnt food web)",
+      ylabel="Divergence in degree distributions")
+
+# Plot the divergence in degree distributions as a function of species richness
+plotB = scatter(S_mangal, divergence_dd, alpha=0.3, label="", smooth=true, markersize=3, linestyle=:dot, linealpha=1,
+      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
+      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
+      foreground_color_legend=nothing, background_color_legend=:white,
+      legend=:topright, legendfont=fonts, 
+      xlabel="Species richness",
+      ylabel="Divergence in degree distributions")
+xaxis!(:log, xticks=(a,a))
+
+plot(plotA, plotB,  
+     title = ["(a)" "(b)"],
+     titleloc=:right, titlefont=fonts)
+     
+savefig(joinpath("figures", "divergence_degree_distributions.png"))
+
+
 ## Figure: Distribution of entropy and z-scores of empirical food webs
 
 plotA = density(entropy_maxent_empL, label="Empirical L",
@@ -571,7 +630,7 @@ function plot_motifs(ms::T) where {T <: Matrix{Float64}}
               guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
               ylims=(0,1),
               xaxis="Motifs", yaxis="Proportion")
-  @df ms_df boxplot!(string.(:variable), :value, fillalpha=0.5, markersize=4, linewidth=2, color=:darkred, label="")
+  @df ms_df boxplot!(string.(:variable), :value, fillalpha=0.5, markersize=4, linewidth=2, color=:grey, label="")
   @df ms_df dotplot!(string.(:variable), :value, color=:black, markersize=1.5, alpha=0.15, label="")
 end
 
