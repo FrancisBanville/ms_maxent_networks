@@ -6,6 +6,7 @@ Pkg.instantiate()
 # Load required packages
 import CSV
 using DataFrames
+using DelimitedFiles
 using JLD
 
 import Ipopt
@@ -23,6 +24,10 @@ using EcologicalNetworks
 using Mangal
 using RandomBooleanMatrices
 
+using SimpleSDMLayers
+using ArchGDAL
+using GDAL
+
 # Load custom functions
 include(joinpath("src", "functions.jl")) 
 
@@ -30,4 +35,6 @@ include(joinpath("src", "functions.jl"))
 include(joinpath("src", "01_import_mangal_metadata.jl"))
 include(joinpath("src", "02_predict_networks.jl"))
 include(joinpath("src", "03_make_figures.jl"))
+include(joinpath("src", "04_make_maps.jl"))
+
 
