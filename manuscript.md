@@ -4,7 +4,94 @@ bibliography: [references.bib]
 
 # Introduction
 
-# Methods
+- Predicting ecological networks 
+    - Importance of predicting ecological networks
+    - Different approaches proposed (*e.g.* machine learning, ecological models)
+    - Benefits of predicting network structure first 
+- Introduction to the use of MaxEnt in ecology
+    - Species distribution modelling (SDMs)
+    - Maximum entropy theory of ecology (METE)
+- Objectives of this paper 
+    - Compare different MaxEnt models and predictions with empirical data
+    - Compare maximum entropy graph models with neutral models
+
+## The principle of maximum entropy: A primer for ecologists
+
+- Overview of the principle of maximum entropy
+    - Least-biased distribution
+    - Shannon or Gibbs entropy
+    - Constraints
+- Finding the maximum entropy distribution 
+    - Method of the Lagrange multiplier
+    - Example with a single constraint (the mean)
+
+## Prior knowledge on food webs
+
+- Number of species and number of interactions
+    - Predicting the number of links (flexible links model)
+    - Show predictions of $L$ for my data
+- (Joint) degree sequence / distribution 
+- Other measures of network structure 
+- Number of individuals and number of species
+
+# Methods 
+- Maximum entropy models of network structure
+- Maximum entropy models of the whole network 
+    - Simulating annealing optimizing SVD-entropy
+- Neutral models
+    - Abundance
+    - Joint degree sequence
+
+## Data 
+
+- Food web of Tuesday Lake 
+- Food webs in New Zealand
+- Data and code availability
+
+# Maximum entropy models of network structure
+
+## Degree distribution of maximum entropy 
+
+- Derivation of the degree distribution constrained by $S$ and $L$
+- Figure: Comparison of predictions with data
+
+## Joint degree distribution of maximum entropy
+
+- Deriving the joint degree distribution constrained by $S$ and $L$
+- Figure: Comparison of predictions with data
+
+- Deriving the joint degree distribution constrained by the degree sequence
+- Figure: Comparison of predictions with data
+
+## Adjacency matrix of maximum entropy 
+
+- Maximum entropy graph models of directed networks
+    - Often over the ensemble (here, it would be of directed simple graphs with or without self-loops)
+    - Does not guarantie biological feasibility
+    - Models can be very complicated
+- Simulating annealing to maximize SVD-entropy 
+- Validation procedure 
+
+- Find the network with maximum entropy for a given $S$ and $L$
+- Find the network with maximum entropy for a given degree sequemce
+- Find the network with maximum entropy for a given joint degree sequence
+
+# Comparison with neutral models
+
+- Deriving the species-abundance relationship of maximum entropy 
+- Neutral model using relative abunances
+- Neutral model using joint degree sequence
+- Comparison of food-web structure of these neutral models with the one of the MaxEnt model constrained by the joint degree sequence
+
+# Discussion
+
+- Explain derivations of my models with empirical data
+- Suggest other constraints that could be used
+- Explain that my models is essentially a fist-order approximation of network structure or an informative prior
+
+
+
+# Old text
 
 ## A maximum entropy model for predicting food-web structure
 
