@@ -26,7 +26,7 @@ Returns the joint degree distribution of maximum entropy given S and L
 function joint_degree_dist_maxent(S::Int64, L::Int64) 
     x = solve_lambdas(S, L) # approximate the Lagrange multipliers
     
-    joint_degree_dist = zeros(S+1, S+1) # create matrix for the joint degree distribution (S+1 because in and out-degrees can be 0)
+    joint_degree_dist = zeros(S+1, S+1) # create matrix for the joint degree distribution (S+1 rows and columns because in and out-degrees go from 0 to S)
 
     Z = sum(sum(exp(-x[1]*k_in - x[2]*k_out) for k_in = 0:S) for k_out = 0:S) # compute partition function (denominator of the MaxEnt distribution)
 
@@ -37,6 +37,5 @@ function joint_degree_dist_maxent(S::Int64, L::Int64)
             joint_degree_dist[k_in + 1, k_out + 1] = num/Z
         end
     end   
-
     return joint_degree_dist                                 
 end
