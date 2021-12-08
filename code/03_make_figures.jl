@@ -5,6 +5,65 @@ Plots.scalefontsizes(1.3)
 fonts=font("Arial",7)
 
 
+### Heatmap of disconnected species ###
+
+# Get the MaxEnt degree distribution for a range of species richness and different quantiles of the number of links
+Ss = [5:5:100;] # range of species richness
+qs = [0:0.05:1;] # quantiles of the number of links
+p_disconnected = zeros(length(qs), length(Ss)) # create vector for the probability a species is disconnected given the number of links (rows) and species richness (columns)
+
+for (i, S) in enumerate(Ss)
+  Ls = round.(quantile(0:S^2, qs)) # get the number of links L associated to every quantile (proportion of S^2 links below L)
+  Ls = convert(Vector{Int64}, Ls) 
+  
+  degree_dists = degree_dist_maxent.(S, Ls) # get the degree distributions of maximum entropy for a given S and all L
+  degree_dists = reduce(hcat, degree_dists)
+  p_disconnected[:,i] = degree_dists[1,:]
+end
+
+q_minS = Ss ./ (Ss.^2 .+ 1) # get the quantile associated to the minimum number of links S-1 that would allow all species to be connected
+
+# plot the proportion of disconnected species for all combinations of S and L (L in quantile)
+heatmap(Ss, qs, log.(p_disconnected), 
+        c=:viridis,
+        colorbar_title="log probability",
+        framestyle=:box, 
+        dpi=1000, 
+        size=(800,500), 
+        margin=5Plots.mm, 
+        guidefont=fonts, 
+        xtickfont=fonts, 
+        ytickfont=fonts)
+# add the minimum number of links S-1 (quantile) on the plot 
+scatter!(Ss, q_minS, 
+      linewidth=1, 
+      linecolor=:black,
+      markerwidth=3, 
+      markercolor=:black,
+      lab="")  
+plot!(Ss, q_minS,
+      linewidth=1, 
+      linecolor=:black,
+      lab="") 
+xaxis!(xlim=(minimum(Ss)-2.5, maximum(Ss)+2.5), "species richness")
+yaxis!(ylim=(0,1), "quantile of the number of links")
+
+savefig(joinpath("figures", "prop_disconnected_species.png"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+################## OLD FIGURES ###############################
+
 ## Figure: Divergence between numerical and analytical solutions of the MaxEnt degree distributions
 
 ## Load metadata of all food webs archived on mangal.io (generated from 01_import_mangal_metadata.jl)
