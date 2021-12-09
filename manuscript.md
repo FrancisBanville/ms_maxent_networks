@@ -68,7 +68,7 @@ The degree distribution could also have been obtained directly using the princip
 
 $$p(k) = \frac{e^{-\lambda_2k}}{Z},$${#eq:lagrange_dd}
 
-with $Z = \sum_{k=0}^S e^{-\lambda_2k}.${#eq:Z_dd}
+with $Z = \sum_{k=0}^S e^{-\lambda_2k}.$
 
 This can be solved numerically using the constraint of the average degree $\langle k \rangle = \frac{2L}{S}$ of a species. Note that the mean degree is twice the value of the linkage density, because every link must be counted twice when we add in and out-degrees together. 
 
