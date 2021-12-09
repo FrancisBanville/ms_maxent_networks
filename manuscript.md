@@ -2,6 +2,112 @@
 bibliography: [references.bib]
 ---
 
+# Introduction 
+
+# Methods
+
+# Maximum entropy models of network structure
+
+## Joint degree distribution 
+
+The joint degree distribution $p(k_{in},k_{out})$ is a joint discrete probability distribution describing the probability that a species has $k_{in}$ predators and $k_{out}$ preys, with $k_{in}$ and $k_{out}$ $\epsilon$ $[0, S]$. Basal species (*e.g.*, plants) have a $k_{out}$ of 0, whereas top predators have a $k_{in}$ of 0. In contrast, the maximum number of preys and predators a species can have is set by the number of species in the food web. Here we show how the joint degree distribution of maximum entropy can be obtained given knowledge of $S$ and $L$.
+
+We want to maximize Shannon's entropy 
+
+$$H = -\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S p(k_{in},k_{out}) \log p(k_{in},k_{out})$${#eq:entropy_jdd}
+
+subject to the following constraints:
+
+$$g_1 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S p(k_{in},k_{out}) = 1$${#eq:g1}
+
+$$g_2 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{in} p(k_{in},k_{out}) = \langle k_{in} \rangle = \frac{L}{S}$${#eq:g2}
+
+$$g_3 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{out} p(k_{in},k_{out}) = \langle k_{out} \rangle = \frac{L}{S}$${#eq:g3}
+
+The first constraint $g_1$ is our normalizing constraint, whereas the other two ($g_2$ and $g_3$) fix the average of the marginal distributions of $k_{in}$ and $k_{out}$ to the linkage density $L/S$. It is important to notice that $\langle k_{in} \rangle = \langle k_{out} \rangle$ because every edge is associated to a predator and a prey. Therefore, without any further constraints, we expect the joint degree distribution of maximum entropy to be a symmetric probability distribution with regards to $k_{in}$ and $k_{out}$. 
+
+The joint probability distribution of maximum entropy given these constraints is found using the method of Lagrange multipliers. To do so, we seek to maximize the following expression.
+
+$$F = H - \lambda_1(g_1-1)-\lambda_2\left( g_2-\frac{L}{S}\right) - \lambda_3 \left( g_3-\frac{L}{S}\right),$${#eq:F_jdd}
+
+where $\lambda_1$, $\lambda_2$, and $\lambda_3$ are the Lagrange multipliers. The probability distribution that maximizes entropy is obtained by finding these values. Note that $F$ is just Shannon's entropy to which we added terms that each sums to zero (our constraints). $F$ is maximized by setting to 0 its partial derivative with respect to $p(k_{in},k_{out})$. Because the derivative of a constant is zero, this gives us:
+
+$$\frac{\partial H}{\partial p(k_{in},k_{out})} = \lambda_1 \frac{\partial g_1}{\partial p(k_{in},k_{out})} + \lambda_2 \frac{\partial g_2}{\partial p(k_{in},k_{out})}+ \lambda_3 \frac{\partial g_3}{\partial p(k_{in},k_{out})}$${#eq:lagrange_jdd}
+
+Evaluating the partial derivatives with respect to $p(k_{in},k_{out})$, we obtain:
+
+$$-\log p(k_{in},k_{out}) - 1 = \lambda_1 + \lambda_2 k_{in} + \lambda_3 k_{out}$${#eq:lagrange2_jdd}
+
+Then, solving @eq:lagrange2_jdd for $p(k_{in},k_{out})$, we obtain:
+
+$$p(k_{in},k_{out}) = \frac{e^{-\lambda_2k_{in}-\lambda_3k_{out}}}{Z},$${#eq:lagrange3_jdd}
+
+where $Z = e^{1+\lambda_1}$ is called the partition function. The partition function ensures that probabilities sum to 1 (our normalization constraint). It can be expressed in terms of $\lambda_2$ and $\lambda_3$ as follows.
+
+$$Z = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S e^{-\lambda_2k_{in}-\lambda_3k_{out}}$${#eq:Z}
+
+After substituting $p(k_{in},k_{out})$ in @eq:g2 and @eq:g3, we get a nonlinear system of two equations and two unknowns.
+
+$$\frac{1}{Z}\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{in} e^{-\lambda_2k_{in}-\lambda_3k_{out}}  = \frac{L}{S}$${#eq:lagrange4_jdd}
+
+$$\frac{1}{Z}\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{out} e^{-\lambda_2k_{in}-\lambda_3k_{out}}  = \frac{L}{S}$${#eq:lagrange5_jdd}
+
+We solved @eq:lagrange4_jdd and @eq:lagrange5_jdd numerically using the Julia library `JuMP.jl` v0.21.8 [@Dunning2017JumMod] for a range of values of $S$ and $L$. `JuMP.jl` supports nonlinear optimization problems by providing exact second derivatives that increase the accuracy and performance of its solvers. The estimated values of $\lambda_2$ and $\lambda_3$ can be substituted in @eq:lagrange3_jdd to have a more workable expression for the joint degree distribution. 
+
+## Degree distribution 
+
+The degree distribution $p(k)$ represents the probability that a species has $k$ links in a food web, with $k = k_{in} + k_{out}$. It can thus be directly obtained from the joint degree distribution:
+
+$$p(k) = \sum_{i=0}^k p(k_{in} = k - i, k_{out} = i)$$
+
+In @fig:disco_sp, we show that the degree distribution of maximum entropy, given $S$ and $L$, predicts very low probabilities that a species will be isolated in its food web (*i.e.*, having $k=0$). As @MacDonald2020RevLin pointed out, the size of food webs should at least be of $S-1$ links, since a lower number would yield isolated species, *i.e.*, species without any predators or preys. Our results show that, under our purely information-theoretic model, this probability is quite high below this threshold. The expected proportion of isolated species rapidly declines by orders of magnitude with increasing numbers of species and links.  
+
+![**Probability that a species is isolated in its food web according to the degree distribution of maximum entropy**. We derived degree distributions of maximum entropy given a range of values of $S$ and $L$, and plotted the probability that a species has a degree $k$ of 0 (log-scale color bar). Here species richness varies between 5 and 100 species, by increment of 5 species. For each level of species richness, the numbers of links correspond to all 20-quantiles of the interval between 0 and $S^2$. The black line marks the $S-1$ minimum numbers of links required to have no isolated species.](figures/prop_disconnected_species.png){#fig:disco_sp}
+
+The degree distribution could also have been obtained directly using the principle of maximum entropy, as discussed in @Williams2011BioMet. This gives the following distribution: 
+
+$$p(k) = \frac{e^{-\lambda_2k}}{Z},$${#eq:lagrange_dd}
+
+with $Z = \sum_{k=0}^S e^{-\lambda_2k}.${#eq:Z_dd}
+
+This can be solved numerically using the constraint of the average degree $\langle k \rangle = \frac{2L}{S}$ of a species. Note that the mean degree is twice the value of the linkage density, because every link must be counted twice when we add in and out-degrees together. 
+
+$$\frac{1}{Z}\sum_{k=0}^S k e^{-\lambda_2k} = \frac{2L}{S}$${#eq:lagrange5_jdd}
+
+The numerical solution is identical to the one we obtained using the joint degree distribution as an intermediate. Ecologists wanting to model a system without considering isolated species could simply change the lower limit of $k$ to 1 and solve the resulting equation numerically. 
+
+
+
+# Acknowledgments
+
+We acknowledge that this study was conducted on land within the traditional unceded territory of the Saint Lawrence Iroquoian, Anishinabewaki, Mohawk, Huron-Wendat, and Omàmiwininiwak nations. This work was supported by the Institute for Data Valorisation (IVADO) and the NSERC BIOS$^2$ CREATE program.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# MANUSCRIPT PLAN ###################################
+
 # Introduction
 
 - Predicting ecological networks 
@@ -53,7 +159,7 @@ bibliography: [references.bib]
 ## Degree distribution of maximum entropy 
 
 - Derivation of the degree distribution constrained by $S$ and $L$
-- Figure: Comparison of predictions with data
+- Figure: Comparison of predictions with data 
 
 ## Joint degree distribution of maximum entropy
 
@@ -91,104 +197,35 @@ bibliography: [references.bib]
 
 
 
-# Old text
+# OLD TEXT #############################################
 
 ## A maximum entropy model for predicting food-web structure
 
-We predict the adjacency matrix of maximum entropy using two network-level measures: the number of species $S$ and the number of interactions $L$. While the number of species is a well-described measure of biodiversity for many taxa and locations, the number of interspecific interactions is typically less known. We thus predicted the adjacency matrix using two methods that differ exclusively on the way $L$ was estimated, i.e. empirically or using a predictive statistical model. Most results were obtained using both approaches. Our model thus involves three main steps: (i) the estimation of the number of links, either empirically or using the flexible links model of @MacDonald2020RevLina; (ii) the prediction of the joint degree distribution from these two measures using a maximum entropy approach; and (iii) the prediction of the adjacency matrix from the joint degree distribution using a heuristic maximum entropy approach. The next subsections describe each of these steps in detail.
+We predict the adjacency matrix of maximum entropy using two network-level measures: the number of species $S$ and the number of interactions $L$. While the number of species is a well-described measure of biodiversity for many taxa and locations, the number of interspecific interactions is typically less known. We thus predicted the adjacency matrix using two methods that differ exclusively on the way $L$ was estimated, i.e. empirically or using a predictive statistical model. Most results were obtained using both approaches. Our model thus involves three main steps: (i) the estimation of the number of links, either empirically or using the flexible links model of MacDonald2020RevLina; (ii) the prediction of the joint degree distribution from these two measures using a maximum entropy approach; and (iii) the prediction of the adjacency matrix from the joint degree distribution using a heuristic maximum entropy approach. The next subsections describe each of these steps in detail.
 
 ### Predicting the number of links
 
-We used the flexible links model of @MacDonald2020RevLina to predict the number of interactions from the number of species. The flexible links model, in contrast to other predictive models of the number of links, incorporates meaningful ecological constraints into the prediction of $L$, namely the minimum $S-1$ and maximum $S^2$ numbers of interactions in food webs. It estimates the proportion of the $S^2 - (S - 1)$ *flexible links* that are realized. More precisely, this model states that the number of *realized* flexible links $L_{FL}$ in a food web represents the number of realized interactions above the minimum (i.e. $L = L_{FL} + S - 1$) and is obtained from a beta-binomial distribution with $S^2 - (S - 1)$ trials and parameters $\alpha = \mu e^\phi$ and $\beta = (1 - \mu) e^\phi$:
+We used the flexible links model of MacDonald2020RevLina to predict the number of interactions from the number of species. The flexible links model, in contrast to other predictive models of the number of links, incorporates meaningful ecological constraints into the prediction of $L$, namely the minimum $S-1$ and maximum $S^2$ numbers of interactions in food webs. It estimates the proportion of the $S^2 - (S - 1)$ *flexible links* that are realized. More precisely, this model states that the number of *realized* flexible links $L_{FL}$ in a food web represents the number of realized interactions above the minimum (i.e. $L = L_{FL} + S - 1$) and is obtained from a beta-binomial distribution with $S^2 - (S - 1)$ trials and parameters $\alpha = \mu e^\phi$ and $\beta = (1 - \mu) e^\phi$:
 
 $$L_{FL} \sim \mathrm{BB}(S^2 - (S - 1), \mu e^\phi, (1 - \mu) e^\phi),$${#eq:BB}
 
 where $\mu$ is the average probability across food webs that a flexible link is realized, and $\phi$ is the concentration parameter around $\mu$.
 
-We fitted the flexible links model on all food webs archived on Mangal, an extensive ecological interactions database [@Poisot2016ManMak]. Ecological networks archived on Mangal are multilayer networks, i.e. networks that describe different types of interactions. We considered as food webs all networks mainly composed of trophic interactions (predation and herbivory types). We estimated the parameters of @eq:BB using a Hamiltonian Monte Carlo sampler with static trajectory (1 chain and 3000 iterations):
+We fitted the flexible links model on all food webs archived on Mangal, an extensive ecological interactions database (Poisot2016ManMak). Ecological networks archived on Mangal are multilayer networks, i.e. networks that describe different types of interactions. We considered as food webs all networks mainly composed of trophic interactions (predation and herbivory types). We estimated the parameters of @eq:BB using a Hamiltonian Monte Carlo sampler with static trajectory (1 chain and 3000 iterations):
 
 $$
 [\mu, \phi| \textbf{L}, \textbf{S}] \propto \prod_{i = 1}^{m} \mathrm{BB}(L_i - (S_i - 1) | S_i^2 - (S_i - 1)), \mu e^{\phi}, (1 - \mu) e^\phi) \times \mathrm{B}(\mu| 3 , 7 ) \times \mathcal{N}(\phi | 3, 0.5),
 $${#eq:BBpost}
 
-where $m$ is the number of food webs archived on Mangal ($m = 235$) and $\textbf{L}$ and $\textbf{S}$ are respectively the vectors of their numbers of interactions and numbers of species. Our weakly-informative prior distributions were chosen following @MacDonald2020RevLina, i.e. a beta distribution for $\mu$ and a normal distribution for $\phi$. The Monte Carlo sampling of the posterior distribution was conducted using the Julia library `Turing` v0.15.12 [@Ge2018TurLan].
+where $m$ is the number of food webs archived on Mangal ($m = 235$) and $\textbf{L}$ and $\textbf{S}$ are respectively the vectors of their numbers of interactions and numbers of species. Our weakly-informative prior distributions were chosen following MacDonald2020RevLina, i.e. a beta distribution for $\mu$ and a normal distribution for $\phi$. The Monte Carlo sampling of the posterior distribution was conducted using the Julia library `Turing` v0.15.12 (Ge2018TurLan).
 
 The flexible links model is a generative model, i.e. it can generate plausible values of the predicted variable. We thus simulated 1000 values of $L$ for each value of $S$ ranging between 5 and 1000 species using the joint posterior distribution of our model parameters. We computed the median predicted value of $L$ for each level of species richness. 
-
-### Predicting the joint degree distribution
-
-The number of species and the number of interactions are state variables whose ratio was directly used to obtain the least-biased degree distribution $p(k)$. This discrete probability distribution represents the probability that a species has $k$ interactions in its food web, $k$ ranging between 1 and $S$. The least-biased of these distributions, considering our limited knowledge of the system, can be derived using the principle of maximum entropy, i.e. by maximizing Shannon's entropy
-
-$$H = -\sum_{k} p(k) \log p(k)$${#eq:entropy}
-
-while respecting a set of constraints on the degree distribution. We used two such constraints:
-
-$$g_1 = \sum_{k=1}^{S} p(k) = 1$${#eq:g1}
-
-and
-
-$$g_2 = \langle k \rangle = \sum_{k=1}^{S} k p(k) = \frac{2L}{S}$${#eq:g2}
-
-The first constraint $g_1$ is a normalizing constraint that ensures that all probabilities sum to 1. In addition, the second constraint $g_2$ fixes the average of the degree distribution to the mean degree $\langle k \rangle$. The mean degree is twice the value of the linkage density $L/S$ since each interaction must be counted twice when summing all species' degrees. Each simulated value of $L$ can be used to compute the mean degree constraint, resulting in a set of potential maximum entropy degree distributions for each value of $S$ (@fig:maxent_dd).
-
-Figure: 
-(a) Probability density of the mean degree for different levels of species richness. Plotted levels of species richness correspond to the median (27 species) and 97% percentile interval (PI, 7 and 85 species) of species richness for all food webs archived on Mangal. Mean degrees were computed using these values of species richness and the numbers of links (n = 1000) predicted from the flexible links model. (b) Different degree distributions of maximum entropy can be derived for a food web of a given size (here 27 species) by using different values of the mean degree constraint. The degree distributions were obtained using the 67%, 89%, and 97% PI, as well as the median, of the corresponding distribution of mean degrees.
-
-Finding probability distributions of maximum entropy is typically done using the method of Lagrange multipliers:
-
-$$\frac{\partial H}{\partial p(k)} = \lambda_1 \frac{\partial g_1}{\partial p(k)} + \lambda_2 \frac{\partial g_2}{\partial p(k)},$${#eq:lagrange1}
-
-where $\lambda_1$ and $\lambda_2$ are the Lagrange multipliers. Probability distributions of maximum entropy are derived by finding these values. Evaluating the partial derivatives with respect to $p(k)$, we obtained:
-
-$$-\log p(k) - 1 = \lambda_1 + \lambda_2 k$${#eq:lagrange2}
-
-Then, solving @eq:lagrange2 for $p(k)$, we obtained
-
-$$p(k) = \frac{e^{-\lambda_2k}}{z},$${#eq:lagrange3}
-
-where $z = e^{1+\lambda_1}$.
-
-After substituting $p(k)$ in @eq:g1 and @eq:g2, we got a nonlinear system of two equations and two unknowns:
-
-$$\frac{1}{z}\sum_{k=1}^{S}e^{-\lambda_2k} = 1$${#eq:lagrange4}
-$$\frac{1}{z}\sum_{k=1}^{S}ke^{-\lambda_2k} = \frac{2L}{S},$${#eq:lagrange5}
-
-which implies that $z = \sum_{k=1}^{S}e^{-\lambda_2k}$.
-
-We solved @eq:lagrange5 numerically using the Julia library  `JuMP` v0.21.8. However, in @fig:solutions, we show how an analytical solution yields very similar results for most empirical values of species richness. For large food webs (of approx. 20 species or more), the degree distribution of maximum entropy approaches
-
-$$p(k) = c r^{k},$${#eq:maxent}
-
-with
-
-$$c = \frac{{1}}{\langle k \rangle-1},$$
-
-$$r = \frac{{\langle k \rangle-1}}{\langle k \rangle}.$$
-
-Figure: 
-Divergence between numerical and analytical solutions of the degree distribution of maximum entropy, for a range of species richness. All solutions were obtained using the median predicted numbers of links from the flexible links model. The divergence was calculated as the sum of absolute differences between the two solutions. The grey area shows the 97% PI of species richness for all food webs archived on Mangal, along with the median (dotted line).
-
-Next, the joint degree distribution $p(k_{in},k_{out})$ of maximum entropy was derived using this analytical solution. The joint degree distribution is the probability of finding a species with $k_{in}$ predators and $k_{out}$ preys in a food web, with $k = k_{in} + k_{out}$. We first observed that the joint degree distribution is identical to the probability of a species having $k_{in}$ predators and a total of $k$ interactions:
-
-$$p(k_{in},k_{out}) = p(k_{in},k)$${#eq:jointdd}
-
-Using Bayes' theorem, we expressed the joint degree distribution as follows:
-
-$$p(k_{in},k) = p(k_{in}|k)p(k),$${#eq:jointdd2}
-
-where $p(k)$ is the degree distribution of maximum entropy derived above. An unbiased way to estimate $p(k_{in}|k)$ is by considering all $k$ interactions as Bernoulli trials with a probability $q$ of being incoming interactions. We set the estimated value of $q$ for all species to $0.5$ since $\sum{k_{in}} = 0.5\sum{k}$. As a result, the joint probability distribution of maximum entropy of a food web with $S$ species and a total of $L$ interactions is given by:
-
-$$p(k_{in},k) = {k\choose k_{in}}q^{k_{in}}(1-q)^{k-k_{in}}c r^{k},$${#eq:jointdd3}
-
-which gives, after substitution and simplification:
-
-$$p(k_{in},k_{out}) = {k_{in}+k_{out}\choose k_{in}}c \left(\frac{r}{2}\right)^{k_{in}+k_{out}}$${#eq:jointdd4}
 
 ### Predicting the adjacency matrix
 
 The joint degree distribution of maximum entropy $p(k_{in},k_{out})$ can be used as a constraint to predict the adjacency matrix of maximum entropy. However, directly deriving a network of maximum entropy considering this constraint is beyond the scope of this paper. Instead, for each level of species richness, we used a heuristic maximum entropy approach in which we simulated networks having the derived joint degree distribution of maximum entropy.
 
-Network simulation was conducted in two steps. First, we estimated the number of species among $S$ species with $k_{in}$ in-degrees and $k_{out}$ out-degrees from the joint probability distribution. Next, we generated 500 random Boolean matrices that maintain the numbers of in and out-degrees for all species in the food web, i.e. matrices constrained by row and column sums. To do so, we used the curveball algorithm of @Strona2014FasUnb implemented in the Julia library `RandomBooleanMatrices` v0.1.1. We then computed the SVD-entropy for all simulated networks, and kept the one with the greatest entropy value. Measures of food-web structure (i.e. connectance, nestedness, network diameter, maximum trophic level, and motifs profile) were computed on these maximum entropy matrices for all levels of species richness.
+Network simulation was conducted in two steps. First, we estimated the number of species among $S$ species with $k_{in}$ in-degrees and $k_{out}$ out-degrees from the joint probability distribution. Next, we generated 500 random Boolean matrices that maintain the numbers of in and out-degrees for all species in the food web, i.e. matrices constrained by row and column sums. To do so, we used the curveball algorithm of Strona2014FasUnb implemented in the Julia library `RandomBooleanMatrices` v0.1.1. We then computed the SVD-entropy for all simulated networks, and kept the one with the greatest entropy value. Measures of food-web structure (i.e. connectance, nestedness, network diameter, maximum trophic level, and motifs profile) were computed on these maximum entropy matrices for all levels of species richness.
 
 ## Data and code availability
 
@@ -226,9 +263,5 @@ Nestedness of empirical and maximum entropy food webs as a function of the maxim
 # Discussion
 
 # Conclusions
-
-# Acknowledgments
-
-We acknowledge that this study was conducted on land within the traditional unceded territory of the Saint Lawrence Iroquoian, Anishinabewaki, Mohawk, Huron-Wendat, and Omàmiwininiwak nations. This work was supported by the Institute for Data Valorisation (IVADO) and the NSERC BIOS$^2$ CREATE program.
 
 # References
