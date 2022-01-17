@@ -37,4 +37,4 @@ mangal_foodwebs = mangal_networks[fw, :]
 
 
 ## Write file
-CSV.write(joinpath("data", "mangal_foodwebs.csv"), mangal_foodwebs)
+CSV.write(joinpath("data", "raw", "mangal", "mangal_foodwebs.csv"), mangal_foodwebs)

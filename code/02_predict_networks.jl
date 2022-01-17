@@ -3,9 +3,11 @@
 ## Read food webs and convert them to UnipartiteNetworks
 
 # food webs archived on mangal.io (generated from 01_import_mangal_metadata.jl) 
-mangal_foodwebs = DataFrame(CSV.File(joinpath("data", "raw", "mangal_foodwebs.csv")))
+mangal_foodwebs = DataFrame(CSV.File(joinpath("data", "raw", "mangal", "mangal_foodwebs.csv")))
 N_mangal = network.(mangal_foodwebs.id)
 N_mangal = convert.(UnipartiteNetwork, N)
+
+save(joinpath("data", "raw", "mangal", "network_mangal.jld"), "data", N_mangal)
 
 # New-Zealand food webs
 NZ_foodwebs = DataFrame.(CSV.File.(glob("*.csv", 
@@ -14,6 +16,8 @@ NZ_foodwebs = DataFrame.(CSV.File.(glob("*.csv",
 N_NZ = convert.(Matrix{Bool}, NZ_foodwebs)
 N_NZ = UnipartiteNetwork.(N_NZ)
 
+save(joinpath("data", "raw", "new_zealand", "network_NZ.jld"), "data", N_NZ)
+
 # Tuesday lake food webs
 tuesday_foodwebs = DataFrame.(CSV.File.(glob("*.csv", 
                                         joinpath("data", "raw", "tuesday_lake", "adjacency_matrices")),
@@ -21,6 +25,7 @@ tuesday_foodwebs = DataFrame.(CSV.File.(glob("*.csv",
 N_tuesday = convert.(Matrix{Bool}, tuesday_foodwebs)
 N_tuesday = UnipartiteNetwork.(N_tuesday)
 
+save(joinpath("data", "raw", "tuesday_lake", "network_tuesday.jld"), "data", N_tuesday)
 
 ## Define flexible links model and infer model parameters
 
@@ -43,8 +48,6 @@ end
 
 # Observations
 N = vcat(N_mangal, N_NZ, N_tuesday)
-save(joinpath("data", "raw", "all_networks.jld"), "data", N)
-
 N = simplify.(N) # remove unconnected species
 
 # number of species
@@ -129,3 +132,8 @@ save(joinpath("data", "sim", "network_maxent", "network_maxent_NZ.jld"), "data",
 
 network_maxent_tuesday = network_maxent.(N_tuesday, nsteps)
 save(joinpath("data", "sim", "network_maxent", "network_maxent_tuesday.jld"), "data", network_maxent_tuesday)
+
+
+
+## Run neutral models
+
