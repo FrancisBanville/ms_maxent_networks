@@ -32,12 +32,9 @@ end
 
 
 ## Filter for food webs (i.e. networks mainly having trophic links)
-
 fw = (mangal_networks.P .+ mangal_networks.H) ./ mangal_networks.L .>= 0.5
-
 mangal_foodwebs = mangal_networks[fw, :]
 
 
 ## Write file
-
 CSV.write(joinpath("data", "mangal_foodwebs.csv"), mangal_foodwebs)
