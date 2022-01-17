@@ -1,7 +1,26 @@
-## Read metadata of all food webs archived on mangal.io (generated from 01_import_mangal_metadata.jl)
+# Here we predict food webs using different models (flexible links, MaxEnt, and neutral models)
+
+## Read food webs and convert them to UnipartiteNetworks
+
+# food webs archived on mangal.io (generated from 01_import_mangal_metadata.jl) 
 mangal_foodwebs = DataFrame(CSV.File(joinpath("data", "raw", "mangal_foodwebs.csv")))
-N = network.(mangal_foodwebs.id)
-N = convert.(UnipartiteNetwork, N)
+N_mangal = network.(mangal_foodwebs.id)
+N_mangal = convert.(UnipartiteNetwork, N)
+
+# New-Zealand food webs
+NZ_foodwebs = DataFrame.(CSV.File.(glob("*.csv", 
+                                        joinpath("data", "raw", "new_zealand", "adjacency_matrices")),
+                                        drop=[1])) # the first column is row names
+N_NZ = convert.(Matrix{Bool}, NZ_foodwebs)
+N_NZ = UnipartiteNetwork.(N_NZ)
+
+# Tuesday lake food webs
+tuesday_foodwebs = DataFrame.(CSV.File.(glob("*.csv", 
+                                        joinpath("data", "raw", "tuesday_lake", "adjacency_matrices")),
+                                        header=false)) # no column names here
+N_tuesday = convert.(Matrix{Bool}, tuesday_foodwebs)
+N_tuesday = UnipartiteNetwork.(N_tuesday)
+
 
 ## Define flexible links model and infer model parameters
 
@@ -23,11 +42,15 @@ N = convert.(UnipartiteNetwork, N)
 end
 
 # Observations
+N = vcat(N_mangal, N_NZ, N_tuesday)
+save(joinpath("data", "raw", "all_networks.jld"), "data", N)
+
+N = simplify.(N) # remove unconnected species
 
 # number of species
-S = vec(mangal_foodwebs[:,:S]) 
+S = richness.(N)
 # number of links
-L = vec(mangal_foodwebs[:,:L]) 
+L = links.(N)
 # number of flexible links that are realized
 R = L .- (S.-1) 
 
@@ -38,7 +61,7 @@ chain = sample(FL(S,R), HMC(0.01,10), 3000)
 plot(chain[200:end,:,:])
 
 
-## Simulate counterfactuals
+## Simulate numbers of links
 
 # Simulate the number of links for a range of species richness
 
@@ -57,3 +80,52 @@ Threads.@threads for s in sp
 end
 
 save(joinpath("data", "sim", "predicted_links.jld"), "data", predicted_links)
+
+
+## Species richness and numbers of links to be used in subsequent simulations
+N_mangal = simplify.(N_mangal)
+S_mangal = richness.(N_mangal)
+L_mangal = links.(N_mangal)
+
+N_NZ = simplify.(N_NZ)
+S_NZ = richness.(N_NZ)
+L_NZ = links.(N_NZ)
+
+N_tuesday = simplify.(N_tuesday)
+S_tuesday = richness.(N_tuesday)
+L_tuesday = links.(N_tuesday)
+
+
+## Simulate degree distributions of maximum entropy
+degree_dist_mangal = degree_dist_maxent.(S_mangal, L_mangal)
+save(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_mangal.jld"), "data", degree_dist_mangal)
+
+degree_dist_NZ = degree_dist_maxent.(S_NZ, L_NZ)
+save(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_NZ.jld"), "data", degree_dist_NZ)
+
+degree_dist_tuesday = degree_dist_maxent.(S_tuesday, L_tuesday)
+save(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_tuesday.jld"), "data", degree_dist_tuesday)
+
+
+## Simulate joint degree distributions of maximum entropy
+joint_degree_dist_mangal = joint_degree_dist_maxent.(S_mangal, L_mangal)
+save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_mangal.jld"), "data", joint_degree_dist_mangal)
+
+joint_degree_dist_NZ = joint_degree_dist_maxent.(S_NZ, L_NZ)
+save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_NZ.jld"), "data", joint_degree_dist_NZ)
+
+joint_degree_dist_tuesday = joint_degree_dist_maxent.(S_tuesday, L_tuesday)
+save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_tuesday.jld"), "data", joint_degree_dist_tuesday)
+
+
+## Simulate networks of maximum entropy
+nsteps = 1000 # number of steps
+
+network_maxent_mangal = network_maxent.(N_mangal, nsteps)
+save(joinpath("data", "sim", "network_maxent", "network_maxent_mangal.jld"), "data", network_maxent_mangal)
+
+network_maxent_NZ = network_maxent.(N_NZ, nsteps)
+save(joinpath("data", "sim", "network_maxent", "network_maxent_NZ.jld"), "data", network_maxent_NZ)
+
+network_maxent_tuesday = network_maxent.(N_tuesday, nsteps)
+save(joinpath("data", "sim", "network_maxent", "network_maxent_tuesday.jld"), "data", network_maxent_tuesday)
