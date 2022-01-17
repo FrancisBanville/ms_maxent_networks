@@ -9,6 +9,7 @@ Pkg.instantiate()
 import CSV 
 using DataFrames 
 using DelimitedFiles
+using Glob
 using JLD 
 
 # Solving systems of equations numerically 
