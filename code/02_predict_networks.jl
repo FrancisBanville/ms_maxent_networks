@@ -1,11 +1,13 @@
 # Here we predict food webs using different models (flexible links, MaxEnt, and neutral models)
 
+Random.seed!(123)
+
 ## Read food webs and convert them to UnipartiteNetworks
 
 # food webs archived on mangal.io (generated from 01_import_mangal_metadata.jl) 
 mangal_foodwebs = DataFrame(CSV.File(joinpath("data", "raw", "mangal", "mangal_foodwebs.csv")))
 N_mangal = network.(mangal_foodwebs.id)
-N_mangal = convert.(UnipartiteNetwork, N)
+N_mangal = convert.(UnipartiteNetwork, N_mangal)
 
 save(joinpath("data", "raw", "mangal", "network_mangal.jld"), "data", N_mangal)
 

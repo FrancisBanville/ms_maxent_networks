@@ -20,6 +20,7 @@ using JuMP
 using Distributions 
 using LinearAlgebra 
 using ProgressMeter
+using Random
 using SparseArrays
 using Statistics
 using StatsBase
