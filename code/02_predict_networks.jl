@@ -9,16 +9,16 @@ mangal_foodwebs = DataFrame(CSV.File(joinpath("data", "raw", "mangal", "mangal_f
 N_mangal = network.(mangal_foodwebs.id)
 N_mangal = convert.(UnipartiteNetwork, N_mangal)
 
-save(joinpath("data", "raw", "mangal", "network_mangal.jld"), "data", N_mangal)
+save(joinpath("data", "proc", "mangal", "networks_mangal.jld"), "data", N_mangal)
 
 # New-Zealand food webs
 NZ_foodwebs = DataFrame.(CSV.File.(glob("*.csv", 
                                         joinpath("data", "raw", "new_zealand", "adjacency_matrices")),
                                         drop=[1])) # the first column is row names
 N_NZ = convert.(Matrix{Bool}, NZ_foodwebs)
-N_NZ = UnipartiteNetwork.(N_NZ)
+N_NZ = UnipartiteNetwork.(N_NZ, names.(NZ_foodwebs))
 
-save(joinpath("data", "raw", "new_zealand", "network_NZ.jld"), "data", N_NZ)
+save(joinpath("data", "proc", "new_zealand", "networks_NZ.jld"), "data", N_NZ)
 
 # Tuesday lake food webs
 tuesday_foodwebs = DataFrame.(CSV.File.(glob("*.csv", 
@@ -27,7 +27,7 @@ tuesday_foodwebs = DataFrame.(CSV.File.(glob("*.csv",
 N_tuesday = convert.(Matrix{Bool}, tuesday_foodwebs)
 N_tuesday = UnipartiteNetwork.(N_tuesday)
 
-save(joinpath("data", "raw", "tuesday_lake", "network_tuesday.jld"), "data", N_tuesday)
+save(joinpath("data", "proc", "tuesday_lake", "networks_tuesday.jld"), "data", N_tuesday)
 
 ## Define flexible links model and infer model parameters
 
@@ -138,4 +138,61 @@ save(joinpath("data", "sim", "network_maxent", "network_maxent_tuesday.jld"), "d
 
 
 ## Run neutral models
+
+## New Zealand data
+
+# read taxonomic and abundance data in New Zealand (all networks)
+abund_data_NZ = DataFrame(CSV.File(joinpath("data", "raw", "new_zealand", "taxa_dry_weight_abundance.csv")))
+rename!(abund_data_NZ , 1 => :food_web, 4 => :no_m2)
+fw_names = unique(abund_data_NZ[!, :food_web])
+
+# get the name of all food webs data (adjacency matrices) in New Zealand
+matrix_names = readdir(joinpath("data", "raw", "new_zealand", "adjacency_matrices"))
+matrix_names = replace.(matrix_names, ".csv" => "")
+
+"""
+abundance_data_NZ(fw_name::String) 
+    fw_name: name of the food web (file name)
+Returns the density (no/m2) of all species in the simplified food web with abundance data
+"""
+function abundance_data_NZ(fw_name::String)
+  # filter abundance data for this food web and get species names
+  abund_data_fw = abund_data_NZ[abund_data_NZ[!, :food_web] .== fw_name, :]
+  abund_data_taxa = abund_data_fw[!, :taxa]
+  # read food web data and get species names
+  N_df = DataFrame.(CSV.File.(joinpath("data", "raw", "new_zealand", "adjacency_matrices", "$fw_name.csv"),
+                    drop=[1])) # the first column is row names
+  # convert to UnipartiteNetwork and make sure species have abundance data
+  N = convert(Matrix{Bool}, N_df)
+  N = UnipartiteNetwork(N, names(N_df))
+  taxa_N = species(N)
+  N.edges = N.edges[in(abund_data_taxa).(taxa_N), in(abund_data_taxa).(taxa_N)]
+  N.S = taxa_N[in(abund_data_taxa).(taxa_N)]
+  # simplify network and get species names
+  simplify!(N)
+  taxa_N = species(N)
+  # get abundance data for all taxa in network
+  abund = abund_data_fw[in(taxa_N).(abund_data_taxa), :no_m2]
+  # put everything together
+  network_abund = (name = fw_name, network = N, abundance = abund)
+  return network_abund
+end
+
+# get the abundance data of all food webs in New Zealand
+abund_data_NZ = abundance_data_NZ.(fw_names)
+save(joinpath("data", "proc", "new_zealand", "abund_data_NZ.jld"), "data", abund_data_NZ)
+
+# simulate networks in New Zealand using the neutral model of relative abundances
+neutral_networks_NZ = Any[]
+
+for i in 1:length(abund_data_NZ)
+  neutral_network = neutral_model(abund_data_NZ[i].abundance, chain)
+  push!(neutral_networks_NZ, neutral_network)
+end
+
+save(joinpath("data", "sim", "neutral_model", "neutral_networks_NZ.jld"), "data", neutral_networks_NZ)
+
+# Tuesday lake data
+
+N.edges[in(abund_data_taxa).(taxa_N), in(abund_data_taxa).(taxa_N)]
 
