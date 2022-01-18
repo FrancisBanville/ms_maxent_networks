@@ -41,7 +41,8 @@ include(joinpath("code", "functions", "joint_degree_dist_maxent.jl")) # gives th
 include(joinpath("code", "functions", "degree_dist_maxent.jl")) # gives the degree distribution of maximum entropy given numbers of species and links
 include(joinpath("code", "functions", "joint_degree_seq.jl")) # gives the joint degree sequence of a unipartite network
 include(joinpath("code", "functions", "joint_degree_dist.jl")) # gives the joint degree distribution of a unipartite network
-include(joinpath("code", "functions", "network_maxent.jl")) # gives the joint degree distribution of a unipartite network
+include(joinpath("code", "functions", "network_maxent.jl")) # gives the network of maximum SVD-entropy that has the same joint degree sequence
+include(joinpath("code", "functions", "neutral_model.jl")) # gives the network of the thresholded neutral model of relative abundances 
 
 ## Load scripts
 include(joinpath("code", "01_import_mangal_metadata.jl"))
