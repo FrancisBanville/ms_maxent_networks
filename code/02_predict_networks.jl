@@ -195,5 +195,40 @@ save(joinpath("data", "sim", "neutral_model", "neutral_networks_NZ.jld"), "data"
 
 ## Tuesday lake data
 
-N.edges[in(abund_data_taxa).(taxa_N), in(abund_data_taxa).(taxa_N)]
+# read taxonomic and abundance data of Tuesday lake (all networks)
+abund_data_tuesday = DataFrame.(CSV.File.(glob("*.csv", 
+                                        joinpath("data", "raw", "tuesday_lake", "abundances"))))
+
+# sum the numerical abundance of species in each trophic species cluster 
+"""
+abundance_data_tuesday(fw_name::String) 
+    fw_name: name of the food web (file name)
+Returns the total abundance of each trophic species in the food web 
+"""
+function abundance_data_tuesday(df::DataFrame, year::Int64, N::UnipartiteNetwork)
+  df = df[df[!, :trophic_species] .!= " NA", :] # remove unknown trophic species
+  
+  # group each species by their trophic species and add their numerical abundances
+  trophic_sp_tuesday = groupby(df, :trophic_species)
+  trophic_sp_tuesday = combine(trophic_sp_tuesday, :numerical_abundance => sum)
+  abund = vec(trophic_sp_tuesday[:, :numerical_abundance_sum])
+  
+  network_abund = (name = year, network = N, abundance = abund)
+  return network_abund
+end
+
+# get the abundance data of all food webs of Tuesday lake
+year = (1984, 1986)
+abund_data_tuesday = abundance_data_tuesday.(abund_data_tuesday, year, N_tuesday)
+save(joinpath("data", "proc", "tuesday_lake", "abund_data_tuesday.jld"), "data", abund_data_tuesday)
+
+# simulate networks of Tuesday lake using the neutral model of relative abundances
+neutral_networks_tuesday = Any[]
+
+for i in 1:length(abund_data_tuesday)
+  neutral_network = neutral_model(abund_data_tuesday[i].abundance, chain)
+  push!(neutral_networks_tuesday, neutral_network)
+end
+
+save(joinpath("data", "sim", "neutral_model", "neutral_networks_tuesday.jld"), "data", neutral_networks_tuesday)
 
