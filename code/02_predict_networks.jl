@@ -8,6 +8,7 @@ Random.seed!(123)
 mangal_foodwebs = DataFrame(CSV.File(joinpath("data", "raw", "mangal", "mangal_foodwebs.csv")))
 N_mangal = network.(mangal_foodwebs.id)
 N_mangal = convert.(UnipartiteNetwork, N_mangal)
+N_mangal = UnipartiteNetwork.(N_mangal[i].edges for i in 1:length(N_mangal))
 
 save(joinpath("data", "proc", "mangal", "networks_mangal.jld"), "data", N_mangal)
 
