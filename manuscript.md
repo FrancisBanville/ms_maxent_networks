@@ -4,6 +4,8 @@ bibliography: [references.bib]
 
 # Introduction 
 
+## Box 1 - The principle of maximum entropy: A primer for ecologists
+
 # Methods
 
 # Maximum entropy models of network structure
@@ -76,6 +78,10 @@ $$\frac{1}{Z}\sum_{k=0}^S k e^{-\lambda_2k} = \frac{2L}{S}$${#eq:lagrange2_dd}
 
 The numerical solution is identical to the one we obtained using the joint degree distribution as an intermediate. Ecologists wanting to model a system without considering isolated species could simply change the lower limit of $k$ to 1 and solve the resulting equation numerically. 
 
+
+## Box 2 - Working with predicted numbers of links
+
+![](figures/maxent_degree_dist_fl.png){#fig:disco_sp}
 
 
 # Acknowledgments

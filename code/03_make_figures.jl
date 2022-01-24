@@ -4,6 +4,182 @@ default(; frame=:box)
 Plots.scalefontsizes(1.3)
 fonts=font("Arial",7)
 
+## Read empirical data
+
+# Mangal
+networks_mangal = load(joinpath("data", "proc", "mangal", "networks_mangal.jld"))["data"]
+
+# New Zealand
+networks_NZ = load(joinpath("data", "proc", "new_zealand", "networks_NZ.jld"))["data"]
+abund_data_NZ = load(joinpath("data", "proc", "new_zealand", "abund_data_NZ.jld"))["data"]
+
+# Tuesday lake
+networks_tuesday = load(joinpath("data", "proc", "tuesday_lake", "networks_tuesday.jld"))["data"]
+abund_data_tuesday = load(joinpath("data", "proc", "tuesday_lake", "abund_data_tuesday.jld"))["data"]
+
+## Read simulated data
+
+# predicted numbers of links
+predicted_links = load(joinpath("data", "sim", "predicted_links.jld"))["data"]
+
+# degree distribution
+degree_dist_mangal_sim = load(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_mangal.jld"))["data"]
+degree_dist_NZ_sim = load(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_NZ.jld"))["data"]
+degree_dist_tuesday_sim = load(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_tuesday.jld"))["data"]
+
+# joint degree distribution
+joint_degree_dist_mangal_sim = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_mangal.jld"))["data"]
+joint_degree_dist_NZ_sim = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_NZ.jld"))["data"]
+joint_degree_dist_tuesday_sim = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_tuesday.jld"))["data"]
+
+# network of maximum svd-entropy
+network_maxent_mangal = load(joinpath("data", "sim", "network_maxent", "network_maxent_mangal.jld"))["data"]
+network_maxent_NZ = load(joinpath("data", "sim", "network_maxent", "network_maxent_NZ.jld"))["data"]
+network_maxent_tuesday = load(joinpath("data", "sim", "network_maxent", "network_maxent_tuesday.jld"))["data"]
+
+# neutral models
+neutral_networks_NZ = load(joinpath("data", "sim", "neutral_model", "neutral_networks_NZ.jld"))["data"]
+neutral_networks_tuesday = load(joinpath("data", "sim", "neutral_model", "neutral_networks_tuesday.jld"))["data"]
+
+
+##### Figures 
+
+### Density of mean degree constraints for different richness ###
+
+# Different quantiles of species richness will be plotted
+S_mangal = richness.(networks_mangal)
+S_NZ = richness.(networks_NZ)
+S_tuesday = richness.(networks_tuesday)
+S_all = vcat(S_mangal, S_NZ, S_tuesday)
+
+S015 = Int64(round(quantile(S_all, 0.015))) # 1.5% lower quantile
+S500 = Int64(round(quantile(S_all, 0.5))) # median
+S985 = Int64(round(quantile(S_all, 0.985))) # 1.5% upper quantile
+
+"""
+kavg_dist(S::Int64)
+    S: number of species
+Returns the predicted distribution of mean degrees of the flexible links model
+"""
+function kavg_dist(S::Int64)
+  L = predicted_links[:, S-4]
+  kavg = 2 .* L ./ S 
+  return kavg
+end
+
+# Get predicted distribution of mean degrees for each level of species richness considered
+kavg015 = kavg_dist(S015)
+kavg500 = kavg_dist(S500)
+kavg985 = kavg_dist(S985)
+
+# Plot distributions of mean degrees for the 3 levels of species richness
+plotA = density(kavg015, 
+                linewidth=2, 
+                label="$(S015) species",
+                framestyle=:box, 
+                grid=false,
+                dpi=1000, 
+                size=(800,500), 
+                margin=5Plots.mm, 
+                guidefont=fonts, 
+                xtickfont=fonts, 
+                ytickfont=fonts,
+                foreground_color_legend=nothing, 
+                background_color_legend=:white, 
+                legendfont=fonts)
+density!(kavg500, 
+        linewidth=2, 
+        label="$(S500) species")
+density!(kavg985,  
+        linewidth=2, 
+        label="$(S985) species")
+xaxis!(xlabel="Mean degree (links/species)", 
+      xlims=(0, maximum(kavg985)))
+yaxis!(ylabel="Density", 
+      ylims=(0,0.6))
+
+
+### Degree distribution of MaxEnt for fixed richness and different numbers of links ###
+
+# quantiles of the predicted numbers of links that will be plotted
+q = [0.015, 0.055, 0.165, 0.500, 0.835, 0.945, 0.985]
+Lquant = Int64.(round.(quantile(predicted_links[:, S500-4], q))) # median number of species
+L015 = Lquant[1]
+L055 = Lquant[2]
+L165 = Lquant[3]
+L500 = Lquant[4]
+L835 = Lquant[5]
+L945 = Lquant[6]
+L985 = Lquant[7]
+
+# get the degree distribution of MaxEnt for a network with a median number of species and different numbers of links
+dd_maxent_Lquant = degree_dist_maxent.(S500, Lquant)
+
+# plot different degree distributions of MaxEnt for a network with a median number of species
+plotB = plot(0:S500,
+            dd_maxent_Lquant[1], 
+            color=:black, 
+            alpha=0.7, 
+            linewidth=2, 
+            linestyle=:dot, 
+            label="$L015 links (97% PI)", # 97% percentile interval
+            framestyle=:box, 
+            grid=false,
+            dpi=1000, 
+            size=(800,500), 
+            margin=5Plots.mm, 
+            guidefont=fonts, 
+            xtickfont=fonts, 
+            ytickfont=fonts,
+            foreground_color_legend=nothing, 
+            background_color_legend=:white, 
+            legendfont=fonts)
+plot!(0:S500,
+      dd_maxent_Lquant[2], 
+      color=:black, 
+      alpha=0.7, 
+      linestyle=:dash, 
+      label="$L055 links (89% PI)") # 89% PI
+plot!(0:S500,
+      dd_maxent_Lquant[3], 
+      color=:black, 
+      alpha=0.7, 
+      linestyle=:solid, 
+      label="$L165 links (67% PI)") # 67% PI
+plot!(0:S500,
+      dd_maxent_Lquant[5], 
+      color=:grey, 
+      alpha=0.7,
+      linestyle=:solid, 
+      label="$L835 links (67% PI)") # 67% PI
+plot!(0:S500,
+      dd_maxent_Lquant[6], 
+      color=:grey, 
+      alpha=0.7, 
+      linestyle=:dash, 
+      label="$L945 links (89% PI)") # 89% PI
+plot!(0:S500,
+      dd_maxent_Lquant[7], 
+      color=:grey, 
+      alpha=0.7, 
+      linestyle=:dot, 
+      label="$L985 links (97% PI)") # 97% PI
+plot!(0:S500,
+      dd_maxent_Lquant[4], 
+      color=:darkblue, 
+      linewidth=4, 
+      label="$L500 links (median)")
+xaxis!(xlabel="Degree k", 
+      xlims=(0,S500))
+yaxis!(ylabel="p(k)")
+
+plot(plotA, plotB,
+    title = ["(a)" "(b)"],
+    titleloc=:right, 
+    titlefont=fonts)
+
+savefig(joinpath("figures","maxent_degree_dist_fl"))
+
 
 ### Heatmap of disconnected species ###
 
@@ -54,36 +230,6 @@ savefig(joinpath("figures", "prop_disconnected_species.png"))
 
 
 ################# TK TO DO #########################
-## Figure: Mean degree constraints and MaxEnt degree distributions
-species015 = Int64(round(species015))
-species500 = Int64(round(species500))
-species985 = Int64(round(species985))
-
-"""
-get_avgk_dist(S::Int64)
-    S: number of species
-Returns the distribution of mean degrees according to the predictions of the flexible links model
-"""
-function get_avgk_dist(S::Int64)
-  L = predicted_links[:, S-4]
-  kavg = 2 .* L ./ S 
-  return kavg
-end
-
-# Get distribution of mean degrees from species richness
-kavg015 = get_avgk_dist(species015)
-kavg500 = get_avgk_dist(species500)
-kavg985 = get_avgk_dist(species985)
-
-# Plot distributions of mean degrees of 3 different levels of species richness
-plotA = density(kavg015, linewidth=2, label="$(species015) species",
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white, legendfont=fonts)
-density!(kavg500, linewidth=2, label="$(species500) species")
-density!(kavg985, linewidth=2, label="$(species985) species")
-xaxis!(xlabel="Mean degree (links/species)", xlims=(0,maximum(kavg985)))
-yaxis!(ylabel="Density", ylims=(0,0.55))
 
 """
 dd_maxent_prob(S::Int64, q::Float64)
