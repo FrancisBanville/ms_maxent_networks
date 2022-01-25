@@ -81,7 +81,7 @@ The numerical solution is identical to the one we obtained using the joint degre
 
 ## Box 2 - Working with predicted numbers of links
 
-![figure legend.](figures/maxent_degree_dist_fl.png){#fig:disco_sp}
+![figure legend](figures/maxent_degree_dist_fl.png){#fig:degree_dist_fl}
 
 
 # Acknowledgments
