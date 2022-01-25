@@ -17,6 +17,7 @@ abund_data_NZ = load(joinpath("data", "proc", "new_zealand", "abund_data_NZ.jld"
 networks_tuesday = load(joinpath("data", "proc", "tuesday_lake", "networks_tuesday.jld"))["data"]
 abund_data_tuesday = load(joinpath("data", "proc", "tuesday_lake", "abund_data_tuesday.jld"))["data"]
 
+
 ## Read simulated data
 
 # predicted numbers of links
@@ -36,6 +37,23 @@ joint_degree_dist_tuesday_sim = load(joinpath("data", "sim", "joint_degree_dist_
 network_maxent_mangal = load(joinpath("data", "sim", "network_maxent", "network_maxent_mangal.jld"))["data"]
 network_maxent_NZ = load(joinpath("data", "sim", "network_maxent", "network_maxent_NZ.jld"))["data"]
 network_maxent_tuesday = load(joinpath("data", "sim", "network_maxent", "network_maxent_tuesday.jld"))["data"]
+
+# access unipartite networks of maximum entropy
+
+N_maxent_mangal = [] 
+for i in 1:length(network_maxent_mangal)
+      push!(N_maxent_mangal, network_maxent_mangal[i].A)
+end
+
+N_maxent_NZ = [] 
+for i in 1:length(network_maxent_NZ)
+      push!(N_maxent_NZ, network_maxent_NZ[i].A)
+end
+
+N_maxent_tuesday = [] 
+for i in 1:length(network_maxent_tuesday)
+      push!(N_maxent_tuesday, network_maxent_tuesday[i].A)
+end
 
 # neutral models
 neutral_networks_NZ = load(joinpath("data", "sim", "neutral_model", "neutral_networks_NZ.jld"))["data"]
@@ -200,9 +218,9 @@ end
 q_minS = Ss ./ (Ss.^2 .+ 1) # get the quantile associated to the minimum number of links S-1 that would allow all species to be connected
 
 # plot the proportion of disconnected species for all combinations of S and L (L in quantile)
-heatmap(Ss, qs, log.(p_disconnected), 
+plotA = heatmap(Ss, qs, log.(p_disconnected), 
         c=:viridis,
-        colorbar_title="log probability",
+        colorbar_title="log probability of a species being isolated",
         framestyle=:box, 
         dpi=1000, 
         size=(800,500), 
@@ -224,56 +242,138 @@ plot!(Ss, q_minS,
 xaxis!(xlim=(minimum(Ss)-2.5, maximum(Ss)+2.5), "species richness")
 yaxis!(ylim=(0,1), "quantile of the number of links")
 
-savefig(joinpath("figures", "prop_disconnected_species.png"))
+
+### Correlation between kin and kout ###
+
+## get in and out degrees for all networks (empirical and maxent)
+
+# empirical data
+
+# mangal
+kout_emp_mangal = reduce(vcat, collect.(values.(degree.(networks_mangal, dims=1))))
+kin_emp_mangal = reduce(vcat, collect.(values.(degree.(networks_mangal, dims=2))))
+
+# New Zealand
+kout_emp_NZ = reduce(vcat, collect.(values.(degree.(networks_NZ, dims=1))))
+kin_emp_NZ = reduce(vcat, collect.(values.(degree.(networks_NZ, dims=2))))
+
+# Tuesday lake
+kout_emp_tuesday = reduce(vcat, collect.(values.(degree.(networks_tuesday, dims=1))))
+kin_emp_tuesday = reduce(vcat, collect.(values.(degree.(networks_tuesday, dims=2))))
+
+# all empirical networks 
+kout_emp = vcat(kout_emp_mangal, kout_emp_NZ, kout_emp_tuesday)
+kin_emp = vcat(kin_emp_mangal, kin_emp_NZ, kin_emp_tuesday)
 
 
-
-
-################# TK TO DO #########################
-
+## simulated networks (from the joint degree distribution of maximum entropy)
 """
-dd_maxent_prob(S::Int64, q::Float64)
-    S: number of species
-    q: quantile for the number of links using the predictions of the flexible links model 
-Returns the degree distribution of MaxEnt (analytical solution) for a network of S species and qth quantile of the number of links from the predictions of the flexible links model 
+simulate_degrees(JDD::Matrix{Float64})
+    JDD: joint degree distribution 
+Returns a simulated vector of in and out degrees using the joint degree distribution as weight
 """
-function dd_maxent_prob(S::Int64, q::Float64)
-  L = Int64(round(quantile(predicted_links[:, S-4], q)))
-  dd_maxent = dd_maxent_prob(S, L)
-  return dd_maxent
+function simulate_degrees(JDD::Matrix{Float64})
+      S = size(JDD, 1) - 1 # number of species 
+      deg = findall(JDD .>= 0) # get cartesian indices 
+      deg_samp = sample(deg, Weights(vec(JDD)), S, replace=true) # select species degrees randomly 
+      # get in and out degrees
+      kin = zeros(Int64, S)
+      kout = zeros(Int64, S)
+      for i in 1:S
+            kout[i] = deg_samp[i][1]
+            kin[i] = deg_samp[i][2]
+      end
+      return (kin = kin, kout = kout)
 end
 
-# Get the degree distribution of MaxEnt (analytical solution) for a network with a median number of species and different numbers of links
-dd015 = dd_maxent_prob(species500, 0.015)
-dd055 = dd_maxent_prob(species500, 0.055)
-dd165 = dd_maxent_prob(species500, 0.165)
-dd500 = dd_maxent_prob(species500, 0.5)
-dd835 = dd_maxent_prob(species500, 0.835)
-dd945 = dd_maxent_prob(species500, 0.945)
-dd985 = dd_maxent_prob(species500, 0.985)
+degrees_maxent_mangal = simulate_degrees.(joint_degree_dist_mangal_sim)
+degrees_maxent_NZ = simulate_degrees.(joint_degree_dist_NZ_sim)
+degrees_maxent_tuesday = simulate_degrees.(joint_degree_dist_tuesday_sim)
 
-# Plot different degree distributions of MaxEnt (analytical solution) for a network with a median number of species
-a = [1,2,5,10,15,20,25] # specified x-ticks 
+function get_kin(degrees::Vector)
+      kin_maxent = []
+      for i in 1:length(degrees)
+            push!(kin_maxent, degrees[i].kin)
+      end
+      return reduce(vcat, kin_maxent)
+end
 
-plotB = plot(dd015, color=:black, alpha=0.7, linewidth=2, linestyle=:dot, label="97% PI", # 97% PI
-    framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-    guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-    foreground_color_legend=nothing, background_color_legend=:white, legendfont=fonts)
-plot!(dd055, color=:black, alpha=0.7, linestyle=:dash, label="89% PI") # 89% PI
-plot!(dd165, color=:black, alpha=0.7, linestyle=:solid, label="67% PI") # 67% PI
-plot!(dd835, color=:grey, alpha=0.7, linestyle=:solid, label="") # 67% PI
-plot!(dd945, color=:grey, alpha=0.7, linestyle=:dash, label="") # 89% PI
-plot!(dd985, color=:grey, alpha=0.7, linestyle=:dot, label="") # 97% PI
-plot!(dd500, color=:darkblue, linewidth=4, label="median")
-xaxis!(:log, xlabel="Degree k", xticks=(a, a), xlims=(1,species500))
-yaxis!(ylabel="p(k)")
+function get_kout(degrees::Vector)
+      kout_maxent = []
+      for i in 1:length(degrees)
+            push!(kout_maxent, degrees[i].kout)
+      end
+      return reduce(vcat, kout_maxent)
+end
 
-plot(plotA, plotB,
-    title = ["(a)" "(b)"],
-    titleloc=:right, titlefont=fonts)
+# Mangal
+kin_maxent_mangal = get_kin(degrees_maxent_mangal)
+kout_maxent_mangal = get_kout(degrees_maxent_mangal)
 
-savefig(joinpath("figures","maxent_degree_distributions"))
-###########################################################
+# New Zealand
+kin_maxent_NZ = get_kin(degrees_maxent_NZ)
+kout_maxent_NZ = get_kout(degrees_maxent_NZ)
+
+# Tuesday lake
+kin_maxent_tuesday = get_kin(degrees_maxent_tuesday)
+kout_maxent_tuesday = get_kout(degrees_maxent_tuesday)
+
+# all simulated networks
+kin_maxent = vcat(kin_maxent_mangal, kin_maxent_NZ, kin_maxent_tuesday)
+kout_maxent = vcat(kout_maxent_mangal, kout_maxent_NZ, kout_maxent_tuesday)
+
+# plot the association between in and out degrees for empirical and simulated data
+plotB = scatter(kout_emp, 
+                kin_emp, 
+                alpha=0.2, 
+                markersize=3, 
+                label="",
+                framestyle=:box, 
+                grid=false,
+                dpi=1000, 
+                size=(800,500), 
+                aspect_ratio=:equal,
+                margin=5Plots.mm, 
+                guidefont=fonts, 
+                xtickfont=fonts, 
+                ytickfont=fonts,
+                foreground_color_legend=nothing, 
+                background_color_legend=:white,
+                legendfont=fonts)
+xaxis!(xlim=(-1, maximum(vcat(kout_emp_mangal, kout_emp_NZ, kout_emp_tuesday))), "Kout (number of preys)")
+yaxis!(ylim=(-1, maximum(vcat(kin_emp_mangal, kin_emp_NZ, kin_emp_tuesday))), "Kin (number of predators)")
+                
+plotC = scatter(kout_maxent, 
+                kin_maxent, 
+                alpha=0.2, 
+                markersize=3, 
+                label="",
+                framestyle=:box, 
+                grid=false,
+                dpi=1000, 
+                size=(800,500), 
+                aspect_ratio=:equal,
+                margin=5Plots.mm, 
+                guidefont=fonts, 
+                xtickfont=fonts, 
+                ytickfont=fonts,
+                foreground_color_legend=nothing, 
+                background_color_legend=:white,
+                legendfont=fonts)
+xaxis!(xlim=(-1, maximum(vcat(kout_emp_mangal, kout_emp_NZ, kout_emp_tuesday))), "Kout (number of preys)")
+yaxis!(ylim=(-1, maximum(vcat(kin_emp_mangal, kin_emp_NZ, kin_emp_tuesday))), "Kin (number of predators)")
+
+
+l = @layout [a [b ; c]]
+
+plot(plotA, plotB, plotC,
+    layout = l,
+    title = ["(a)" "(b) empirical data" "(c) simulated data"],
+    titleloc=:right, 
+    titlefont=fonts)
+
+savefig(joinpath("figures","joint_degree_dist.png"))
+
 
 ################# TK TO DO #########################
 # Figure: Measures of empirical and maximum entropy food webs 
