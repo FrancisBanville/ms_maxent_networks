@@ -280,8 +280,8 @@ function simulate_degrees(JDD::Matrix{Float64})
       kin = zeros(Int64, S)
       kout = zeros(Int64, S)
       for i in 1:S
-            kout[i] = deg_samp[i][1]
-            kin[i] = deg_samp[i][2]
+            kout[i] = deg_samp[i][1] - 1 # we substract one because of degree 0
+            kin[i] = deg_samp[i][2] - 1
       end
       return (kin = kin, kout = kout)
 end
