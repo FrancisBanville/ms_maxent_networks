@@ -31,9 +31,8 @@ using Plots
 using StatsPlots 
 
 # Analyzing ecological networks
-using EcologicalNetworks 
 using Mangal 
-using RandomBooleanMatrices 
+using EcologicalNetworks 
 
 ## Load custom functions
 include(joinpath("code", "functions", "predict_links.jl")) # predict the number of links from the number of species

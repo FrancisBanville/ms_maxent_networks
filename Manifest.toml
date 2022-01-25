@@ -381,9 +381,9 @@ version = "2.1.5+1"
 
 [[EcologicalNetworks]]
 deps = ["Combinatorics", "DataStructures", "DelimitedFiles", "Distributions", "LinearAlgebra", "Random", "Requires", "SparseArrays", "Statistics", "StatsBase"]
-git-tree-sha1 = "4d3891129b1ec39142123ebe3af76c958d860c82"
+git-tree-sha1 = "23688b8e6c0a395820ad1eed7d283375dff62e42"
 uuid = "f03a62fe-f8ab-5b77-a061-bb599b765229"
-version = "0.4.1"
+version = "0.4.3"
 
 [[EllipsisNotation]]
 deps = ["ArrayInterface"]
@@ -1142,18 +1142,6 @@ uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 [[Random]]
 deps = ["Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
-
-[[RandomBooleanMatrices]]
-deps = ["Random", "RandomNumbers", "SparseArrays", "StatsBase", "Test"]
-git-tree-sha1 = "c13963a90c579b3bc241d858e4d063d778deeef5"
-uuid = "9ae346a0-3d16-5633-ad70-ddb60ab77eac"
-version = "0.1.1"
-
-[[RandomNumbers]]
-deps = ["Random", "Requires"]
-git-tree-sha1 = "441e6fc35597524ada7f85e13df1f4e10137d16f"
-uuid = "e6cf234a-135c-5ec9-84dd-332b85af5143"
-version = "1.4.0"
 
 [[RangeArrays]]
 git-tree-sha1 = "b9039e93773ddcfc828f12aadf7115b4b4d225f5"

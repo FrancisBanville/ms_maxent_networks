@@ -125,7 +125,7 @@ save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_tues
 
 
 ## Simulate networks of maximum entropy
-nsteps = 1000 # number of steps
+nsteps = 2000 # number of steps
 
 network_maxent_mangal = network_maxent.(N_mangal, nsteps)
 save(joinpath("data", "sim", "network_maxent", "network_maxent_mangal.jld"), "data", network_maxent_mangal)
@@ -135,8 +135,6 @@ save(joinpath("data", "sim", "network_maxent", "network_maxent_NZ.jld"), "data",
 
 network_maxent_tuesday = network_maxent.(N_tuesday, nsteps)
 save(joinpath("data", "sim", "network_maxent", "network_maxent_tuesday.jld"), "data", network_maxent_tuesday)
-
-
 
 ## Run neutral models
 
