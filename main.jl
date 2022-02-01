@@ -43,6 +43,9 @@ include(joinpath("code", "functions", "joint_degree_seq.jl")) # gives the joint 
 include(joinpath("code", "functions", "joint_degree_dist.jl")) # gives the joint degree distribution of a unipartite network
 include(joinpath("code", "functions", "network_maxent.jl")) # gives the network of maximum SVD-entropy that has the same joint degree sequence
 include(joinpath("code", "functions", "neutral_model.jl")) # gives the network of the thresholded neutral model of relative abundances 
+include(joinpath("code", "functions", "MxSim.jl")) # gives the average of all species’ largest similarity index 
+include(joinpath("code", "functions", "count_motifs.jl")) # gives the proportion of each motif in an unipartite network
+include(joinpath("code", "functions", "simulate_degrees.jl")) # gives a simulated vector of in and out degrees using the joint degree distribution as weight
 
 ## Load scripts
 include(joinpath("code", "01_import_mangal_metadata.jl"))

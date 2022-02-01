@@ -123,6 +123,12 @@ save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_NZ.j
 jdd_maxent_tuesday = joint_degree_dist_maxent.(S_tuesday, L_tuesday)
 save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_tuesday.jld"), "data", jdd_maxent_tuesday)
 
+## Simulated degree sequence from the joint degree distribution of maximum entropy
+jdd_maxent_all = vcat(jdd_maxent_mangal, jdd_maxent_NZ, jdd_maxent_tuesday)
+k_maxent_all = simulate_degrees.(jdd_maxent_all)
+
+save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_sequence_all.jld"), "data", k_maxent_all)
+
 
 ## Simulate networks of maximum entropy
 nsteps = 2000 # number of steps

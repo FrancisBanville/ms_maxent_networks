@@ -1,0 +1,26 @@
+"""
+MxSim(N::UnipartiteNetwork)
+    N: Unipartite simple directed network
+Returns the average of all species’ largest similarity index 
+"""
+function MxSim(N::UnipartiteNetwork)
+      AJS_N = AJS(N) # Additive Jaccard similarity between all species pairs
+      length_AJS_N = length(AJS_N)
+      max_AJS = []
+      try
+            # find the maximum similarity for every species
+            for i in 1:richness(N) 
+                  spi = []
+                  for j in 1:length_AJS_N
+                        if in(AJS_N[j][1])(species(N)[i])
+                              push!(spi, AJS_N[j][2])
+                        end
+                   end
+            push!(max_AJS, maximum(spi))
+            end
+      catch
+            return missing
+      end
+      return mean(max_AJS) # return average similarity index 
+end
+
