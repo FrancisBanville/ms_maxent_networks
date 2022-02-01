@@ -375,6 +375,167 @@ plot(plotA, plotB, plotC,
 savefig(joinpath("figures","joint_degree_dist.png"))
 
 
+
+### Table of network properties ###
+
+## networks
+N_mangal_emp = simplify.(networks_mangal)
+N_mangal_maxent = simplify.(N_maxent_mangal)
+N_nz_emp = simplify.(networks_NZ)
+N_nz_maxent = simplify.(N_maxent_NZ)
+N_nz_neutral = simplify.(neutral_networks_NZ)
+N_tuesday_emp = simplify.(networks_tuesday)
+N_tuesday_maxent = simplify.(N_maxent_tuesday)
+N_tuesday_neutral = simplify.(neutral_networks_tuesday)
+
+N_all = vcat(N_mangal_emp, 
+            N_mangal_maxent, 
+            N_nz_emp, 
+            N_nz_maxent, 
+            N_nz_neutral, 
+            N_tuesday_emp, 
+            N_tuesday_maxent, 
+            N_tuesday_neutral)
+
+## number of networks
+n_mangal = length(N_mangal_emp)
+n_nz = length(N_nz_emp)
+n_nz_neutral = length(N_nz_neutral)
+n_tuesday = length(N_tuesday_emp)
+
+# dataframe for all measures 
+names_all = vcat(fill("mangal_emp", n_mangal), 
+                 fill("mangal_maxent", n_mangal),
+                 fill("nz_emp", n_nz),
+                 fill("nz_maxent", n_nz),
+                 fill("nz_neutral", n_nz_neutral),
+                 fill("tuesday_emp", n_tuesday),
+                 fill("tuesday_maxent", n_tuesday),
+                 fill("tuesday_neutral", n_tuesday))
+
+metrics = DataFrame(network = names_all)
+
+## S: number of species
+S_all = richness.(N_all)
+insertcols!(metrics, :S => S_all)
+
+## L: number of links 
+L_all = links.(N_all)
+insertcols!(metrics, :L => L_all)
+
+## C: connectance 
+C_all = connectance.(N_all)
+insertcols!(metrics, :C => C_all)
+
+## rho: nestedness
+rho_all = ρ.(N_all)
+insertcols!(metrics, :rho => rho_all)
+
+## maxtl: maximum trophic level
+maxtl_all = Union{Missing, Float64}[]
+for i in 1:length(N_all)
+      try 
+      maxtl = maximum(values(trophic_level(N_all[i])))
+      push!(maxtl_all, maxtl)
+      catch
+      push!(maxtl_all, missing) # no maximum trophic level found
+      end
+end
+
+insertcols!(metrics, :maxtl => maxtl_all)
+
+## diam: network diameter (shortest distance between the two most distant nodes in the network)
+diam_all = maximum.(shortest_path.(N_all))
+insertcols!(metrics, :diam => diam_all)
+
+## entropy: SVD-entropy
+entropy_all = svd_entropy.(N_all)
+insertcols!(metrics, :entropy => entropy_all)
+
+## T: fraction of top species (species with no predators)
+kin_all = values.(degree.(N_all, dims = 2))
+T_all = sum.(x -> x == 0, kin_all) ./ S_all
+insertcols!(metrics, :T => T_all)
+
+## B: fraction of basal species (species with no preys)
+kout_all = values.(degree.(N_all, dims = 1))
+B_all = sum.(x -> x == 0, kout_all) ./ S_all
+insertcols!(metrics, :B => B_all)
+
+## I: fraction of intermediate species (species with preys and predators)
+I_all = 1 .- T_all .- B_all
+I_all[I_all .< 0] .= 0
+insertcols!(metrics, :I => I_all)
+
+## GenSD: standard deviation of generality (number of preys normalized by link density)
+Gen_all = [kout_all[i] ./ (L_all[i] ./ S_all[i]) for i in 1:length(N_all)]
+GenSD_all = std.(Gen_all)
+insertcols!(metrics, :GenSD => GenSD_all)
+
+## VulSD: standard deviation of vulnerability
+Vul_all = [kin_all[i] ./ (L_all[i] ./ S_all[i]) for i in 1:length(N_all)]
+VulSD_all = std.(Vul_all)
+insertcols!(metrics, :VulSD => VulSD_all)
+
+## MxSim: mean maximum similarity 
+"""
+MxSim(N::UnipartiteNetwork)
+    N: Unipartite simple directed network
+Returns the average of all species’ largest similarity index 
+"""
+function MxSim(N::UnipartiteNetwork)
+      AJS_N = AJS(N) # Additive Jaccard similarity between all species pairs
+      length_AJS_N = length(AJS_N)
+      max_AJS = []
+      try
+            # find the maximum similarity for every species
+            for i in 1:richness(N) 
+                  spi = []
+                  for j in 1:length_AJS_N
+                        if in(AJS_N[j][1])(species(N)[i])
+                              push!(spi, AJS_N[j][2])
+                        end
+                   end
+            push!(max_AJS, maximum(spi))
+            end
+      catch
+            return missing
+      end
+      return mean(max_AJS) # return average similarity index 
+end
+MxSim_all = MxSim.(N_all)
+insertcols!(metrics, :MxSim => MxSim_all)
+
+## ChnLg: mean food-chain length
+
+## ChnSD: standard deviation of food-chain length
+
+## ChnNo: number of food chains
+
+## Loop: fraction of species involved in loops (no cannibals)
+
+## Cannib: fraction of cannibal species
+Cannib_all = [sum(diag(N_all[i].edges)) for i in 1:length(N_all)]
+insertcols!(metrics, :Cannib => Cannib_all)
+
+## Omniv: fraction of species that consume two or more species and have food chains of different lengths
+
+## motifs
+"""
+count_motifs(N::UnipartiteNetwork) 
+    N: unipartite network
+Returns the proportion that each motif was found in the unipartite network
+"""
+function count_motifs(N::UnipartiteNetwork) 
+      # list and count motifs
+      motifs = unipartitemotifs() 
+      motifs_count = [length(find_motif(N, ms[i])) for i in 1:13]
+      # returns the proportion of each motif for all networks
+      return motifs_count ./ sum(motifs_count)
+end
+motifs_all = count_motifs.(N_all)
+
+
 ################# TK TO DO #########################
 # Figure: Measures of empirical and maximum entropy food webs 
 
