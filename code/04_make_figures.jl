@@ -4,60 +4,52 @@ default(; frame=:box)
 Plots.scalefontsizes(1.3)
 fonts=font("Arial",7)
 
-## Read empirical data
+options = (
+            linewidth=2, 
+            framestyle=:box, 
+            grid=false,
+            dpi=1000, 
+            size=(800,500), 
+            margin=5Plots.mm, 
+            guidefont=fonts, 
+            xtickfont=fonts, 
+            ytickfont=fonts,
+            foreground_color_legend=nothing, 
+            background_color_legend=:white, 
+            legendfont=fonts
+)
 
-# Mangal
-networks_mangal = load(joinpath("data", "proc", "mangal", "networks_mangal.jld"))["data"]
+## Read empirical networks
 
-# New Zealand
-networks_NZ = load(joinpath("data", "proc", "new_zealand", "networks_NZ.jld"))["data"]
-abund_data_NZ = load(joinpath("data", "proc", "new_zealand", "abund_data_NZ.jld"))["data"]
+N_mangal = load(joinpath("data", "proc", "mangal", "networks_mangal.jld"))["data"]
 
-# Tuesday lake
-networks_tuesday = load(joinpath("data", "proc", "tuesday_lake", "networks_tuesday.jld"))["data"]
-abund_data_tuesday = load(joinpath("data", "proc", "tuesday_lake", "abund_data_tuesday.jld"))["data"]
+N_NZ = load(joinpath("data", "proc", "new_zealand", "networks_NZ.jld"))["data"]
 
+N_tuesday = load(joinpath("data", "proc", "tuesday_lake", "networks_tuesday.jld"))["data"]
 
-## Read simulated data
+## Read joint degree distributions (MaxEnt)
 
-# predicted numbers of links
+jdd_maxent_mangal = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_mangal.jld"))["data"]
+
+jdd_maxent_NZ = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_NZ.jld"))["data"]
+
+jdd_maxent_tuesday = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_tuesday.jld"))["data"]
+
+k_maxent_all = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_sequence_all.jld"))["data"]
+
+## Read tables of network properties
+
+metrics = DataFrame(CSV.File(joinpath("results", "metrics.csv")))
+gmetrics = DataFrame(CSV.File(joinpath("results", "gmetrics.csv")))
+
+# empirical networks only
+metrics_emp = metrics[in(vcat("N_mangal", "N_NZ", "N_tuesday")).(metrics[!,:network]),:]
+
+# MaxEnt networks only
+metrics_maxent = metrics[in(vcat("N_maxent_mangal", "N_maxent_NZ", "N_maxent_tuesday")).(metrics[!,:network]),:]
+
+## Read counterfactuals of the flexible links model
 predicted_links = load(joinpath("data", "sim", "predicted_links.jld"))["data"]
-
-# degree distribution
-degree_dist_mangal_sim = load(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_mangal.jld"))["data"]
-degree_dist_NZ_sim = load(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_NZ.jld"))["data"]
-degree_dist_tuesday_sim = load(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_tuesday.jld"))["data"]
-
-# joint degree distribution
-joint_degree_dist_mangal_sim = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_mangal.jld"))["data"]
-joint_degree_dist_NZ_sim = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_NZ.jld"))["data"]
-joint_degree_dist_tuesday_sim = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_tuesday.jld"))["data"]
-
-# network of maximum svd-entropy
-network_maxent_mangal = load(joinpath("data", "sim", "network_maxent", "network_maxent_mangal.jld"))["data"]
-network_maxent_NZ = load(joinpath("data", "sim", "network_maxent", "network_maxent_NZ.jld"))["data"]
-network_maxent_tuesday = load(joinpath("data", "sim", "network_maxent", "network_maxent_tuesday.jld"))["data"]
-
-# access unipartite networks of maximum entropy
-
-N_maxent_mangal = [] 
-for i in 1:length(network_maxent_mangal)
-      push!(N_maxent_mangal, network_maxent_mangal[i].A)
-end
-
-N_maxent_NZ = [] 
-for i in 1:length(network_maxent_NZ)
-      push!(N_maxent_NZ, network_maxent_NZ[i].A)
-end
-
-N_maxent_tuesday = [] 
-for i in 1:length(network_maxent_tuesday)
-      push!(N_maxent_tuesday, network_maxent_tuesday[i].A)
-end
-
-# neutral models
-neutral_networks_NZ = load(joinpath("data", "sim", "neutral_model", "neutral_networks_NZ.jld"))["data"]
-neutral_networks_tuesday = load(joinpath("data", "sim", "neutral_model", "neutral_networks_tuesday.jld"))["data"]
 
 
 ##### Figures 
@@ -65,21 +57,14 @@ neutral_networks_tuesday = load(joinpath("data", "sim", "neutral_model", "neutra
 ### Density of mean degree constraints for different richness ###
 
 # Different quantiles of species richness will be plotted
-S_mangal = richness.(networks_mangal)
-S_NZ = richness.(networks_NZ)
-S_tuesday = richness.(networks_tuesday)
-S_all = vcat(S_mangal, S_NZ, S_tuesday)
+S_emp = metrics_emp.S
 
-S015 = Int64(round(quantile(S_all, 0.015))) # 1.5% lower quantile
-S500 = Int64(round(quantile(S_all, 0.5))) # median
-S985 = Int64(round(quantile(S_all, 0.985))) # 1.5% upper quantile
+S015 = Int64(round(quantile(S_emp, 0.015))) # 1.5% lower quantile
+S500 = Int64(round(quantile(S_emp, 0.5))) # median
+S985 = Int64(round(quantile(S_emp, 0.985))) # 1.5% upper quantile
 
-"""
-kavg_dist(S::Int64)
-    S: number of species
-Returns the predicted distribution of mean degrees of the flexible links model
-"""
 function kavg_dist(S::Int64)
+  # Returns the predicted distribution of mean degrees for a given level of species richness
   L = predicted_links[:, S-4]
   kavg = 2 .* L ./ S 
   return kavg
@@ -92,8 +77,8 @@ kavg985 = kavg_dist(S985)
 
 # Plot distributions of mean degrees for the 3 levels of species richness
 plotA = density(kavg015, 
-                linewidth=2, 
                 label="$(S015) species",
+                linewidth=2, 
                 framestyle=:box, 
                 grid=false,
                 dpi=1000, 
@@ -249,48 +234,16 @@ yaxis!(ylim=(0,1), "quantile of the number of links")
 
 # empirical data
 
-# mangal
-kout_emp_mangal = reduce(vcat, collect.(values.(degree.(networks_mangal, dims=1))))
-kin_emp_mangal = reduce(vcat, collect.(values.(degree.(networks_mangal, dims=2))))
+N_emp = simplify.(vcat(N_mangal, N_NZ, N_tuesday))
 
-# New Zealand
-kout_emp_NZ = reduce(vcat, collect.(values.(degree.(networks_NZ, dims=1))))
-kin_emp_NZ = reduce(vcat, collect.(values.(degree.(networks_NZ, dims=2))))
-
-# Tuesday lake
-kout_emp_tuesday = reduce(vcat, collect.(values.(degree.(networks_tuesday, dims=1))))
-kin_emp_tuesday = reduce(vcat, collect.(values.(degree.(networks_tuesday, dims=2))))
-
-# all empirical networks 
-kout_emp = vcat(kout_emp_mangal, kout_emp_NZ, kout_emp_tuesday)
-kin_emp = vcat(kin_emp_mangal, kin_emp_NZ, kin_emp_tuesday)
+kout_emp = reduce(vcat, collect.(values.(degree.(N_emp, dims=1))))
+kin_emp = reduce(vcat, collect.(values.(degree.(N_emp, dims=2))))
 
 
 ## simulated networks (from the joint degree distribution of maximum entropy)
-"""
-simulate_degrees(JDD::Matrix{Float64})
-    JDD: joint degree distribution 
-Returns a simulated vector of in and out degrees using the joint degree distribution as weight
-"""
-function simulate_degrees(JDD::Matrix{Float64})
-      S = size(JDD, 1) - 1 # number of species 
-      deg = findall(JDD .>= 0) # get cartesian indices 
-      deg_samp = sample(deg, Weights(vec(JDD)), S, replace=true) # select species degrees randomly 
-      # get in and out degrees
-      kin = zeros(Int64, S)
-      kout = zeros(Int64, S)
-      for i in 1:S
-            kout[i] = deg_samp[i][1] - 1 # we substract one because of degree 0
-            kin[i] = deg_samp[i][2] - 1
-      end
-      return (kin = kin, kout = kout)
-end
-
-degrees_maxent_mangal = simulate_degrees.(joint_degree_dist_mangal_sim)
-degrees_maxent_NZ = simulate_degrees.(joint_degree_dist_NZ_sim)
-degrees_maxent_tuesday = simulate_degrees.(joint_degree_dist_tuesday_sim)
 
 function get_kin(degrees::Vector)
+      # retrieve kin from the simulated degree sequence
       kin_maxent = []
       for i in 1:length(degrees)
             push!(kin_maxent, degrees[i].kin)
@@ -299,6 +252,7 @@ function get_kin(degrees::Vector)
 end
 
 function get_kout(degrees::Vector)
+      # retrieve kout from the simulated degree sequence
       kout_maxent = []
       for i in 1:length(degrees)
             push!(kout_maxent, degrees[i].kout)
@@ -306,21 +260,9 @@ function get_kout(degrees::Vector)
       return reduce(vcat, kout_maxent)
 end
 
-# Mangal
-kin_maxent_mangal = get_kin(degrees_maxent_mangal)
-kout_maxent_mangal = get_kout(degrees_maxent_mangal)
-
-# New Zealand
-kin_maxent_NZ = get_kin(degrees_maxent_NZ)
-kout_maxent_NZ = get_kout(degrees_maxent_NZ)
-
-# Tuesday lake
-kin_maxent_tuesday = get_kin(degrees_maxent_tuesday)
-kout_maxent_tuesday = get_kout(degrees_maxent_tuesday)
-
 # all simulated networks
-kin_maxent = vcat(kin_maxent_mangal, kin_maxent_NZ, kin_maxent_tuesday)
-kout_maxent = vcat(kout_maxent_mangal, kout_maxent_NZ, kout_maxent_tuesday)
+kin_maxent = get_kin(k_maxent_all)
+kout_maxent = get_kout(k_maxent_all)
 
 # plot the association between in and out degrees for empirical and simulated data
 plotB = scatter(kout_emp, 
@@ -340,8 +282,8 @@ plotB = scatter(kout_emp,
                 foreground_color_legend=nothing, 
                 background_color_legend=:white,
                 legendfont=fonts)
-xaxis!(xlim=(-1, maximum(vcat(kout_emp_mangal, kout_emp_NZ, kout_emp_tuesday))), "Kout (number of preys)")
-yaxis!(ylim=(-1, maximum(vcat(kin_emp_mangal, kin_emp_NZ, kin_emp_tuesday))), "Kin (number of predators)")
+xaxis!(xlim=(-1, maximum(vcat(kout_emp, kout_maxent))), "Kout (number of preys)")
+yaxis!(ylim=(-1, maximum(vcat(kin_emp, kin_maxent))), "Kin (number of predators)")
                 
 plotC = scatter(kout_maxent, 
                 kin_maxent, 
@@ -360,8 +302,8 @@ plotC = scatter(kout_maxent,
                 foreground_color_legend=nothing, 
                 background_color_legend=:white,
                 legendfont=fonts)
-xaxis!(xlim=(-1, maximum(vcat(kout_emp_mangal, kout_emp_NZ, kout_emp_tuesday))), "Kout (number of preys)")
-yaxis!(ylim=(-1, maximum(vcat(kin_emp_mangal, kin_emp_NZ, kin_emp_tuesday))), "Kin (number of predators)")
+xaxis!(xlim=(-1, maximum(vcat(kout_emp, kout_maxent))), "Kout (number of preys)")
+yaxis!(ylim=(-1, maximum(vcat(kin_emp, kin_maxent))), "Kin (number of predators)")
 
 
 l = @layout [a [b ; c]]
@@ -375,340 +317,294 @@ plot(plotA, plotB, plotC,
 savefig(joinpath("figures","joint_degree_dist.png"))
 
 
+### Measures of empirical and maximum entropy food webs ###
 
-### Table of network properties ###
-
-## networks
-N_mangal_emp = simplify.(networks_mangal)
-N_mangal_maxent = simplify.(N_maxent_mangal)
-N_nz_emp = simplify.(networks_NZ)
-N_nz_maxent = simplify.(N_maxent_NZ)
-N_nz_neutral = simplify.(neutral_networks_NZ)
-N_tuesday_emp = simplify.(networks_tuesday)
-N_tuesday_maxent = simplify.(N_maxent_tuesday)
-N_tuesday_neutral = simplify.(neutral_networks_tuesday)
-
-N_all = vcat(N_mangal_emp, 
-            N_mangal_maxent, 
-            N_nz_emp, 
-            N_nz_maxent, 
-            N_nz_neutral, 
-            N_tuesday_emp, 
-            N_tuesday_maxent, 
-            N_tuesday_neutral)
-
-## number of networks
-n_mangal = length(N_mangal_emp)
-n_nz = length(N_nz_emp)
-n_nz_neutral = length(N_nz_neutral)
-n_tuesday = length(N_tuesday_emp)
-
-# dataframe for all measures 
-names_all = vcat(fill("mangal_emp", n_mangal), 
-                 fill("mangal_maxent", n_mangal),
-                 fill("nz_emp", n_nz),
-                 fill("nz_maxent", n_nz),
-                 fill("nz_neutral", n_nz_neutral),
-                 fill("tuesday_emp", n_tuesday),
-                 fill("tuesday_maxent", n_tuesday),
-                 fill("tuesday_neutral", n_tuesday))
-
-metrics = DataFrame(network = names_all)
-
-## S: number of species
-S_all = richness.(N_all)
-insertcols!(metrics, :S => S_all)
-
-## L: number of links 
-L_all = links.(N_all)
-insertcols!(metrics, :L => L_all)
-
-## C: connectance 
-C_all = connectance.(N_all)
-insertcols!(metrics, :C => C_all)
-
-## rho: nestedness
-rho_all = ρ.(N_all)
-insertcols!(metrics, :rho => rho_all)
-
-## maxtl: maximum trophic level
-maxtl_all = Union{Missing, Float64}[]
-for i in 1:length(N_all)
-      try 
-      maxtl = maximum(values(trophic_level(N_all[i])))
-      push!(maxtl_all, maxtl)
-      catch
-      push!(maxtl_all, missing) # no maximum trophic level found
-      end
-end
-
-insertcols!(metrics, :maxtl => maxtl_all)
-
-## diam: network diameter (shortest distance between the two most distant nodes in the network)
-diam_all = maximum.(shortest_path.(N_all))
-insertcols!(metrics, :diam => diam_all)
-
-## entropy: SVD-entropy
-entropy_all = svd_entropy.(N_all)
-insertcols!(metrics, :entropy => entropy_all)
-
-## T: fraction of top species (species with no predators)
-kin_all = values.(degree.(N_all, dims = 2))
-T_all = sum.(x -> x == 0, kin_all) ./ S_all
-insertcols!(metrics, :T => T_all)
-
-## B: fraction of basal species (species with no preys)
-kout_all = values.(degree.(N_all, dims = 1))
-B_all = sum.(x -> x == 0, kout_all) ./ S_all
-insertcols!(metrics, :B => B_all)
-
-## I: fraction of intermediate species (species with preys and predators)
-I_all = 1 .- T_all .- B_all
-I_all[I_all .< 0] .= 0
-insertcols!(metrics, :I => I_all)
-
-## GenSD: standard deviation of generality (number of preys normalized by link density)
-Gen_all = [kout_all[i] ./ (L_all[i] ./ S_all[i]) for i in 1:length(N_all)]
-GenSD_all = std.(Gen_all)
-insertcols!(metrics, :GenSD => GenSD_all)
-
-## VulSD: standard deviation of vulnerability
-Vul_all = [kin_all[i] ./ (L_all[i] ./ S_all[i]) for i in 1:length(N_all)]
-VulSD_all = std.(Vul_all)
-insertcols!(metrics, :VulSD => VulSD_all)
-
-## MxSim: mean maximum similarity 
-"""
-MxSim(N::UnipartiteNetwork)
-    N: Unipartite simple directed network
-Returns the average of all species’ largest similarity index 
-"""
-function MxSim(N::UnipartiteNetwork)
-      AJS_N = AJS(N) # Additive Jaccard similarity between all species pairs
-      length_AJS_N = length(AJS_N)
-      max_AJS = []
-      try
-            # find the maximum similarity for every species
-            for i in 1:richness(N) 
-                  spi = []
-                  for j in 1:length_AJS_N
-                        if in(AJS_N[j][1])(species(N)[i])
-                              push!(spi, AJS_N[j][2])
-                        end
-                   end
-            push!(max_AJS, maximum(spi))
-            end
-      catch
-            return missing
-      end
-      return mean(max_AJS) # return average similarity index 
-end
-MxSim_all = MxSim.(N_all)
-insertcols!(metrics, :MxSim => MxSim_all)
-
-## ChnLg: mean food-chain length
-
-## ChnSD: standard deviation of food-chain length
-
-## ChnNo: number of food chains
-
-## Loop: fraction of species involved in loops (no cannibals)
-
-## Cannib: fraction of cannibal species
-Cannib_all = [sum(diag(N_all[i].edges)) for i in 1:length(N_all)]
-insertcols!(metrics, :Cannib => Cannib_all)
-
-## Omniv: fraction of species that consume two or more species and have food chains of different lengths
-
-## motifs
-"""
-count_motifs(N::UnipartiteNetwork) 
-    N: unipartite network
-Returns the proportion that each motif was found in the unipartite network
-"""
-function count_motifs(N::UnipartiteNetwork) 
-      # list and count motifs
-      motifs = unipartitemotifs() 
-      motifs_count = [length(find_motif(N, ms[i])) for i in 1:13]
-      # returns the proportion of each motif for all networks
-      return motifs_count ./ sum(motifs_count)
-end
-motifs_all = count_motifs.(N_all)
-
-
-################# TK TO DO #########################
-# Figure: Measures of empirical and maximum entropy food webs 
-
-# Convert food webs archieved on Mangal to UnipartiteNetworks
-Ns_mangal = network.(mangal_foodwebs.id)
-Ns_mangal = convert.(UnipartiteNetwork, Ns_mangal)
-
-# Measure species richness
-S_mangal = richness.(Ns_mangal)
-S_maxent_empL = richness.(Ns_maxent_empL)
-S_maxent_fl = richness.(Ns_maxent_fl)
-
-# Measure nestedness (spectral radius of the adjacency matrix)
-nestedness_mangal = ρ.(Ns_mangal)
-nestedness_maxent_empL = ρ.(Ns_maxent_empL)
-nestedness_maxent_fl = ρ.(Ns_maxent_fl)
-
-# Measure maximum trophic levels
-tl_mangal = values.(trophic_level.(Ns_mangal))
-tl_max_mangal = maximum.(tl_mangal)
-
-tl_maxent_empL = values.(trophic_level.(Ns_maxent_empL))
-tl_max_maxent_empL = maximum.(tl_maxent_empL)
-
-tl_maxent_fl = values.(trophic_level.(Ns_maxent_fl))
-tl_max_maxent_fl = maximum.(tl_maxent_fl)
-
-# Measure network diameter (shortest distance between the two most distant nodes in the network)
-shortest_paths_mangal = shortest_path.(Ns_mangal)
-diameter_mangal = maximum.(shortest_paths_mangal)
-
-shortest_paths_maxent_empL = shortest_path.(Ns_maxent_empL)
-diameter_maxent_empL = maximum.(shortest_paths_maxent_empL)
-
-shortest_paths_maxent_fl = shortest_path.(Ns_maxent_fl)
-diameter_maxent_fl = maximum.(shortest_paths_maxent_fl)
-
-entropy_mangal = svd_entropy.(Ns_mangal)
-entropy_maxent_empL = svd_entropy.(Ns_maxent_empL)
-entropy_maxent_fl = svd_entropy.(Ns_maxent_fl)
-
-# Make vector of measures of MaxEnt food webs (nb of links given by the flexible links model) the same length as the other vectors
-n1 = length(Ns_mangal) 
-n2 = length(Ns_maxent_fl)
-i = [findall(in(mangal_foodwebs.S[i]).(S_maxent_fl)) for i in 1:n1]
-i[n1-1] = [n2] # The second to last entry has no value. We'll change it manually.
-i = reduce(vcat, i)
-
-nestedness_maxent_fl_long = [nestedness_maxent_fl[j] for j in i]
-tl_max_maxent_fl_long = [tl_max_maxent_fl[j] for j in i]
-diameter_maxent_fl_long = [diameter_maxent_fl[j] for j in i]
-entropy_maxent_fl_long = [entropy_maxent_fl[j] for j in i]
-
-# Plot predicted as a function of empirical measures
-plotA = scatter(nestedness_mangal, nestedness_maxent_empL, alpha=0.3, markersize=3, label="Empirical L",
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white,
-      legend=:bottomright, legendfont=fonts,
-      xlabel="Nestedness (empirical webs)",
-      ylabel="Nestedness (MaxEnt webs)")
-scatter!(nestedness_mangal, nestedness_maxent_fl_long, alpha=0.3, markersize=3, label="Median L")
+# Nestedness
+plotA = scatter(metrics_emp.rho, 
+                  metrics_maxent.rho,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  label="",
+                  xlabel="Nestedness (empirical)",
+                  ylabel="Nestedness (MaxEnt)")
 plot!(LinRange(0.4, 0.9, 100), LinRange(0.4, 0.9, 100), lab="", color="grey", linestyle=:dot)
 
-plotB = scatter(tl_max_mangal, tl_max_maxent_empL, alpha=0.3, markersize=3, label="Empirical L",
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white,
-      legend=:bottomright, legendfont=fonts,
-      ticks=[2,4,6,8,10,12],
-      xlabel="Maximum trophic level (empirical webs)",
-      ylabel="Maximum trophic level (MaxEnt webs)")
-scatter!(tl_max_mangal, tl_max_maxent_fl_long, alpha=0.3, markersize=3, label="Median L")
-plot!(LinRange(2, 12, 100), LinRange(2, 12, 100), lab="", color="grey", linestyle=:dot)
+# Maximum trophic level
+plotB = scatter(metrics_emp.maxtl, 
+                  metrics_maxent.maxtl,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  label="",
+                  xlabel="Maximum trophic level (empirical)",
+                  ylabel="Maximum trophic level (MaxEnt)")
+plot!(LinRange(2, 10, 100), LinRange(2, 10, 100), lab="", color="grey", linestyle=:dot)
 
-plotC = scatter(diameter_mangal, diameter_maxent_empL, alpha=0.3, markersize=3, label="Empirical L",
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white,
-      legend=:bottomright, legendfont=fonts,
-      ticks=[1,3,5,7,9,11,13],
-      xlabel="Diameter (empirical webs)",
-      ylabel="Diameter (MaxEnt webs)")
-scatter!(diameter_mangal .+ 0.1, diameter_maxent_fl_long, alpha=0.3, markersize=3, label="Median L")
-plot!(LinRange(1, 13, 100), LinRange(1, 13, 100), lab="", color="grey", linestyle=:dot)
+plotC = scatter(metrics_emp.diam,
+                  metrics_maxent.diam,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  label="",
+                  xlabel="Diameter (empirical)",
+                  ylabel="Diameter (MaxEnt)")
+plot!(LinRange(1, 10, 100), LinRange(1, 10, 100), lab="", color="grey", linestyle=:dot)
 
-plotD = scatter(entropy_mangal, entropy_maxent_empL, alpha=0.3, markersize=3, label="Empirical L",
-framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-foreground_color_legend=nothing, background_color_legend=:white,
-legend=:bottomright, legendfont=fonts,
-xlabel="SVD-entropy (empirical webs)",
-ylabel="SVD-entropy (MaxEnt webs)")
-scatter!(entropy_mangal, entropy_maxent_fl_long, alpha=0.3, markersize=3, label="Median L")
-plot!(LinRange(0.77, 1, 100), LinRange(0.77, 1, 100), lab="", color="grey", linestyle=:dot)
+plotD = scatter(metrics_emp.entropy,
+                  metrics_maxent.entropy,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  label="",
+                  xlabel="SVD-entropy (empirical)",
+                  ylabel="SVD-entropy (MaxEnt)")
+plot!(LinRange(0.75, 1, 100), LinRange(0.75, 1, 100), lab="", color="grey", linestyle=:dot)
 
 plot(plotA, plotB, plotC, plotD, 
      title = ["(a)" "(b)" "(c)" "(d)"],
      titleloc=:right, titlefont=fonts)
 
-savefig(joinpath("figures", "measures_mangal_maxent.png"))
-#########################################################
+savefig(joinpath("figures", "metrics_emp_maxent.png"))
 
-################# TK TO DO #########################
-# Figure: Plot measures as a function of species richness and of other measures
+
+
+### Metrics as a function of species richness ###
+
 a = [5,10,20,50,100,400] # specified x-ticks 
 
-plotA = scatter(S_mangal, nestedness_maxent_empL, alpha=0.3, label="Empirical L", smooth=true, markersize=3, linestyle=:dot, linealpha=1,
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white,
-      legend=:topright, legendfont=fonts,
-      xlabel="Species richness",
-      ylabel="Nestedness")
-scatter!(S_mangal, nestedness_maxent_fl_long, alpha=0.3, label="Median L", smooth=true, markersize=3, linestyle=:dot, linealpha=1)
-scatter!(S_mangal, nestedness_mangal, alpha=0.3, label="Mangal", smooth=true, markersize=3, linestyle=:dot, linealpha=1)
+# Nestedness and species richness
+plotA = scatter(metrics_emp.S,
+                  metrics_emp.rho,
+                  smooth=true,
+                  linestyle=:dot, 
+                  linealpha=1,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legend=:topright,
+                  legendfont=fonts,
+                  label="Empirical",
+                  xlabel="Species richness",
+                  ylabel="Nestedness")
+scatter!(metrics_maxent.S, 
+            metrics_maxent.rho,
+            alpha=0.3,
+            label="MaxEnt", 
+            smooth=true, 
+            markersize=3, 
+            linestyle=:dot, 
+            linealpha=1)
 xaxis!(:log, xticks=(a,a))
 
-plotB = scatter(S_mangal, tl_max_maxent_empL, alpha=0.3, label="Empirical L", smooth=true, markersize=3, linestyle=:dot, linealpha=1,
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white,
-      legend=:topright, legendfont=fonts,
-      xlabel="Species richness",
-      ylabel="Maximum trophic level",
-      yticks=[2,4,6,8,10,12])
-scatter!(S_mangal, tl_max_maxent_fl_long, alpha=0.3, label="Median L", smooth=true, markersize=3, linestyle=:dot, linealpha=1)
-scatter!(S_mangal, tl_max_mangal, alpha=0.3, label="Mangal", smooth=true,markersize=3, linestyle=:dot, linealpha=1)
+# Maximum trophic level and species richness
+
+missing_tl = findall(ismissing, metrics_maxent.maxtl) # remove missing values
+metrics_maxent_maxtl = metrics_maxent.maxtl[Not(missing_tl),:] 
+metrics_maxent_S = metrics_maxent.S[Not(missing_tl),:]
+
+plotB = scatter(metrics_emp.S,
+                  metrics_emp.maxtl,
+                  smooth=true,
+                  linestyle=:dot, 
+                  linealpha=1,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legend=:topright,
+                  legendfont=fonts,
+                  label="Empirical",
+                  xlabel="Species richness",
+                  ylabel="Maximum trophic level")
+scatter!(metrics_maxent_S, 
+            metrics_maxent_maxtl,
+            alpha=0.3, 
+            label="MaxEnt", 
+            smooth=true, 
+            markersize=3, 
+            linestyle=:dot, 
+            linealpha=1)
 xaxis!(:log, xticks=(a,a))
 
-plotC = scatter(S_mangal, diameter_maxent_empL, alpha=0.3, label="Empirical L", smooth=true, markersize=3, linestyle=:dot, linealpha=1,
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white,
-      legend=:topright, legendfont=fonts, 
-      xlabel="Species richness",
-      ylabel="Diameter",
-      yticks=[1,3,5,7,9,11,13])
-scatter!(S_mangal, diameter_maxent_fl_long, alpha=0.3, label="Median L", smooth=true, markersize=3, linestyle=:dot, linealpha=1)
-scatter!(S_mangal, diameter_mangal, alpha=0.3, label="Mangal", smooth=true, markersize=3, linestyle=:dot, linealpha=1)
+# Network diameter and species richness
+plotC = scatter(metrics_emp.S,
+                  metrics_emp.diam,
+                  smooth=true,
+                  linestyle=:dot, 
+                  linealpha=1,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legend=:topright,
+                  legendfont=fonts,
+                  label="Empirical",
+                  xlabel="Species richness",
+                  ylabel="Diameter")
+scatter!(metrics_maxent.S,
+            metrics_maxent.diam,
+            alpha=0.3, 
+            label="MaxEnt", 
+            smooth=true, 
+            markersize=3, 
+            linestyle=:dot, 
+            linealpha=1)
 xaxis!(:log, xticks=(a,a))
 
-plotD = scatter(S_mangal, entropy_maxent_empL, alpha=0.3, label="Empirical L", smooth=true, markersize=3, linestyle=:dot, linealpha=1,
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white,
-      legend=:bottomright, legendfont=fonts, 
-      xlabel="Species richness",
-      ylabel="SVD-entropy")
-scatter!(S_mangal, entropy_maxent_fl_long, alpha=0.3, label="Median L", smooth=true, markersize=3, linestyle=:dot, linealpha=1)
-scatter!(S_mangal, entropy_mangal, alpha=0.3, label="Mangal", smooth=true, markersize=3, linestyle=:dot, linealpha=1)
+# Entropy and species richness
+plotD = scatter(metrics_emp.S,      
+                  metrics_emp.entropy,
+                  smooth=true,
+                  linestyle=:dot, 
+                  linealpha=1,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legend=:topright,
+                  legendfont=fonts,
+                  label="Empirical",
+                  xlabel="Species richness",
+                  ylabel="SVD-entropy")
+scatter!(metrics_maxent.S,
+            metrics_maxent.entropy,
+            alpha=0.3, 
+            label="MaxEnt", 
+            smooth=true, 
+            markersize=3, 
+            linestyle=:dot, 
+            linealpha=1)
 xaxis!(:log, xticks=(a,a))
 
 plot(plotA, plotB, plotC, plotD, 
      title = ["(a)" "(b)" "(c)" "(d)"],
      titleloc=:right, titlefont=fonts)
 
-savefig(joinpath("figures", "measures_richness.png"))
+savefig(joinpath("figures", "metrics_richness.png"))
 
-# Plot nestedness as a function of maximum entropy
-scatter(tl_max_maxent_empL, nestedness_maxent_empL, alpha=0.5, label="Empirical L", smooth=true, markersize=4, linestyle=:dot, linealpha=1,
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white,
-      legend=:topright, legendfont=fonts,
-      xticks=[2,4,6,8,10,12],
-      xlabel="Maximum trophic level",
-      ylabel="Nestedness")
-scatter!(tl_max_maxent_fl, nestedness_maxent_fl, alpha=0.5, label="Median L", smooth=true, markersize=4, linestyle=:dot, linealpha=1)
-scatter!(tl_max_mangal, nestedness_mangal, alpha=0.5, label="Mangal", smooth=true, markersize=4, linestyle=:dot, linealpha=1)
 
+### Plot nestedness as a function of maximum trophic level ###
+
+missing_tl = findall(ismissing, metrics_maxent.maxtl) # remove missing values
+metrics_maxent_maxtl = metrics_maxent.maxtl[Not(missing_tl),:] 
+metrics_maxent_rho = metrics_maxent.rho[Not(missing_tl),:]
+
+scatter(metrics_emp.maxtl,
+            metrics_emp.rho,
+            smooth=true,
+            linestyle=:dot, 
+            linealpha=1,
+            alpha=0.3,
+            markersize=3,
+            framestyle=:box, 
+            grid=false,
+            dpi=1000, 
+            size=(800,500), 
+            margin=5Plots.mm, 
+            guidefont=fonts, 
+            xtickfont=fonts, 
+            ytickfont=fonts,
+            foreground_color_legend=nothing, 
+            background_color_legend=:white, 
+            legend=:topright,
+            legendfont=fonts,
+            label="Empirical",
+            xlabel="Maximum trophic level",
+            ylabel="Nestedness")
+scatter!(metrics_maxent_maxtl,
+            metrics_maxent_rho,
+            alpha=0.3, 
+            label="MaxEnt", 
+            smooth=true, 
+            markersize=3, 
+            linestyle=:dot, 
+            linealpha=1)
+      
 savefig(joinpath("figures", "maxtrophiclevel_nestedness.png"))
-#############################################################
+
+
+
+
+
+
+
+
+
+
 
 
 ################# TK TO DO #########################
@@ -809,3 +705,81 @@ plot(plotA, plotB,
 
 savefig(joinpath("figures", "entropy_distribution.png"))
 #####################################################################
+
+
+
+
+
+
+######################################################################
+## Figure: Motif distribution
+
+"""
+count_motifs(N::T) where {T <: UnipartiteNetwork}
+    N: unipartite network
+Returns the number of times each motif was found in the unipartite network
+"""
+function count_motifs(N::T) where {T <: UnipartiteNetwork}
+  ms = unipartitemotifs() # list motifs
+  ms_count = [length(find_motif(N, ms[i])) for i in 1:13]
+end
+
+"""
+count_motifs(Ns::T) where {T <: Union{Vector{UnipartiteNetwork{Bool, String}}, Vector{UnipartiteNetwork{Bool, MangalNode}}}}
+    Ns: vector of unipartite networks
+Returns the proportion of each motif in each unipartite network
+Rows are networks and columns are different motifs
+"""
+function count_motifs(Ns::T) where {T <: Union{Vector{UnipartiteNetwork{Bool, String}}, Vector{UnipartiteNetwork{Bool, MangalNode}}}}
+  # remove the biggest network (too long to find all motifs in networks that are too large)
+  Ns_small = Ns[richness.(Ns) .!== maximum(richness.(Ns))]
+  # count each of the 13 possible motifs for all networks in Ns
+  motifs_count = zeros(Float64, length(Ns_small), length(unipartitemotifs()))
+  
+  for i in 1:length(Ns_small)
+    motifs_count[i,:] = count_motifs(Ns_small[i]) 
+  end
+
+  # returns the proportion of each motif for all networks
+  return motifs_count ./ sum.(eachrow(motifs_count))
+end
+
+# Get the proportion of motifs for all food webs (empirical and predicted)
+motifs_prop_mangal = count_motifs(Ns_mangal)
+motifs_prop_maxent_empL = count_motifs(Ns_maxent_empL)
+motifs_prop_maxent_fl = count_motifs(Ns_maxent_fl)
+
+"""
+plot_motifs(ms::T) where {T <: Matrix{Float64}}
+    ms: matrix of proportions of motifs in networks (rows = networks, columns = motifs)
+Returns the plot of the distribution of all motifs in a set of food webs 
+Gives a violon plot, boxplot and dotplot
+"""
+function plot_motifs(ms::T) where {T <: Matrix{Float64}}
+  
+  # change data format for plotting
+  ms_df = convert(DataFrame, ms)
+  rename!(ms_df, vcat(["S$i" for i in 1:5],["D$j" for j in 1:8]))
+  ms_df = DataFrames.stack(ms_df)
+  
+  # plot proportions of all modules
+  @df ms_df violin(string.(:variable), :value, linewidth=0, label="",
+              framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
+              guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
+              ylims=(0,1),
+              xaxis="Motifs", yaxis="Proportion")
+  @df ms_df boxplot!(string.(:variable), :value, fillalpha=0.2, markersize=3, linewidth=1, color=:grey, label="")
+  @df ms_df dotplot!(string.(:variable), :value, color=:black, markersize=1.5, alpha=0.15, label="")
+end
+
+# Plot the proportions of all motifs for empirical and predicted food webs 
+# Food webs with median L are not plotted since their distribution is very similar to the one of MaxEnt food webs with empirical L
+plotA = plot_motifs(motifs_prop_mangal)
+plotB = plot_motifs(motifs_prop_maxent_empL)
+
+plot(plotA, plotB,
+     title = ["(a) Empirical food webs" "(b) MaxEnt food webs"],
+     titleloc=:right, titlefont=fonts)
+
+savefig(joinpath("figures", "motifs_distribution.png"))
+###########################################################################
