@@ -33,6 +33,7 @@ using StatsPlots
 # Analyzing ecological networks
 using Mangal 
 using EcologicalNetworks 
+using RandomBooleanMatrices
 
 ## Load custom functions
 include(joinpath("code", "functions", "predict_links.jl")) # predict the number of links from the number of species
@@ -46,5 +47,6 @@ include(joinpath("code", "functions", "neutral_model.jl")) # gives the network o
 ## Load scripts
 include(joinpath("code", "01_import_mangal_metadata.jl"))
 include(joinpath("code", "02_predict_networks.jl"))
-include(joinpath("code", "03_make_figures.jl"))
+include(joinpath("code", "03_compute_measures.jl"))
+include(joinpath("code", "04_make_figures.jl"))
 

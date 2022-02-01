@@ -46,41 +46,52 @@ end
 network_maxent(N::UnipartiteNetwork, nsteps::Int64)
     N: Unipartite directed simple network
     nsteps: Number of steps
+    nchains: Number of chains
 Returns the adjacency matrix of maximum SVD-entropy constrained by the joint degree sequence of N using a simulating annealing algorithm 
 """
-function network_maxent(N::UnipartiteNetwork, nsteps::Int64)
-    A0 = copy(N)
+function network_maxent(N::UnipartiteNetwork, nchains::Int64, nsteps::Int64)
+    # matrix generator object
+    rmg = matrixrandomizer(N.edges)
+    # initial vector for SVD-entropies and object for best matrices
+    entropies = zeros(Float64, nsteps, nchains)
+    A = []
 
-    # initial vector for SVD-entropies
-    entropies = zeros(Float64, nsteps)
-    best = svd_entropy(A0)
-    entropies[1] = best
+    for j in 1:nchains
+        # generate a new random matrix with the same row and column sums (joint degree sequence) as N
+        A0 = UnipartiteNetwork(convert(Matrix{Bool}, rand(rmg)))
+        best = svd_entropy(A0)
+        entropies[1,j] = best
 
-    # initial temperature of the simulating annealing algorithm
-    T = 0.2
+        # initial temperature of the simulating annealing algorithm
+        T = 0.2
 
-    # simulating annealing algorithm
-    for i in 2:nsteps
-        # propose a new constrained random matrix and compute the difference in SVD-entropy 
-        A1 = swap_degreeN(A0)
-        candidate = svd_entropy(A1)
-        delta = candidate - best
-        # accept if the difference is positive or with a probability p if it's negative
-        if delta > 0 
-            A0 = A1 
-            best = candidate
-        else 
-            p = exp(delta/T)
-            P = rand(Uniform(0, 1))
-            if P < p
-                A0 = A1
+        # simulating annealing algorithm
+        for i in 2:nsteps
+            # propose a new constrained random matrix and compute the difference in SVD-entropy 
+            A1 = swap_degreeN(A0)
+            candidate = svd_entropy(A1)
+            delta = candidate - best
+            # accept if the difference is positive or with a probability p if it's negative
+            if delta > 0 
+                A0 = A1 
                 best = candidate
+            else 
+                p = exp(delta/T)
+                P = rand(Uniform(0, 1))
+                if P < p
+                    A0 = A1
+                    best = candidate
+                end
             end
+            entropies[i,j] = best
+            # update the temperature
+            T = T * 0.99
         end
-        entropies[i] = best
-        # update the temperature
-        T = T * 0.99
+        push!(A, A0)
     end
-    Amax = (A = A0, entropy = maximum(entropies), entropies = entropies)
+    # find the network with maximum entropy among all chains
+    imax = findmax(entropies[nsteps,:])[2]
+    Amax = (A = A[imax], entropies = entropies)
     return Amax
 end
+

@@ -50,18 +50,18 @@ save(joinpath("data", "proc", "tuesday_lake", "networks_tuesday.jld"), "data", N
 end
 
 # Observations
-N = vcat(N_mangal, N_NZ, N_tuesday)
-N = simplify.(N) # remove unconnected species
+N_all = vcat(N_mangal, N_NZ, N_tuesday)
+N_all = simplify.(N_all) # remove unconnected species
 
 # number of species
-S = richness.(N)
+S_all = richness.(N_all)
 # number of links
-L = links.(N)
+L_all = links.(N_all)
 # number of flexible links that are realized
-R = L .- (S.-1) 
+R_all = L_all .- (S_all.-1) 
 
 # Hamiltonian Monte Carlo sampler with static trajectory
-chain = sample(FL(S,R), HMC(0.01,10), 3000)
+chain = sample(FL(S_all, R_all), HMC(0.01,10), 3000)
 
 # Diagnostic plot
 plot(chain[200:end,:,:])
@@ -103,49 +103,50 @@ L_tuesday = links.(N_tuesday)
 
 
 ## Simulate degree distributions of maximum entropy
-degree_dist_mangal = degree_dist_maxent.(S_mangal, L_mangal)
-save(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_mangal.jld"), "data", degree_dist_mangal)
+dd_maxent_mangal = degree_dist_maxent.(S_mangal, L_mangal)
+save(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_mangal.jld"), "data", dd_maxent_mangal)
 
-degree_dist_NZ = degree_dist_maxent.(S_NZ, L_NZ)
-save(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_NZ.jld"), "data", degree_dist_NZ)
+dd_maxent_NZ = degree_dist_maxent.(S_NZ, L_NZ)
+save(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_NZ.jld"), "data", dd_maxent_NZ)
 
-degree_dist_tuesday = degree_dist_maxent.(S_tuesday, L_tuesday)
-save(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_tuesday.jld"), "data", degree_dist_tuesday)
+dd_maxent_tuesday = degree_dist_maxent.(S_tuesday, L_tuesday)
+save(joinpath("data", "sim", "degree_dist_maxent", "degree_dist_tuesday.jld"), "data", dd_maxent_tuesday)
 
 
 ## Simulate joint degree distributions of maximum entropy
-joint_degree_dist_mangal = joint_degree_dist_maxent.(S_mangal, L_mangal)
-save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_mangal.jld"), "data", joint_degree_dist_mangal)
+jdd_maxent_mangal = joint_degree_dist_maxent.(S_mangal, L_mangal)
+save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_mangal.jld"), "data", jdd_maxent_mangal)
 
-joint_degree_dist_NZ = joint_degree_dist_maxent.(S_NZ, L_NZ)
-save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_NZ.jld"), "data", joint_degree_dist_NZ)
+jdd_maxent_NZ = joint_degree_dist_maxent.(S_NZ, L_NZ)
+save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_NZ.jld"), "data", jdd_maxent_NZ)
 
-joint_degree_dist_tuesday = joint_degree_dist_maxent.(S_tuesday, L_tuesday)
-save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_tuesday.jld"), "data", joint_degree_dist_tuesday)
+jdd_maxent_tuesday = joint_degree_dist_maxent.(S_tuesday, L_tuesday)
+save(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_dist_tuesday.jld"), "data", jdd_maxent_tuesday)
 
 
 ## Simulate networks of maximum entropy
 nsteps = 2000 # number of steps
+nchains = 4 # number of chains
 
-network_maxent_mangal = network_maxent.(N_mangal, nsteps)
-save(joinpath("data", "sim", "network_maxent", "network_maxent_mangal.jld"), "data", network_maxent_mangal)
+N_maxent_mangal = network_maxent.(N_mangal, nchains, nsteps)
+save(joinpath("data", "sim", "network_maxent", "network_maxent_mangal.jld"), "data", N_maxent_mangal)
 
-network_maxent_NZ = network_maxent.(N_NZ, nsteps)
-save(joinpath("data", "sim", "network_maxent", "network_maxent_NZ.jld"), "data", network_maxent_NZ)
+N_maxent_NZ = network_maxent.(N_NZ, nchains, nsteps)
+save(joinpath("data", "sim", "network_maxent", "network_maxent_NZ.jld"), "data", N_maxent_NZ)
 
-network_maxent_tuesday = network_maxent.(N_tuesday, nsteps)
-save(joinpath("data", "sim", "network_maxent", "network_maxent_tuesday.jld"), "data", network_maxent_tuesday)
+N_maxent_tuesday = network_maxent.(N_tuesday, nchains, nsteps)
+save(joinpath("data", "sim", "network_maxent", "network_maxent_tuesday.jld"), "data", N_maxent_tuesday)
 
 ## Run neutral models
 
 ## New Zealand data
 
 # read taxonomic and abundance data in New Zealand (all networks)
-abund_data_NZ = DataFrame(CSV.File(joinpath("data", "raw", "new_zealand", "taxa_dry_weight_abundance.csv")))
-rename!(abund_data_NZ , 1 => :food_web, 4 => :no_m2)
-fw_names = unique(abund_data_NZ[!, :food_web])
+abund_NZ = DataFrame(CSV.File(joinpath("data", "raw", "new_zealand", "taxa_dry_weight_abundance.csv")))
+rename!(abund_NZ , 1 => :food_web, 4 => :no_m2)
+fw_names = unique(abund_NZ[!, :food_web])
 
-# get the name of all food webs data (adjacency matrices) in New Zealand
+# get the name of all food webs (adjacency matrices) in New Zealand
 matrix_names = readdir(joinpath("data", "raw", "new_zealand", "adjacency_matrices"))
 matrix_names = replace.(matrix_names, ".csv" => "")
 
@@ -156,8 +157,8 @@ Returns the density (no/m2) of all species in the simplified food web with abund
 """
 function abundance_data_NZ(fw_name::String)
   # filter abundance data for this food web and get species names
-  abund_data_fw = abund_data_NZ[abund_data_NZ[!, :food_web] .== fw_name, :]
-  abund_data_taxa = abund_data_fw[!, :taxa]
+  abund_fw = abund_NZ[abund_NZ[!, :food_web] .== fw_name, :]
+  abund_taxa = abund_fw[!, :taxa]
   # read food web data and get species names
   N_df = DataFrame.(CSV.File.(joinpath("data", "raw", "new_zealand", "adjacency_matrices", "$fw_name.csv"),
                     drop=[1])) # the first column is row names
@@ -165,38 +166,38 @@ function abundance_data_NZ(fw_name::String)
   N = convert(Matrix{Bool}, N_df)
   N = UnipartiteNetwork(N, names(N_df))
   taxa_N = species(N)
-  N.edges = N.edges[in(abund_data_taxa).(taxa_N), in(abund_data_taxa).(taxa_N)]
-  N.S = taxa_N[in(abund_data_taxa).(taxa_N)]
+  N.edges = N.edges[in(abund_taxa).(taxa_N), in(abund_taxa).(taxa_N)]
+  N.S = taxa_N[in(abund_taxa).(taxa_N)]
   # simplify network and get species names
   simplify!(N)
   taxa_N = species(N)
   # get abundance data for all taxa in network
-  abund = abund_data_fw[in(taxa_N).(abund_data_taxa), :no_m2]
+  abund = abund_fw[in(taxa_N).(abund_taxa), :no_m2]
   # put everything together
   network_abund = (name = fw_name, network = N, abundance = abund)
   return network_abund
 end
 
 # get the abundance data of all food webs in New Zealand
-abund_data_NZ = abundance_data_NZ.(fw_names)
-save(joinpath("data", "proc", "new_zealand", "abund_data_NZ.jld"), "data", abund_data_NZ)
+abund_NZ = abundance_data_NZ.(fw_names)
+save(joinpath("data", "proc", "new_zealand", "abund_data_NZ.jld"), "data", abund_NZ)
 
 # simulate networks in New Zealand using the neutral model of relative abundances
-neutral_networks_NZ = Any[]
+N_neutral_NZ = Any[]
 
-for i in 1:length(abund_data_NZ)
-  neutral_network = neutral_model(abund_data_NZ[i].abundance, chain)
-  push!(neutral_networks_NZ, neutral_network)
+for i in 1:length(abund_NZ)
+  N_neutral = neutral_model(abund_NZ[i].abundance, chain)
+  push!(N_neutral_NZ, N_neutral)
 end
 
-save(joinpath("data", "sim", "neutral_model", "neutral_networks_NZ.jld"), "data", neutral_networks_NZ)
+save(joinpath("data", "sim", "neutral_model", "neutral_networks_NZ.jld"), "data", N_neutral_NZ)
 
 
 ## Tuesday lake data
 
 # read taxonomic and abundance data of Tuesday lake (all networks)
-abund_data_tuesday = DataFrame.(CSV.File.(glob("*.csv", 
-                                        joinpath("data", "raw", "tuesday_lake", "abundances"))))
+abund_tuesday = DataFrame.(CSV.File.(glob("*.csv", 
+                                      joinpath("data", "raw", "tuesday_lake", "abundances"))))
 
 # sum the numerical abundance of species in each trophic species cluster 
 """
@@ -218,16 +219,16 @@ end
 
 # get the abundance data of all food webs of Tuesday lake
 year = (1984, 1986)
-abund_data_tuesday = abundance_data_tuesday.(abund_data_tuesday, year, N_tuesday)
-save(joinpath("data", "proc", "tuesday_lake", "abund_data_tuesday.jld"), "data", abund_data_tuesday)
+abund_tuesday = abundance_data_tuesday.(abund_tuesday, year, N_tuesday)
+save(joinpath("data", "proc", "tuesday_lake", "abund_data_tuesday.jld"), "data", abund_tuesday)
 
 # simulate networks of Tuesday lake using the neutral model of relative abundances
-neutral_networks_tuesday = Any[]
+N_neutral_tuesday = Any[]
 
-for i in 1:length(abund_data_tuesday)
-  neutral_network = neutral_model(abund_data_tuesday[i].abundance, chain)
-  push!(neutral_networks_tuesday, neutral_network)
+for i in 1:length(abund_tuesday)
+  neutral_network = neutral_model(abund_tuesday[i].abundance, chain)
+  push!(N_neutral_tuesday, neutral_network)
 end
 
-save(joinpath("data", "sim", "neutral_model", "neutral_networks_tuesday.jld"), "data", neutral_networks_tuesday)
+save(joinpath("data", "sim", "neutral_model", "neutral_networks_tuesday.jld"), "data", N_neutral_tuesday)
 
