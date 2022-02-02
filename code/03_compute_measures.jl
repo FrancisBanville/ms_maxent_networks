@@ -15,6 +15,8 @@ abund_NZ = load(joinpath("data", "proc", "new_zealand", "abund_data_NZ.jld"))["d
 N_tuesday = load(joinpath("data", "proc", "tuesday_lake", "networks_tuesday.jld"))["data"]
 abund_tuesday = load(joinpath("data", "proc", "tuesday_lake", "abund_data_tuesday.jld"))["data"]
 
+N_emp = simplify.(vcat(N_mangal, N_NZ, N_tuesday))
+
 ## Simulated data (maximum entropy)
 
 # degree distribution
@@ -42,6 +44,8 @@ N_maxent_NZ = []
 
 N_maxent_tuesday = [] 
 [push!(N_maxent_tuesday, N_entropies_maxent_tuesday[i].A) for i in 1:length(N_entropies_maxent_tuesday)]
+
+N_maxent = simplify.(vcat(N_maxent_mangal, N_maxent_NZ, N_maxent_tuesday))
 
 ## Simulated data (neutral models)
 
@@ -187,6 +191,7 @@ CSV.write(joinpath("results", "metrics.csv"), metrics)
 
 #### Average and standard deviation of all measures by type of networks (i.e. dataset and empirical / maxent / neutral)
 
+# summarizing functions skipping missing values
 avg(x) = all(ismissing, x) ? missing : mean(skipmissing(x))
 sd(x) = all(ismissing, x) ? missing : std(skipmissing(x))
 
@@ -198,6 +203,38 @@ CSV.write(joinpath("results", "gmetrics.csv"), gmetrics)
 
 
 
+#### Difference between empirical networks and those of MaxEnt
+
+## Divergence between the degree sequence of MaxEnt and empirical networks (MSD_ds)
+
+# sorted degree sequence of empirical networks 
+k_emp_all = joint_degree_seq.(N_emp)
+
+k_emp_all_sorted = [sort(k_emp_all[i].kin .+ k_emp_all[i].kout, rev=true) for i in 1:length(k_emp_all)]
+
+# sorted degree sequence of MaxEnt networks
+k_maxent_all = load(joinpath("data", "sim", "joint_degree_dist_maxent", "joint_degree_sequence_all.jld"))["data"]
+
+k_maxent_all_sorted = [sort(k_maxent_all[i].kin .+ k_maxent_all[i].kout, rev=true) for i in 1:length(k_maxent_all)]
+
+# mean squared deviation between empirical and MaxEnt degree sequence 
+MSD_ds_maxent = [mean(k_emp_all_sorted[i] .- k_maxent_all_sorted[i]).^2 for i in 1:length(k_maxent_all_sorted)]
+
+## Create new data frame for all differences
+metrics_diff = DataFrame(MSD_ds = MSD_maxent)
+
+
+
+## Difference in SVD-entropy (entropy_diff)
+entropy_emp = svd_entropy.(N_emp)
+entropy_maxent = svd_entropy.(N_maxent)
+
+entropy_diff = entropy_maxent .- entropy_emp
+
+insertcols!(metrics_diff, :entropy_diff => entropy_diff)
+
+
+CSV.write(joinpath("results", "metrics_diff.csv"), metrics_diff)
 
 
 
