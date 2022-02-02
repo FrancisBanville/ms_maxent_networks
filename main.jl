@@ -17,6 +17,7 @@ import Ipopt
 using JuMP 
 
 # Doing statistics and models
+using Distances
 using Distributions 
 using LinearAlgebra 
 using ProgressMeter

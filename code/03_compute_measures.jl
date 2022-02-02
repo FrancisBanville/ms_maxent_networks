@@ -205,6 +205,13 @@ CSV.write(joinpath("results", "gmetrics.csv"), gmetrics)
 
 #### Difference between empirical networks and those of MaxEnt
 
+# empirical networks only
+metrics_emp = metrics[in(vcat("N_mangal", "N_NZ", "N_tuesday")).(metrics[!,:network]),:]
+
+# MaxEnt networks only
+metrics_maxent = metrics[in(vcat("N_maxent_mangal", "N_maxent_NZ", "N_maxent_tuesday")).(metrics[!,:network]),:]
+
+
 ## Divergence between the degree sequence of MaxEnt and empirical networks (MSD_ds)
 
 # sorted degree sequence of empirical networks 
@@ -224,7 +231,6 @@ MSD_ds_maxent = [mean(k_emp_all_sorted[i] .- k_maxent_all_sorted[i]).^2 for i in
 metrics_diff = DataFrame(MSD_ds = MSD_maxent)
 
 
-
 ## Difference in SVD-entropy (entropy_diff)
 entropy_emp = svd_entropy.(N_emp)
 entropy_maxent = svd_entropy.(N_maxent)
@@ -232,6 +238,21 @@ entropy_maxent = svd_entropy.(N_maxent)
 entropy_diff = entropy_maxent .- entropy_emp
 
 insertcols!(metrics_diff, :entropy_diff => entropy_diff)
+
+
+## Difference in nestedness (rho_diff)
+rho_diff = metrics_maxent.rho .- metrics_emp.rho
+
+insertcols!(metrics_diff, :rho_diff => rho_diff)
+
+## Jaccard distance (jaccard)
+
+A_emp = [vec(Matrix(N_emp[i].edges)) for i in 1:length(N_emp)]
+A_maxent = [vec(Matrix(N_maxent[i].edges)) for i in 1:length(N_maxent)]
+
+jaccard_maxent = jaccard.(A_emp, A_maxent)
+
+insertcols!(metrics_diff, :jaccard => jaccard_maxent)
 
 
 CSV.write(joinpath("results", "metrics_diff.csv"), metrics_diff)

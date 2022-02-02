@@ -801,8 +801,55 @@ plot(plotA, plotB,
 savefig(joinpath("figures", "entropy_distribution.png"))
 
 
+### Difference in nestedness and SVD-entropy ###
 
+plotA = scatter(metrics_diff.entropy_diff,
+            metrics_diff.rho_diff,
+            alpha=0.3,
+            markersize=3,
+            smooth=true,
+            framestyle=:box, 
+            grid=false,
+            dpi=1000, 
+            size=(800,500), 
+            margin=5Plots.mm, 
+            guidefont=fonts, 
+            xtickfont=fonts, 
+            ytickfont=fonts,
+            foreground_color_legend=nothing, 
+            background_color_legend=:white, 
+            legendfont=fonts,
+            legend=:topleft,
+            label="",
+            xlabel="SVD-entropy (difference)",
+            ylabel="Nestedness (difference)")
 
+plotB = scatter(metrics_diff.entropy_diff,
+                  metrics_diff.jaccard,
+                  alpha=0.3,
+                  markersize=3,
+                  smooth=true,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  legend=:topleft,
+                  label="",
+                  xlabel="SVD-entropy (difference)",
+                  ylabel="Jaccard distance")
+
+plot(plotA, plotB,
+     title = ["(a)" "(b)"],
+     titleloc=:right, titlefont=fonts)
+
+savefig(joinpath("figures", "difference_entropy_jaccard.png"))
 
 
 
