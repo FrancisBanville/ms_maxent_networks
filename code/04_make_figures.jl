@@ -658,47 +658,148 @@ savefig(joinpath("figures", "divergence_degree_sequence.png"))
 
 
 
+### Difference in SVD-entropy  ###
+
+# Difference in SVD-entropy and species richness
+plotA = scatter(metrics_emp.S,
+                  metrics_diff.entropy_diff,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  reg=true,
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  label="",
+                  xlabel="Species richness",
+                  ylabel="SVD-entropy (difference)")
+xaxis!(:log, xticks=(a,a))
+
+b = [10,100,1000,10000] # specified x-ticks 
+# Difference in SVD-entropy and number of links
+plotB = scatter(metrics_emp.L,
+                  metrics_diff.entropy_diff,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  reg=true,
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  label="",
+                  xlabel="Number of links",
+                  ylabel="SVD-entropy (difference)")
+xaxis!(:log, xticks=(b,b))
+
+# Difference in SVD-entropy and connectance
+plotC = scatter(metrics_emp.C,
+                  metrics_diff.entropy_diff,
+                  alpha=0.3,
+                  markersize=3,
+                  framestyle=:box, 
+                  reg=true,
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  label="",
+                  xlabel="Connectance",
+                  ylabel="SVD-entropy (difference)")
+
+plot(plotA, plotB, plotC,
+      layout = grid(1,3),
+      title = ["(a)" "(b)" "(c)"],
+      titleloc=:right, titlefont=fonts)
+             
+savefig(joinpath("figures", "difference_entropy.png"))
 
 
-################# TK TO DO #########################
-## Figure: Distribution of entropy and z-scores of empirical food webs
 
-plotA = density(entropy_maxent_empL, label="Empirical L",
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white,
-      legend=:topright, legendfont=fonts,
-      ylims=(0,30),
-      xlabel="SVD-entropy",
-      ylabel="Density")
-density!(entropy_maxent_fl, label="Median L")
-density!(entropy_mangal, label="Mangal")
+### Distribution of entropy and z-scores of empirical food webs ###
 
-entropy_maxent_fl_avg = mean(entropy_maxent_fl)
-entropy_maxent_fl_std = std(entropy_maxent_fl)
-entropy_mangal_zscores = (entropy_mangal .- entropy_maxent_fl_avg) ./ entropy_maxent_fl_std
+# Distribution of entropies
+plotA = density(metrics_emp.entropy,
+                  linesize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  legend=:topleft,
+                  label="Empirical",
+                  xlabel="SVD-entropy",
+                  ylabel="Density",
+                  ylim=(0,20.5))
+density!(metrics_maxent.entropy,
+            linesize=3,
+            label="MaxEnt")
 
-entropy_mangal_zscores_500 = quantile(entropy_mangal_zscores, 0.500)
-entropy_mangal_zscores_015 = quantile(entropy_mangal_zscores, 0.015)
-entropy_mangal_zscores_985 = quantile(entropy_mangal_zscores, 0.985)
+# compute z-scores
+entropy_maxent_avg = mean(metrics_maxent.entropy)
+entropy_maxent_std = std(metrics_maxent.entropy)
 
-plotB = density(entropy_mangal_zscores, label="",
-      framestyle=:box, dpi=1000, size=(800,500), margin=5Plots.mm, 
-      guidefont=fonts, xtickfont=fonts, ytickfont=fonts,
-      foreground_color_legend=nothing, background_color_legend=:white,
-      legend=:topright, legendfont=fonts,
-      color=:grey,
-      ylims=(0,0.16),
-      xlabel="z-score of SVD-entropy",
-      ylabel="Density")
-plot!([entropy_mangal_zscores_500], seriestype=:vline, color=:grey, ls=:dash, lab="")
+entropy_emp_zscores = (metrics_emp.entropy .- entropy_maxent_avg) ./ entropy_maxent_std
+
+entropy_emp_zscores_500 = quantile(entropy_emp_zscores, 0.500)
+entropy_emp_zscores_015 = quantile(entropy_emp_zscores, 0.015)
+entropy_emp_zscores_985 = quantile(entropy_emp_zscores, 0.985)
+
+plotB = density(entropy_emp_zscores, 
+                  color=:grey,
+                  linesize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  label="",
+                  xlabel="z-score of SVD-entropy",
+                  ylabel="Density",
+                  ylim=(0,0.27))
+plot!([entropy_emp_zscores_500], 
+            seriestype=:vline, 
+            color=:grey, 
+            ls=:dash, 
+            lab="")
 
 plot(plotA, plotB,
      title = ["(a)" "(b)"],
      titleloc=:right, titlefont=fonts)
 
 savefig(joinpath("figures", "entropy_distribution.png"))
-#####################################################################
+
 
 
 
