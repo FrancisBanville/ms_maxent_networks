@@ -878,6 +878,7 @@ groupedboxplot(motifs_emp_maxent.variable,
                   legend_font=fonts,
                   foreground_color_legend=nothing, 
                   background_color_legend=:white, 
+                  xminorgrid=false,
                   ylims=(0,1),
                   xaxis="Motifs", 
                   yaxis="Proportion")
