@@ -864,6 +864,7 @@ insertcols!(motifs_emp_maxent, :group => groups)
 groupedboxplot(motifs_emp_maxent.variable, 
                   motifs_emp_maxent.value,
                   group=motifs_emp_maxent.group, 
+                  alpha=0.9,
                   linewidth=1,
                   markersize=3,
                   framestyle=:box, 
@@ -880,12 +881,5 @@ groupedboxplot(motifs_emp_maxent.variable,
                   ylims=(0,1),
                   xaxis="Motifs", 
                   yaxis="Proportion")
-groupeddotplot!(motifs_emp_maxent.variable, 
-                  motifs_emp_maxent.value,
-                  group=motifs_emp_maxent.group,
-                  color=:black, 
-                  markersize=1, 
-                  alpha=0.2, 
-                  label="")
 
 savefig(joinpath("figures", "motifs_distribution.png"))
