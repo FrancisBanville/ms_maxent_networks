@@ -83,6 +83,11 @@ The numerical solution is identical to the one we obtained using the joint degre
 
 ![figure legend](figures/maxent_degree_dist_fl.png){#fig:degree_dist_fl}
 
+: table legend {#tbl:metrics}
+
+\input{tables/metrics.md}
+
+
 
 ![figure legend](figures/metrics_emp_maxent.png){#fig:metrics}
 
@@ -101,23 +106,13 @@ We acknowledge that this study was conducted on land within the traditional unce
 
 ![Probability that a species is isolated in its food web according to the degree distribution of maximum entropy**. We derived degree distributions of maximum entropy given a range of values of $S$ and $L$, and plotted the probability that a species has a degree $k$ of 0 (log-scale color bar). Here species richness varies between 5 and 100 species, by increment of 5 species. For each level of species richness, the numbers of links correspond to all 20-quantiles of the interval between 0 and $S^2$. The black line marks the $S-1$ minimum numbers of links required to have no isolated species.](figures/heatmap_disconnected.png){#fig:heatmap}
 
-\pagebreak
-
 ![figure legend](figures/kin_kout_difference.png){#fig:kin_kout_diff}
-
-\pagebreak
 
 ![figure legend](figures/divergence_degree_sequence.png){#fig:diverge_degree_seq}
 
-\pagebreak
-
 ![figure legend](figures/entropy_distribution.png){#fig:entropy_dist}
 
-\pagebreak
-
 ![figure legend](figures/metrics_richness.png){#fig:metrics_richness}
-
-\pagebreak
 
 ![figure legend](figures/difference_entropy.png){#fig:entropy_size}
 
