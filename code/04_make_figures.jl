@@ -193,7 +193,7 @@ end
 q_minS = Ss ./ (Ss.^2 .+ 1) # get the quantile associated to the minimum number of links S-1 that would allow all species to be connected
 
 # plot the proportion of disconnected species for all combinations of S and L (L in quantile)
-plotA = heatmap(Ss, qs, log.(p_disconnected), 
+heatmap(Ss, qs, log.(p_disconnected), 
         c=:viridis,
         colorbar_title="log probability of a species being isolated",
         framestyle=:box, 
@@ -217,6 +217,8 @@ plot!(Ss, q_minS,
 xaxis!(xlim=(minimum(Ss)-2.5, maximum(Ss)+2.5), "species richness")
 yaxis!(ylim=(0,1), "quantile of the number of links")
 
+savefig(joinpath("figures","heatmap_disconnected.png"))
+
 
 ### Correlation between kin and kout ###
 
@@ -239,7 +241,7 @@ kin_maxent = reduce(vcat,[k_maxent_all[i].kin for i in 1:length(k_maxent_all)])
 
 
 # plot the association between in and out degrees for empirical and simulated data
-plotB = scatter(kout_emp, 
+plotA = scatter(kout_emp, 
                 kin_emp, 
                 alpha=0.2, 
                 markersize=3, 
@@ -256,10 +258,10 @@ plotB = scatter(kout_emp,
                 foreground_color_legend=nothing, 
                 background_color_legend=:white,
                 legendfont=fonts)
-xaxis!(xlim=(-1, maximum(vcat(kout_emp, kout_maxent))), "Kout (number of preys)")
-yaxis!(ylim=(-1, maximum(vcat(kin_emp, kin_maxent))), "Kin (number of predators)")
+xaxis!(xlim=(-1, maximum(vcat(kout_emp, kout_maxent))), "Kout")
+yaxis!(ylim=(-1, maximum(vcat(kin_emp, kin_maxent))), "Kin")
                 
-plotC = scatter(kout_maxent, 
+plotB = scatter(kout_maxent, 
                 kin_maxent, 
                 alpha=0.2, 
                 markersize=3, 
@@ -276,20 +278,179 @@ plotC = scatter(kout_maxent,
                 foreground_color_legend=nothing, 
                 background_color_legend=:white,
                 legendfont=fonts)
-xaxis!(xlim=(-1, maximum(vcat(kout_emp, kout_maxent))), "Kout (number of preys)")
-yaxis!(ylim=(-1, maximum(vcat(kin_emp, kin_maxent))), "Kin (number of predators)")
+xaxis!(xlim=(-1, maximum(vcat(kout_emp, kout_maxent))), "Kout")
+yaxis!(ylim=(-1, maximum(vcat(kin_emp, kin_maxent))), "Kin")
 
 
-l = @layout [a [b ; c]]
+### Difference of in and out degrees ###
+
+# get degree sequence of empirical and MaxEnt networks
+# species' out and in degree sequence will be sorted using their total degree
+k_emp = kout_emp .+ kin_emp
+k_maxent = kout_maxent .+ kin_maxent
+
+# get network id (to be used when getting species rank)
+N_id = reduce(vcat, [fill(i, metrics_emp.S[i]) for i in 1:length(N_emp)])
+S_id = reduce(vcat, [fill(metrics_emp.S[i], metrics_emp.S[i]) for i in 1:length(N_emp)])
+
+# put in data frame
+k_emp_df = DataFrame(k_tot = k_emp,
+                        kout = kout_emp,
+                        kin = kin_emp,
+                        N_id = N_id)
+k_maxent_df = DataFrame(k_tot = k_maxent,
+                        kout = kout_maxent,
+                        kin = kin_maxent,
+                        N_id = N_id)
+
+# get the difference in out and in degree of all species in all networks (except the largest) using different sortings
+function kin_kout_diff(k_emp_df::DataFrame, k_maxent_df::DataFrame, column_sort::String, output::String) 
+      k_diff = []
+      for i in 1:length(N_emp) 
+            # get degree sequence of network i and sort it
+            k_emp_sorted = k_emp_df[k_emp_df.N_id .== i,:]
+            sort!(k_emp_sorted, column_sort, rev=true)
+
+            k_maxent_sorted = k_maxent_df[k_maxent_df.N_id .== i,:]
+            sort!(k_maxent_sorted, column_sort, rev=true)
+
+            # compute difference in out and in degree for network i
+            k_diff_sorted = k_maxent_sorted[!, output] .- k_emp_sorted[!, output]
+
+            push!(k_diff, k_diff_sorted)
+      end
+
+      k_diff = reduce(vcat, k_diff)
+
+      # remove the largest network (for graphical reasons)
+      k_diff_nolarge = k_diff[S_id .!= maximum(S_id)]
+      
+      return k_diff_nolarge
+end
+
+kout_diff_sortedby_ktot = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kout")
+kin_diff_sortedby_ktot = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kin")
+
+kout_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kout")
+kin_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kin")
+
+kout_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kout")
+kin_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kin")
+
+S_id_nolarge = S_id[S_id .!= maximum(S_id)]
+
+# plot differences of in and out degrees between empirical and MaxEnt networks (sorted by total degree)
+plotC = scatter(kout_diff_sortedby_ktot,
+            kin_diff_sortedby_ktot,
+            markersize=S_id_nolarge ./ 10,
+            alpha=0.2,
+            framestyle=:box, 
+            grid=false,
+            dpi=1000, 
+            size=(800,500), 
+            margin=5Plots.mm, 
+            guidefont=fonts, 
+            xtickfont=fonts, 
+            ytickfont=fonts,
+            foreground_color_legend=nothing, 
+            background_color_legend=:white, 
+            legendfont=fonts,
+            legend=:topleft,
+            label="",
+            xlabel="\\Delta Kout",
+            ylabel="\\Delta Kin")
+plot!([0], 
+      seriestype=:vline, 
+      linewidth=0.3,
+      color=:black, 
+      lab="")
+plot!([0], 
+      seriestype=:hline, 
+      linewidth=0.3,
+      color=:black, 
+      lab="")
+
+l = @layout [[a ; b] c]
 
 plot(plotA, plotB, plotC,
-    layout = l,
-    title = ["(a)" "(b) empirical data" "(c) simulated data"],
-    titleloc=:right, 
-    titlefont=fonts)
-
+      layout = l,
+      title = ["(a) empirical" "(b) MaxEnt" "(c) difference"],
+      titleloc=:right, 
+      titlefont=fonts)
+      
 savefig(joinpath("figures","joint_degree_dist.png"))
 
+
+# plot differences of in and out degrees between empirical and MaxEnt networks (sorted by out degree)
+plotA = scatter(kout_diff_sortedby_kout,
+            kin_diff_sortedby_kout,
+            markersize=S_id_nolarge ./ 10,
+            alpha=0.2,
+            framestyle=:box, 
+            grid=false,
+            dpi=1000, 
+            size=(800,500), 
+            margin=5Plots.mm, 
+            guidefont=fonts, 
+            xtickfont=fonts, 
+            ytickfont=fonts,
+            foreground_color_legend=nothing, 
+            background_color_legend=:white, 
+            legendfont=fonts,
+            legend=:topleft,
+            label="",
+            xlabel="\\Delta Kout",
+            ylabel="\\Delta Kin")
+plot!([0], 
+      seriestype=:vline, 
+      linewidth=0.3,
+      color=:black, 
+      lab="")
+plot!([0], 
+      seriestype=:hline, 
+      linewidth=0.3,
+      color=:black, 
+      lab="")
+
+# plot differences of in and out degrees between empirical and MaxEnt networks (sorted by in degree)
+plotB = scatter(kout_diff_sortedby_kin,
+            kin_diff_sortedby_kin,
+            markersize=S_id_nolarge ./ 10,
+            alpha=0.2,
+            framestyle=:box, 
+            grid=false,
+            dpi=1000, 
+            size=(800,500), 
+            margin=5Plots.mm, 
+            guidefont=fonts, 
+            xtickfont=fonts, 
+            ytickfont=fonts,
+            foreground_color_legend=nothing, 
+            background_color_legend=:white, 
+            legendfont=fonts,
+            legend=:topleft,
+            label="",
+            xlabel="\\Delta Kout",
+            ylabel="\\Delta Kin")
+plot!([0], 
+      seriestype=:vline, 
+      linewidth=0.3,
+      color=:black, 
+      lab="")
+plot!([0], 
+      seriestype=:hline, 
+      linewidth=0.3,
+      color=:black, 
+      lab="")
+
+
+plot(plotA, plotB,
+      title = ["(a) sorted by Kout" "(b) sorted by Kin"],
+      titleloc=:right, titlefont=fonts)
+ 
+savefig(joinpath("figures", "kin_kout_difference.png"))
+ 
+ 
 
 ### Measures of empirical and maximum entropy food webs ###
 
@@ -649,7 +810,7 @@ plotA = scatter(metrics_emp.S,
                   legendfont=fonts,
                   label="",
                   xlabel="Species richness",
-                  ylabel="SVD-entropy (difference)")
+                  ylabel="\\Delta SVD-entropy")
 xaxis!(:log, xticks=(a,a))
 
 b = [10,100,1000,10000] # specified x-ticks 
@@ -672,7 +833,7 @@ plotB = scatter(metrics_emp.L,
                   legendfont=fonts,
                   label="",
                   xlabel="Number of links",
-                  ylabel="SVD-entropy (difference)")
+                  ylabel="\\Delta SVD-entropy")
 xaxis!(:log, xticks=(b,b))
 
 # Difference in SVD-entropy and connectance
@@ -694,7 +855,7 @@ plotC = scatter(metrics_emp.C,
                   legendfont=fonts,
                   label="",
                   xlabel="Connectance",
-                  ylabel="SVD-entropy (difference)")
+                  ylabel="\\Delta SVD-entropy")
 
 plot(plotA, plotB, plotC,
       layout = grid(1,3),
@@ -791,8 +952,8 @@ plotA = scatter(metrics_diff.entropy_diff,
             legendfont=fonts,
             legend=:topleft,
             label="",
-            xlabel="SVD-entropy (difference)",
-            ylabel="Nestedness (difference)")
+            xlabel="\\Delta SVD-entropy",
+            ylabel="\\Delta nestedness")
 
 plotB = scatter(metrics_diff.entropy_diff,
                   metrics_diff.jaccard,
@@ -812,7 +973,7 @@ plotB = scatter(metrics_diff.entropy_diff,
                   legendfont=fonts,
                   legend=:topleft,
                   label="",
-                  xlabel="SVD-entropy (difference)",
+                  xlabel="\\Delta SVD-entropy",
                   ylabel="Jaccard distance")
 
 plot(plotA, plotB,
@@ -848,7 +1009,7 @@ insertcols!(motifs_emp_maxent, :group => groups)
 groupedboxplot(motifs_emp_maxent.variable, 
                   motifs_emp_maxent.value,
                   group=motifs_emp_maxent.group, 
-                  alpha=0.9,
+                  alpha=0.7,
                   linewidth=1,
                   markersize=3,
                   framestyle=:box, 
@@ -859,7 +1020,7 @@ groupedboxplot(motifs_emp_maxent.variable,
                   guidefont=fonts, 
                   xtickfont=fonts, 
                   ytickfont=fonts,
-                  legend_font=fonts,
+                  legendfont=fonts,
                   foreground_color_legend=nothing, 
                   background_color_legend=:white, 
                   xminorgrid=false,
@@ -868,167 +1029,3 @@ groupedboxplot(motifs_emp_maxent.variable,
                   yaxis="Proportion")
 
 savefig(joinpath("figures", "motifs_distribution.png"))
-
-
-
-### Difference of in and out degrees ###
-
-# get degree sequence of empirical and MaxEnt networks
-# species' out and in degree sequence will be sorted using their total degree
-k_emp = kout_emp .+ kin_emp
-k_maxent = kout_maxent .+ kin_maxent
-
-# get network id (to be used when getting species rank)
-N_id = reduce(vcat, [fill(i, metrics_emp.S[i]) for i in 1:length(N_emp)])
-S_id = reduce(vcat, [fill(metrics_emp.S[i], metrics_emp.S[i]) for i in 1:length(N_emp)])
-
-# put in data frame
-k_emp_df = DataFrame(k_tot = k_emp,
-                        kout = kout_emp,
-                        kin = kin_emp,
-                        N_id = N_id)
-k_maxent_df = DataFrame(k_tot = k_maxent,
-                        kout = kout_maxent,
-                        kin = kin_maxent,
-                        N_id = N_id)
-
-# get the difference in out and in degree of all species in all networks (except the largest) using different sortings
-function kin_kout_diff(k_emp_df::DataFrame, k_maxent_df::DataFrame, column_sort::String, output::String) 
-      k_diff = []
-      for i in 1:length(N_emp) 
-            # get degree sequence of network i and sort it
-            k_emp_sorted = k_emp_df[k_emp_df.N_id .== i,:]
-            sort!(k_emp_sorted, column_sort, rev=true)
-
-            k_maxent_sorted = k_maxent_df[k_maxent_df.N_id .== i,:]
-            sort!(k_maxent_sorted, column_sort, rev=true)
-
-            # compute difference in out and in degree for network i
-            k_diff_sorted = k_maxent_sorted[!, output] .- k_emp_sorted[!, output]
-
-            push!(k_diff, k_diff_sorted)
-      end
-
-      k_diff = reduce(vcat, k_diff)
-
-      # remove the largest network (for graphical reasons)
-      k_diff_nolarge = k_diff[S_id .!= maximum(S_id)]
-      
-      return k_diff_nolarge
-end
-
-kout_diff_sortedby_ktot = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kout")
-kin_diff_sortedby_ktot = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kin")
-
-kout_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kout")
-kin_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kin")
-
-kout_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kout")
-kin_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kin")
-
-S_id_nolarge = S_id[S_id .!= maximum(S_id)]
-
-# plot differences of in and out degrees between empirical and MaxEnt networks (sorted by total degree)
-scatter(kout_diff_sortedby_ktot,
-            kin_diff_sortedby_ktot,
-            markersize=S_id_nolarge ./ 10,
-            alpha=0.2,
-            framestyle=:box, 
-            grid=false,
-            dpi=1000, 
-            size=(800,500), 
-            margin=5Plots.mm, 
-            guidefont=fonts, 
-            xtickfont=fonts, 
-            ytickfont=fonts,
-            foreground_color_legend=nothing, 
-            background_color_legend=:white, 
-            legendfont=fonts,
-            legend=:topleft,
-            label="",
-            xlabel="Kout (difference)",
-            ylabel="Kin (difference)")
-plot!([0], 
-      seriestype=:vline, 
-      linewidth=0.3,
-      color=:black, 
-      lab="")
-plot!([0], 
-      seriestype=:hline, 
-      linewidth=0.3,
-      color=:black, 
-      lab="")
-
-savefig(joinpath("figures", "kin_kout_difference.png"))
-
-
-# plot differences of in and out degrees between empirical and MaxEnt networks (sorted by out degree)
-plotA = scatter(kout_diff_sortedby_kout,
-            kin_diff_sortedby_kout,
-            markersize=S_id_nolarge ./ 10,
-            alpha=0.2,
-            framestyle=:box, 
-            grid=false,
-            dpi=1000, 
-            size=(800,500), 
-            margin=5Plots.mm, 
-            guidefont=fonts, 
-            xtickfont=fonts, 
-            ytickfont=fonts,
-            foreground_color_legend=nothing, 
-            background_color_legend=:white, 
-            legendfont=fonts,
-            legend=:topleft,
-            label="",
-            xlabel="Kout (difference)",
-            ylabel="Kin (difference)")
-plot!([0], 
-      seriestype=:vline, 
-      linewidth=0.3,
-      color=:black, 
-      lab="")
-plot!([0], 
-      seriestype=:hline, 
-      linewidth=0.3,
-      color=:black, 
-      lab="")
-
-# plot differences of in and out degrees between empirical and MaxEnt networks (sorted by in degree)
-plotB = scatter(kout_diff_sortedby_kin,
-            kin_diff_sortedby_kin,
-            markersize=S_id_nolarge ./ 10,
-            alpha=0.2,
-            framestyle=:box, 
-            grid=false,
-            dpi=1000, 
-            size=(800,500), 
-            margin=5Plots.mm, 
-            guidefont=fonts, 
-            xtickfont=fonts, 
-            ytickfont=fonts,
-            foreground_color_legend=nothing, 
-            background_color_legend=:white, 
-            legendfont=fonts,
-            legend=:topleft,
-            label="",
-            xlabel="Kout (difference)",
-            ylabel="Kin (difference)")
-plot!([0], 
-      seriestype=:vline, 
-      linewidth=0.3,
-      color=:black, 
-      lab="")
-plot!([0], 
-      seriestype=:hline, 
-      linewidth=0.3,
-      color=:black, 
-      lab="")
-
-
-plot(plotA, plotB,
-      title = ["(a) sorted by Kout" "(b) sorted by Kin"],
-      titleloc=:right, titlefont=fonts)
- 
-savefig(joinpath("figures", "kin_kout_difference_sorted.png"))
- 
- 
