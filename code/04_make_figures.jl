@@ -38,6 +38,9 @@ metrics_emp = metrics[in(vcat("N_mangal", "N_NZ", "N_tuesday")).(metrics[!,:netw
 # MaxEnt networks only
 metrics_maxent = metrics[in(vcat("N_maxent_mangal", "N_maxent_NZ", "N_maxent_tuesday")).(metrics[!,:network]),:]
 
+# Neutral networks only
+metrics_neutral = metrics[in(vcat("N_neutral_NZ", "N_neutral_tuesday")).(metrics[!,:network]),:]
+
 ## Read counterfactuals of the flexible links model
 predicted_links = load(joinpath("data", "sim", "predicted_links.jld"))["data"]
 
@@ -998,17 +1001,23 @@ motifs_maxent = select(metrics_maxent, vcat([motifs[i] for i in 1:length(motifs)
 motifs_maxent = DataFrames.stack(motifs_maxent)
 motifs_maxent = dropmissing(motifs_maxent)
 
+# select proportion of each motifs in neutral networks and tidy data frame
+motifs_neutral = select(metrics_neutral, vcat([motifs[i] for i in 1:length(motifs)]))
+motifs_neutral = DataFrames.stack(motifs_neutral)
+motifs_neutral = dropmissing(motifs_neutral)
+
 # join both datasets and label them
 groups = vcat(fill("Empirical", nrow(motifs_emp)),
-              fill("MaxEnt", nrow(motifs_emp)))
+              fill("MaxEnt", nrow(motifs_maxent)),
+              fill("Neutral", nrow(motifs_neutral)))
 
-motifs_emp_maxent = [motifs_emp; motifs_maxent]
-insertcols!(motifs_emp_maxent, :group => groups)
+motifs_emp_maxent_neutral = [motifs_emp; motifs_maxent; motifs_neutral]
+insertcols!(motifs_emp_maxent_neutral, :group => groups)
 
 # motif distribution
-groupedboxplot(motifs_emp_maxent.variable, 
-                  motifs_emp_maxent.value,
-                  group=motifs_emp_maxent.group, 
+groupedboxplot(motifs_emp_maxent_neutral.variable, 
+                  motifs_emp_maxent_neutral.value,
+                  group=motifs_emp_maxent_neutral.group, 
                   alpha=0.7,
                   linewidth=1,
                   markersize=3,
