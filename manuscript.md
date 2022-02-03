@@ -56,6 +56,8 @@ $$\frac{1}{Z}\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{out} e^{-\lambda_2k_{in}-\la
 
 We solved @eq:lagrange4_jdd and @eq:lagrange5_jdd numerically using the Julia library `JuMP.jl` v0.21.8 [@Dunning2017JumMod] for a range of values of $S$ and $L$. `JuMP.jl` supports nonlinear optimization problems by providing exact second derivatives that increase the accuracy and performance of its solvers. The estimated values of $\lambda_2$ and $\lambda_3$ can be substituted in @eq:lagrange3_jdd to have a more workable expression for the joint degree distribution. 
 
+![figure legend](figures/joint_degree_dist.png){#fig:joint_dd}
+
 ## Degree distribution 
 
 The degree distribution $p(k)$ represents the probability that a species has $k$ links in a food web, with $k = k_{in} + k_{out}$. It can thus be directly obtained from the joint degree distribution:
@@ -63,8 +65,6 @@ The degree distribution $p(k)$ represents the probability that a species has $k$
 $$p(k) = \sum_{i=0}^k p(k_{in} = k - i, k_{out} = i)$$
 
 In @fig:disco_sp, we show that the degree distribution of maximum entropy, given $S$ and $L$, predicts very low probabilities that a species will be isolated in its food web (*i.e.*, having $k=0$). As @MacDonald2020RevLin pointed out, the size of food webs should at least be of $S-1$ links, since a lower number would yield isolated species, *i.e.*, species without any predators or preys. Our results show that, under our purely information-theoretic model, this probability is quite high below this threshold. The expected proportion of isolated species rapidly declines by orders of magnitude with increasing numbers of species and links.  
-
-![**(a) Probability that a species is isolated in its food web according to the degree distribution of maximum entropy**. We derived degree distributions of maximum entropy given a range of values of $S$ and $L$, and plotted the probability that a species has a degree $k$ of 0 (log-scale color bar). Here species richness varies between 5 and 100 species, by increment of 5 species. For each level of species richness, the numbers of links correspond to all 20-quantiles of the interval between 0 and $S^2$. The black line marks the $S-1$ minimum numbers of links required to have no isolated species.](figures/joint_degree_dist.png){#fig:disco_sp}
 
 The degree distribution could also have been obtained directly using the principle of maximum entropy, as discussed in @Williams2011BioMet. This gives the following distribution: 
 
@@ -84,12 +84,33 @@ The numerical solution is identical to the one we obtained using the joint degre
 ![figure legend](figures/maxent_degree_dist_fl.png){#fig:degree_dist_fl}
 
 
+![figure legend](figures/metrics_emp_maxent.png){#fig:metrics}
+
+![figure legend](figures/difference_entropy_jaccard.png){#fig:entropy_jaccard}
+
+![figure legend](figures/motifs_distribution.png){#fig:motifs}
+
+
+
 # Acknowledgments
 
 We acknowledge that this study was conducted on land within the traditional unceded territory of the Saint Lawrence Iroquoian, Anishinabewaki, Mohawk, Huron-Wendat, and Omàmiwininiwak nations. This work was supported by the Institute for Data Valorisation (IVADO) and the NSERC BIOS$^2$ CREATE program.
 
 
 
+# Supplementary material
+
+![Probability that a species is isolated in its food web according to the degree distribution of maximum entropy**. We derived degree distributions of maximum entropy given a range of values of $S$ and $L$, and plotted the probability that a species has a degree $k$ of 0 (log-scale color bar). Here species richness varies between 5 and 100 species, by increment of 5 species. For each level of species richness, the numbers of links correspond to all 20-quantiles of the interval between 0 and $S^2$. The black line marks the $S-1$ minimum numbers of links required to have no isolated species.](figures/heatmap_disconnected.png){#fig:heatmap}
+
+![figure legend](figures/kin_kout_difference.png){#fig:kin_kout_diff}
+
+![figure legend](figures/divergence_degree_sequence.png){#fig:diverge_degree_seq}
+
+![figure legend](figures/entropy_distribution.png){#fig:entropy_dist}
+
+![figure legend](figures/metrics_richness.png){#fig:metrics_richness}
+
+![figure legend](figures/difference_entropy.png){#fig:entropy_size}
 
 
 
