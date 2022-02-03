@@ -884,3 +884,4 @@ groupedboxplot(motifs_emp_maxent.variable,
                   yaxis="Proportion")
 
 savefig(joinpath("figures", "motifs_distribution.png"))
+
