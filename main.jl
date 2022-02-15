@@ -50,7 +50,8 @@ include(joinpath("code", "functions", "simulate_degrees.jl")) # gives a simulate
 
 ## Load scripts
 include(joinpath("code", "01_import_mangal_metadata.jl"))
-include(joinpath("code", "02_predict_networks.jl"))
-include(joinpath("code", "03_compute_measures.jl"))
-include(joinpath("code", "04_make_figures.jl"))
+include(joinpath("code", "02_clean_data.jl"))
+include(joinpath("code", "03_predict_networks.jl"))
+include(joinpath("code", "04_compute_measures.jl"))
+include(joinpath("code", "05_make_figures.jl"))
 
