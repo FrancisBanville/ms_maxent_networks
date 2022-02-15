@@ -15,7 +15,7 @@ end
 """
 swap_degreeN(N::UnipartiteNetwork)
     N: Unipartite directed simple network
-Returns a network with two swapped interactions (or the same network if couldn't find two interactions to be swapped)
+Returns a network with two swapped interactions (or the same network if couldn't find two interactions to be swapped) constrained by the joint degree sequence
 """
 function swap_degreeN(N::UnipartiteNetwork)
     A = Array(N.edges)
@@ -43,13 +43,33 @@ function swap_degreeN(N::UnipartiteNetwork)
 end
 
 """
-network_maxent(N::UnipartiteNetwork, nsteps::Int64)
+swap_interactions(N::UnipartiteNetwork)
     N: Unipartite directed simple network
+Returns a network with a swapped interaction 
+"""
+function swap_interactions(N::UnipartiteNetwork)
+    A = Array(N.edges)
+    # find all interactions in the network
+    iy = findall(A .== 1) # presences   
+    ny = findall(A .== 0) # absences
+    # choose one randomly
+    i1 = StatsBase.sample(iy, 1) 
+    n1 = StatsBase.sample(ny, 1)
+    # swap interactions
+    A[i1] .= false
+    A[n1] .= true
+    return UnipartiteNetwork(A)
+end
+
+"""
+network_maxent(N::UnipartiteNetwork, nsteps::Int64, nchains::Int64)
+    N: Unipartite directed simple network
+    model: MaxEnt model constrained by the joint degree sequence ("JDD") or     connectance ("Co")
     nsteps: Number of steps
     nchains: Number of chains
 Returns the adjacency matrix of maximum SVD-entropy constrained by the joint degree sequence of N using a simulating annealing algorithm 
 """
-function network_maxent(N::UnipartiteNetwork, nchains::Int64, nsteps::Int64)
+function network_maxent(N::UnipartiteNetwork, model::String, nchains::Int64, nsteps::Int64)
     # matrix generator object
     rmg = matrixrandomizer(N.edges)
     # initial vector for SVD-entropies and object for best matrices
@@ -68,7 +88,11 @@ function network_maxent(N::UnipartiteNetwork, nchains::Int64, nsteps::Int64)
         # simulating annealing algorithm
         for i in 2:nsteps
             # propose a new constrained random matrix and compute the difference in SVD-entropy 
-            A1 = swap_degreeN(A0)
+            if model == "jds"
+                A1 = swap_degreeN(A0)
+            elseif model == "co"
+                A1 = swap_interactions(A0)
+            end
             candidate = svd_entropy(A1)
             delta = candidate - best
             # accept if the difference is positive or with a probability p if it's negative
@@ -94,4 +118,3 @@ function network_maxent(N::UnipartiteNetwork, nchains::Int64, nsteps::Int64)
     Amax = (A = A[imax], entropies = entropies)
     return Amax
 end
-
