@@ -15,12 +15,17 @@ function MxSim(N::UnipartiteNetwork)
                         if in(AJS_N[j][1])(species(N)[i])
                               push!(spi, AJS_N[j][2])
                         end
-                   end
-            push!(max_AJS, maximum(spi))
+                  end
+                  if length(spi) > 0
+                        push!(max_AJS, maximum(spi)[1])
+                  end
             end
       catch
             return missing
       end
       return mean(max_AJS) # return average similarity index 
 end
+
+
+
 
