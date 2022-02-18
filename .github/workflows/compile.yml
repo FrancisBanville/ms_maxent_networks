@@ -45,6 +45,14 @@ jobs:
           cp references.json dist/
           cp .assets/logo.png dist/
           cp author_template.tsv dist/
+      - name: Input the first table from the files
+        run: |
+          TABLE=measures_all.md
+          perl -0777 -i -pe "s/\\\input{tables\\/$TABLE}/`cat tables\\/$TABLE`/g" manuscript.md
+      - name: Input the second table from the files
+        run: |
+          TABLE=measures_abund.md
+          perl -0777 -i -pe "s/\\\input{tables\\/$TABLE}/`cat tables\\/$TABLE`/g" manuscript.md
       - name: Build the website
         run: pandoc manuscript.md -o dist/index.html -F pandoc-crossref --citeproc --bibliography=references.json --metadata-file=metadata.json --metadata-file=affiliations.json --template=.assets/templates/index.html
       - name: Build the tex files

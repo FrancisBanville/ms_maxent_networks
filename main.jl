@@ -11,6 +11,7 @@ using DataFrames
 using DelimitedFiles
 using Glob
 using JLD 
+using Latexify
 
 # Solving systems of equations numerically 
 import Ipopt
@@ -55,3 +56,5 @@ include(joinpath("code", "03_predict_networks.jl"))
 include(joinpath("code", "04_compute_measures.jl"))
 include(joinpath("code", "05_make_figures.jl"))
 
+
+Pkg.add(Pkg.PackageSpec(;name="EcologicalNetworks", version="0.5.2"))
