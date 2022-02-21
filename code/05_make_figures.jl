@@ -10,36 +10,33 @@ fonts=font("Arial",7)
 ## Empirical data 
 N_all = load(joinpath("data", "proc", "N_all.jld"))["data"]
 N_abund = load(joinpath("data", "proc", "N_abund.jld"))["data"]
-A_abund = load(joinpath("data", "proc", "A_abund.jld"))["data"]
+
+## Simulated data
+N_ent_maxentjds_all = load(joinpath("data", "sim", "network_maxent", "N_maxentjds_all.jld"))["data"]
+N_maxentjds_all = [N_ent_maxentjds_all[i].A for i in 1:length(N_ent_maxentjds_all)]
 
 ## Degree distributions of maximum entropy 
 dd_maxent_all = load(joinpath("data", "sim", "degree_dist_maxent", "dd_maxent_all.jld"))["data"]
 jdd_maxent_all = load(joinpath("data", "sim", "degree_dist_maxent", "jdd_maxent_all.jld"))["data"]
 jds_maxent_all = load(joinpath("data", "sim", "degree_dist_maxent", "jds_maxent_all.jld"))["data"] 
 
-## Tables of network properties
-metrics = DataFrame(CSV.File(joinpath("results", "metrics.csv")))
-gmetrics_all = DataFrame(CSV.File(joinpath("results", "gmetrics_all.csv")))
-gmetrics_abund = DataFrame(CSV.File(joinpath("results", "gmetrics_abund.csv")))
-
-## Tables of differences in network properties
-metrics_diffco = DataFrame(CSV.File(joinpath("results", "metrics_diffco.csv")))
-metrics_diffjds = DataFrame(CSV.File(joinpath("results", "metrics_diffjds.csv")))
+## Table of network properties
+measures = DataFrame(CSV.File(joinpath("results", "measures.csv")))
 
 # subset networks
-metrics_emp = metrics[metrics.network .== "N_all",:]
-metrics_maxentco_all = metrics[metrics.network .== "N_maxentco_all",:]
-metrics_maxentjds_all = metrics[metrics.network .== "N_maxentjds_all",:]
-metrics_nullco_all = metrics[metrics.network .== "N_nullco_all",:]
-metrics_nulljds_all = metrics[metrics.network .== "N_nulljds_all",:]
+measures_all = measures[measures.network .== "N_all",:]
+measures_maxentco_all = measures[measures.network .== "N_maxentco_all",:]
+measures_maxentjds_all = measures[measures.network .== "N_maxentjds_all",:]
+measures_nullco_all = measures[measures.network .== "N_nullco_all",:]
+measures_nulljds_all = measures[measures.network .== "N_nulljds_all",:]
 
 
-metrics_abund = metrics[metrics.network .== "N_abund",:]
-metrics_maxentco_abund = metrics[metrics.network .== "N_maxentco_abund",:]
-metrics_maxentjds_abund = metrics[metrics.network .== "N_maxentjds_abund",:]
-metrics_nullco_abund = metrics[metrics.network .== "N_nullco_abund",:]
-metrics_nulljds_abund = metrics[metrics.network .== "N_nulljds_abund",:]
-metrics_neutral_abund = metrics[metrics.network .== "N_neutral_abund",:]
+measures_abund = measures[measures.network .== "N_abund",:]
+measures_maxentco_abund = measures[measures.network .== "N_maxentco_abund",:]
+measures_maxentjds_abund = measures[measures.network .== "N_maxentjds_abund",:]
+measures_nullco_abund = measures[measures.network .== "N_nullco_abund",:]
+measures_nulljds_abund = measures[measures.network .== "N_nulljds_abund",:]
+measures_neutral_abund = measures[measures.network .== "N_neutral_abund",:]
 
 
 ## Read counterfactuals of the flexible links model
@@ -51,11 +48,11 @@ predicted_links = load(joinpath("data", "sim", "predicted_links.jld"))["data"]
 ### Density of mean degree constraints for different richness ###
 
 # Different quantiles of species richness will be plotted
-S_emp = metrics_emp.S
+S_all = measures_all.S
 
-S015 = Int64(round(quantile(S_emp, 0.015))) # 1.5% lower quantile
-S500 = Int64(round(quantile(S_emp, 0.5))) # median
-S985 = Int64(round(quantile(S_emp, 0.985))) # 1.5% upper quantile
+S015 = Int64(round(quantile(S_all, 0.015))) # 1.5% lower quantile
+S500 = Int64(round(quantile(S_all, 0.5))) # median
+S985 = Int64(round(quantile(S_all, 0.985))) # 1.5% upper quantile
 
 function kavg_dist(S::Int64)
   # Returns the predicted distribution of mean degrees for a given level of species richness
@@ -119,7 +116,7 @@ plotB = plot(0:S500,
             alpha=0.7, 
             linewidth=2, 
             linestyle=:dot, 
-            label="$L015 links (97% PI)", # 97% percentile interval
+            label="$L015 links", # 97% percentile interval
             framestyle=:box, 
             grid=false,
             dpi=1000, 
@@ -136,39 +133,40 @@ plot!(0:S500,
       color=:black, 
       alpha=0.7, 
       linestyle=:dash, 
-      label="$L055 links (89% PI)") # 89% PI
+      label="$L055 links") # 89% PI
 plot!(0:S500,
       dd_maxent_Lquant[3], 
       color=:black, 
       alpha=0.7, 
       linestyle=:solid, 
-      label="$L165 links (67% PI)") # 67% PI
+      label="$L165 links") # 67% PI
+plot!(0:S500,
+      dd_maxent_Lquant[4], 
+      color=:darkblue, 
+      linewidth=4, 
+      label="$L500 links")
 plot!(0:S500,
       dd_maxent_Lquant[5], 
       color=:grey, 
       alpha=0.7,
       linestyle=:solid, 
-      label="$L835 links (67% PI)") # 67% PI
+      label="$L835 links") # 67% PI
 plot!(0:S500,
       dd_maxent_Lquant[6], 
       color=:grey, 
       alpha=0.7, 
       linestyle=:dash, 
-      label="$L945 links (89% PI)") # 89% PI
+      label="$L945 links") # 89% PI
 plot!(0:S500,
       dd_maxent_Lquant[7], 
       color=:grey, 
       alpha=0.7, 
       linestyle=:dot, 
-      label="$L985 links (97% PI)") # 97% PI
-plot!(0:S500,
-      dd_maxent_Lquant[4], 
-      color=:darkblue, 
-      linewidth=4, 
-      label="$L500 links (median)")
+      label="$L985 links") # 97% PI
 xaxis!(xlabel="Degree k", 
       xlims=(0,S500))
-yaxis!(ylabel="p(k)")
+yaxis!(ylabel="p(k)",
+      ylims=(0,0.23))
 
 plot(plotA, plotB,
     title = ["(a)" "(b)"],
@@ -246,7 +244,7 @@ kin_maxent = reduce(vcat,[jds_maxent_all[i].kin for i in 1:length(jds_maxent_all
 plotA = scatter(kout_emp, 
                 kin_emp, 
                 alpha=0.2, 
-                markersize=3, 
+                markersize=5, 
                 label="",
                 framestyle=:box, 
                 grid=false,
@@ -266,7 +264,7 @@ yaxis!(ylim=(-1, maximum(vcat(kin_emp, kin_maxent))), "Kin")
 plotB = scatter(kout_maxent, 
                 kin_maxent, 
                 alpha=0.2, 
-                markersize=3, 
+                markersize=5, 
                 label="",
                 framestyle=:box, 
                 grid=false,
@@ -292,8 +290,8 @@ k_emp = kout_emp .+ kin_emp
 k_maxent = kout_maxent .+ kin_maxent
 
 # get network id (to be used when getting species rank)
-N_id = reduce(vcat, [fill(i, metrics_emp.S[i]) for i in 1:length(N_all)])
-S_id = reduce(vcat, [fill(metrics_emp.S[i], metrics_emp.S[i]) for i in 1:length(N_all)])
+N_id = reduce(vcat, [fill(i, measures_all.S[i]) for i in 1:length(N_all)])
+S_id = reduce(vcat, [fill(measures_all.S[i], measures_all.S[i]) for i in 1:length(N_all)])
 
 # put in data frame
 k_emp_df = DataFrame(k_tot = k_emp,
@@ -323,11 +321,8 @@ function kin_kout_diff(k_emp_df::DataFrame, k_maxent_df::DataFrame, column_sort:
       end
 
       k_diff = reduce(vcat, k_diff)
-
-      # remove the largest network (for graphical reasons)
-      k_diff_nolarge = k_diff[S_id .!= maximum(S_id)]
       
-      return k_diff_nolarge
+      return k_diff
 end
 
 kout_diff_sortedby_ktot = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kout")
@@ -339,12 +334,10 @@ kin_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kin")
 kout_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kout")
 kin_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kin")
 
-S_id_nolarge = S_id[S_id .!= maximum(S_id)]
-
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by total degree)
 plotC = scatter(kout_diff_sortedby_ktot,
             kin_diff_sortedby_ktot,
-            markersize=S_id_nolarge ./ 10,
+            markersize=S_id ./ 10,
             alpha=0.2,
             framestyle=:box, 
             grid=false,
@@ -386,7 +379,7 @@ savefig(joinpath("figures","joint_degree_dist.png"))
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by out degree)
 plotA = scatter(kout_diff_sortedby_kout,
             kin_diff_sortedby_kout,
-            markersize=S_id_nolarge ./ 10,
+            markersize=S_id ./ 10,
             alpha=0.2,
             framestyle=:box, 
             grid=false,
@@ -417,7 +410,7 @@ plot!([0],
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by in degree)
 plotB = scatter(kout_diff_sortedby_kin,
             kin_diff_sortedby_kin,
-            markersize=S_id_nolarge ./ 10,
+            markersize=S_id ./ 10,
             alpha=0.2,
             framestyle=:box, 
             grid=false,
@@ -457,10 +450,10 @@ savefig(joinpath("figures", "kin_kout_difference.png"))
 ### Measures of empirical and maximum entropy food webs ###
 
 # Nestedness
-plotA = scatter(metrics_emp.rho, 
-                  metrics_maxentjds.rho,
+plotA = scatter(measures_all.rho, 
+                  measures_maxentjds_all.rho,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=5,
                   framestyle=:box, 
                   grid=false,
                   dpi=1000, 
@@ -478,10 +471,10 @@ plotA = scatter(metrics_emp.rho,
 plot!(LinRange(0.4, 0.9, 100), LinRange(0.4, 0.9, 100), lab="", color="grey", linestyle=:dot)
 
 # Maximum trophic level
-plotB = scatter(metrics_emp.maxtl, 
-                  metrics_maxentjds.maxtl,
+plotB = scatter(measures_all.maxtl, 
+                  measures_maxentjds_all.maxtl,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=5,
                   framestyle=:box, 
                   grid=false,
                   dpi=1000, 
@@ -498,10 +491,10 @@ plotB = scatter(metrics_emp.maxtl,
                   ylabel="Maximum trophic level (MaxEnt)")
 plot!(LinRange(2, 10, 100), LinRange(2, 10, 100), lab="", color="grey", linestyle=:dot)
 
-plotC = scatter(metrics_emp.diam,
-                  metrics_maxentjds.diam,
+plotC = scatter(measures_all.diam,
+                  measures_maxentjds_all.diam,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=5,
                   framestyle=:box, 
                   grid=false,
                   dpi=1000, 
@@ -518,10 +511,10 @@ plotC = scatter(metrics_emp.diam,
                   ylabel="Diameter (MaxEnt)")
 plot!(LinRange(1, 10, 100), LinRange(1, 10, 100), lab="", color="grey", linestyle=:dot)
 
-plotD = scatter(metrics_emp.entropy,
-                  metrics_maxentjds.entropy,
+plotD = scatter(measures_all.entropy,
+                  measures_maxentjds_all.entropy,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=5,
                   framestyle=:box, 
                   grid=false,
                   dpi=1000, 
@@ -542,22 +535,22 @@ plot(plotA, plotB, plotC, plotD,
      title = ["(a)" "(b)" "(c)" "(d)"],
      titleloc=:right, titlefont=fonts)
 
-savefig(joinpath("figures", "metrics_emp_maxent.png"))
+savefig(joinpath("figures", "measures_emp_maxent.png"))
 
 
 
-### Metrics as a function of species richness ###
+### Measures as a function of species richness ###
 
 a = [5,10,20,50,100,400] # specified x-ticks 
 
 # Nestedness and species richness
-plotA = scatter(metrics_emp.S,
-                  metrics_emp.rho,
+plotA = scatter(measures_all.S,
+                  measures_all.rho,
                   smooth=true,
                   linestyle=:dot, 
                   linealpha=1,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=5,
                   framestyle=:box, 
                   grid=false,
                   dpi=1000, 
@@ -573,29 +566,29 @@ plotA = scatter(metrics_emp.S,
                   label="Empirical",
                   xlabel="Species richness",
                   ylabel="Nestedness")
-scatter!(metrics_maxentjds.S, 
-            metrics_maxentjds.rho,
+scatter!(measures_maxentjds_all.S, 
+            measures_maxentjds_all.rho,
             alpha=0.3,
             label="MaxEnt", 
             smooth=true, 
-            markersize=3, 
+            markersize=5, 
             linestyle=:dot, 
             linealpha=1)
 xaxis!(:log, xticks=(a,a))
 
 # Maximum trophic level and species richness
 
-missing_tl = findall(ismissing, metrics_maxentjds.maxtl) # remove missing values
-metrics_maxent_maxtl = metrics_maxentjds.maxtl[Not(missing_tl),:] 
-metrics_maxent_S = metrics_maxentjds.S[Not(missing_tl),:]
+missing_tl = findall(ismissing, measures_maxentjds_all.maxtl) # remove missing values
+measures_maxentjds_maxtl = measures_maxentjds_all.maxtl[Not(missing_tl),:] 
+measures_maxentjds_S = measures_maxentjds_all.S[Not(missing_tl),:]
 
-plotB = scatter(metrics_emp.S,
-                  metrics_emp.maxtl,
+plotB = scatter(measures_all.S,
+                  measures_all.maxtl,
                   smooth=true,
                   linestyle=:dot, 
                   linealpha=1,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=5,
                   framestyle=:box, 
                   grid=false,
                   dpi=1000, 
@@ -606,29 +599,29 @@ plotB = scatter(metrics_emp.S,
                   ytickfont=fonts,
                   foreground_color_legend=nothing, 
                   background_color_legend=:white, 
-                  legend=:topright,
+                  legend=:topleft,
                   legendfont=fonts,
                   label="Empirical",
                   xlabel="Species richness",
                   ylabel="Maximum trophic level")
-scatter!(metrics_maxent_S, 
-            metrics_maxent_maxtl,
+scatter!(measures_maxentjds_S, 
+            measures_maxentjds_maxtl,
             alpha=0.3, 
             label="MaxEnt", 
             smooth=true, 
-            markersize=3, 
+            markersize=5, 
             linestyle=:dot, 
             linealpha=1)
 xaxis!(:log, xticks=(a,a))
 
 # Network diameter and species richness
-plotC = scatter(metrics_emp.S,
-                  metrics_emp.diam,
+plotC = scatter(measures_all.S,
+                  measures_all.diam,
                   smooth=true,
                   linestyle=:dot, 
                   linealpha=1,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=5,
                   framestyle=:box, 
                   grid=false,
                   dpi=1000, 
@@ -639,29 +632,29 @@ plotC = scatter(metrics_emp.S,
                   ytickfont=fonts,
                   foreground_color_legend=nothing, 
                   background_color_legend=:white, 
-                  legend=:topright,
+                  legend=:topleft,
                   legendfont=fonts,
                   label="Empirical",
                   xlabel="Species richness",
                   ylabel="Diameter")
-scatter!(metrics_maxentjds.S,
-            metrics_maxentjds.diam,
+scatter!(measures_maxentjds_all.S,
+            measures_maxentjds_all.diam,
             alpha=0.3, 
             label="MaxEnt", 
             smooth=true, 
-            markersize=3, 
+            markersize=5, 
             linestyle=:dot, 
             linealpha=1)
 xaxis!(:log, xticks=(a,a))
 
 # Entropy and species richness
-plotD = scatter(metrics_emp.S,      
-                  metrics_emp.entropy,
+plotD = scatter(measures_all.S,      
+                  measures_all.entropy,
                   smooth=true,
                   linestyle=:dot, 
                   linealpha=1,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=5,
                   framestyle=:box, 
                   grid=false,
                   dpi=1000, 
@@ -672,17 +665,17 @@ plotD = scatter(metrics_emp.S,
                   ytickfont=fonts,
                   foreground_color_legend=nothing, 
                   background_color_legend=:white, 
-                  legend=:topright,
+                  legend=:bottomleft,
                   legendfont=fonts,
                   label="Empirical",
                   xlabel="Species richness",
                   ylabel="SVD-entropy")
-scatter!(metrics_maxentjds.S,
-            metrics_maxentjds.entropy,
+scatter!(measures_maxentjds_all.S,
+            measures_maxentjds_all.entropy,
             alpha=0.3, 
             label="MaxEnt", 
             smooth=true, 
-            markersize=3, 
+            markersize=5, 
             linestyle=:dot, 
             linealpha=1)
 xaxis!(:log, xticks=(a,a))
@@ -691,22 +684,22 @@ plot(plotA, plotB, plotC, plotD,
      title = ["(a)" "(b)" "(c)" "(d)"],
      titleloc=:right, titlefont=fonts)
 
-savefig(joinpath("figures", "metrics_richness.png"))
+savefig(joinpath("figures", "measures_richness.png"))
 
 
 ### Plot nestedness as a function of maximum trophic level ###
 
-missing_tl = findall(ismissing, metrics_maxentjds.maxtl) # remove missing values
-metrics_maxent_maxtl = metrics_maxentjds.maxtl[Not(missing_tl),:] 
-metrics_maxent_rho = metrics_maxentjds.rho[Not(missing_tl),:]
+missing_tl = findall(ismissing, measures_maxentjds_all.maxtl) # remove missing values
+measures_maxentjds_maxtl = measures_maxentjds_all.maxtl[Not(missing_tl),:] 
+measures_maxentjds_rho = measures_maxentjds_all.rho[Not(missing_tl),:]
 
-scatter(metrics_emp.maxtl,
-            metrics_emp.rho,
+scatter(measures_all.maxtl,
+            measures_all.rho,
             smooth=true,
             linestyle=:dot, 
             linealpha=1,
             alpha=0.3,
-            markersize=3,
+            markersize=6,
             framestyle=:box, 
             grid=false,
             dpi=1000, 
@@ -722,12 +715,12 @@ scatter(metrics_emp.maxtl,
             label="Empirical",
             xlabel="Maximum trophic level",
             ylabel="Nestedness")
-scatter!(metrics_maxent_maxtl,
-            metrics_maxent_rho,
+scatter!(measures_maxentjds_maxtl,
+            measures_maxentjds_rho,
             alpha=0.3, 
             label="MaxEnt", 
             smooth=true, 
-            markersize=3, 
+            markersize=6, 
             linestyle=:dot, 
             linealpha=1)
       
@@ -736,11 +729,25 @@ savefig(joinpath("figures", "maxtrophiclevel_nestedness.png"))
 
 ### Divergence between degree sequences (MaxEnt vs empirical networks) ###
 
-# Divergence in degree sequence and species richness
-plotA = scatter(metrics_emp.S,
-                  metrics_diffjds.MSD_ds,
+## Divergence between the degree sequence of MaxEnt and empirical networks (MSD_ds)
+
+# sorted degree sequence of empirical networks 
+k_emp_all = joint_degree_seq.(N_all)
+
+k_emp_all_sorted = [sort(k_emp_all[i].kin .+ k_emp_all[i].kout, rev=true) for i in 1:length(k_emp_all)]
+
+# sorted degree sequence of MaxEnt networks
+jds_maxent_all = load(joinpath("data", "sim", "degree_dist_maxent", "jds_maxent_all.jld"))["data"]
+
+k_maxent_all_sorted = [sort(jds_maxent_all[i].kin .+ jds_maxent_all[i].kout, rev=true) for i in 1:length(jds_maxent_all)]
+
+# mean squared deviation between empirical and MaxEnt degree sequence 
+MSD_ds_maxent = [mean(k_emp_all_sorted[i] .- k_maxent_all_sorted[i]).^2 for i in 1:length(k_maxent_all_sorted)]
+
+plotA = scatter(measures_all.S,
+                  MSD_ds_maxent,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=6,
                   framestyle=:box, 
                   reg=true,
                   grid=false,
@@ -761,10 +768,10 @@ xaxis!(:log, xticks=(a,a))
 
 
 # Divergence in degree sequence and SVD-entropy
-plotB = scatter(metrics_emp.entropy,
-                  metrics_diffjds.MSD_ds,
+plotB = scatter(measures_all.entropy,
+                  MSD_ds_maxent,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=6,
                   framestyle=:box, 
                   reg=true,
                   grid=false,
@@ -794,10 +801,16 @@ savefig(joinpath("figures", "divergence_degree_sequence.png"))
 ### Difference in SVD-entropy  ###
 
 # Difference in SVD-entropy and species richness
-plotA = scatter(metrics_emp.S,
-                  metrics_diffjds.entropy_diff,
+
+entropy_all = svd_entropy.(N_all)
+entropy_maxentjds_all = svd_entropy.(N_maxentjds_all)
+
+entropy_diffjds = entropy_maxentjds_all .- entropy_all
+
+plotA = scatter(measures_all.S,
+                  entropy_diffjds,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=6,
                   framestyle=:box, 
                   reg=true,
                   grid=false,
@@ -817,10 +830,10 @@ xaxis!(:log, xticks=(a,a))
 
 b = [10,100,1000,10000] # specified x-ticks 
 # Difference in SVD-entropy and number of links
-plotB = scatter(metrics_emp.L,
-                  metrics_diffjds.entropy_diff,
+plotB = scatter(measures_all.L,
+                  entropy_diffjds,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=6,
                   framestyle=:box, 
                   reg=true,
                   grid=false,
@@ -839,10 +852,10 @@ plotB = scatter(metrics_emp.L,
 xaxis!(:log, xticks=(b,b))
 
 # Difference in SVD-entropy and connectance
-plotC = scatter(metrics_emp.C,
-                  metrics_diffjds.entropy_diff,
+plotC = scatter(measures_all.C,
+                  entropy_diffjds,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=6,
                   framestyle=:box, 
                   reg=true,
                   grid=false,
@@ -871,7 +884,7 @@ savefig(joinpath("figures", "difference_entropy.png"))
 ### Distribution of entropy and z-scores of empirical food webs ###
 
 # Distribution of entropies
-plotA = density(metrics_emp.entropy,
+plotA = density(measures_all.entropy,
                   linesize=3,
                   framestyle=:box, 
                   grid=false,
@@ -888,22 +901,22 @@ plotA = density(metrics_emp.entropy,
                   label="Empirical",
                   xlabel="SVD-entropy",
                   ylabel="Density",
-                  ylim=(0,20.5))
-density!(metrics_maxentjds.entropy,
+                  ylim=(0,21))
+density!(measures_maxentjds_all.entropy,
             linesize=3,
             label="MaxEnt")
 
 # compute z-scores
-entropy_maxent_avg = mean(metrics_maxentjds.entropy)
-entropy_maxent_std = std(metrics_maxentjds.entropy)
+entropy_maxentjds_avg = mean(measures_maxentjds_all.entropy)
+entropy_maxentjds_std = std(measures_maxentjds_all.entropy)
 
-entropy_emp_zscores = (metrics_emp.entropy .- entropy_maxent_avg) ./ entropy_maxent_std
+entropy_zscores = (measures_all.entropy .- entropy_maxentjds_avg) ./ entropy_maxentjds_std
 
-entropy_emp_zscores_500 = quantile(entropy_emp_zscores, 0.500)
-entropy_emp_zscores_015 = quantile(entropy_emp_zscores, 0.015)
-entropy_emp_zscores_985 = quantile(entropy_emp_zscores, 0.985)
+entropy_zscores_500 = quantile(entropy_zscores, 0.500)
+entropy_zscores_015 = quantile(entropy_zscores, 0.015)
+entropy_zscores_985 = quantile(entropy_zscores, 0.985)
 
-plotB = density(entropy_emp_zscores, 
+plotB = density(entropy_zscores, 
                   color=:grey,
                   linesize=3,
                   framestyle=:box, 
@@ -921,7 +934,7 @@ plotB = density(entropy_emp_zscores,
                   xlabel="z-score of SVD-entropy",
                   ylabel="Density",
                   ylim=(0,0.27))
-plot!([entropy_emp_zscores_500], 
+plot!([entropy_zscores_500], 
             seriestype=:vline, 
             color=:grey, 
             ls=:dash, 
@@ -934,12 +947,25 @@ plot(plotA, plotB,
 savefig(joinpath("figures", "entropy_distribution.png"))
 
 
-### Difference in nestedness and SVD-entropy ###
+### Jaccard dissimilarity and difference in nestedness and SVD-entropy ###
 
-plotA = scatter(metrics_diffjds.entropy_diff,
-            metrics_diffjds.rho_diff,
+## Difference in nestedness (rho_diff)
+rho_diffjds = measures_maxentjds_all.rho .- measures_all.rho
+
+
+## Jaccard distance (jaccard)
+
+A_all = [vec(Matrix(N_all[i].edges)) for i in 1:length(N_all)]
+
+A_maxentjds_all = [vec(Matrix(N_maxentjds_all[i].edges)) for i in 1:length(N_maxentjds_all)]
+
+jaccard_maxentjds = jaccard.(A_all, A_maxentjds_all)
+
+
+plotA = scatter(entropy_diffjds,
+            rho_diffjds,
             alpha=0.3,
-            markersize=3,
+            markersize=6,
             smooth=true,
             framestyle=:box, 
             grid=false,
@@ -957,10 +983,10 @@ plotA = scatter(metrics_diffjds.entropy_diff,
             xlabel="\\Delta SVD-entropy",
             ylabel="\\Delta nestedness")
 
-plotB = scatter(metrics_diffjds.entropy_diff,
-                  metrics_diffjds.jaccard,
+plotB = scatter(entropy_diffjds,
+                  jaccard_maxentjds,
                   alpha=0.3,
-                  markersize=3,
+                  markersize=6,
                   smooth=true,
                   framestyle=:box, 
                   grid=false,
@@ -991,39 +1017,39 @@ savefig(joinpath("figures", "difference_entropy_jaccard.png"))
 motifs = keys(unipartitemotifs())
 
 # select proportion of each motifs in empirical networks and tidy data frame
-motifs_emp = select(metrics_emp, vcat([motifs[i] for i in 1:5]))
-motifs_emp = DataFrames.stack(motifs_emp)
-motifs_emp = dropmissing(motifs_emp)
+motifs_all = select(measures_all, vcat([motifs[i] for i in 1:5]))
+motifs_all = DataFrames.stack(motifs_all)
+motifs_all = dropmissing(motifs_all)
 
 # select proportion of each motifs in MaxEnt networks and tidy data frame
-motifs_maxentjds = select(metrics_maxentjds, vcat([motifs[i] for i in 1:5]))
-motifs_maxentjds = DataFrames.stack(motifs_maxentjds)
-motifs_maxentjds = dropmissing(motifs_maxentjds)
+motifs_maxentjds_all = select(measures_maxentjds_all, vcat([motifs[i] for i in 1:5]))
+motifs_maxentjds_all = DataFrames.stack(motifs_maxentjds_all)
+motifs_maxentjds_all = dropmissing(motifs_maxentjds_all)
 
-motifs_maxentco = select(metrics_maxentco, vcat([motifs[i] for i in 1:5]))
-motifs_maxentco = DataFrames.stack(motifs_maxentco)
-motifs_maxentco = dropmissing(motifs_maxentco)
+motifs_maxentco_all = select(measures_maxentco_all, vcat([motifs[i] for i in 1:5]))
+motifs_maxentco_all = DataFrames.stack(motifs_maxentco_all)
+motifs_maxentco_all = dropmissing(motifs_maxentco_all)
 
-motifs_nulljds = select(metrics_nulljds_all, vcat([motifs[i] for i in 1:5]))
-motifs_nulljds = DataFrames.stack(motifs_nulljds)
-motifs_nulljds = dropmissing(motifs_nulljds)
+motifs_nulljds_all = select(measures_nulljds_all, vcat([motifs[i] for i in 1:5]))
+motifs_nulljds_all = DataFrames.stack(motifs_nulljds_all)
+motifs_nulljds_all = dropmissing(motifs_nulljds_all)
 
-motifs_nullco = select(metrics_nullco_all, vcat([motifs[i] for i in 1:5]))
-motifs_nullco = DataFrames.stack(motifs_nullco)
-motifs_nullco = dropmissing(motifs_nullco)
+motifs_nullco_all = select(measures_nullco_all, vcat([motifs[i] for i in 1:5]))
+motifs_nullco_all = DataFrames.stack(motifs_nullco_all)
+motifs_nullco_all = dropmissing(motifs_nullco_all)
 
 # join both datasets and label them
-groups = vcat(fill("Empirical", nrow(motifs_emp)),
-              fill("MaxEnt-co", nrow(motifs_maxentco)),
-              fill("MaxEnt-jds", nrow(motifs_maxentjds)),
-              fill("Null 1", nrow(motifs_nullco)),
-              fill("Null 2", nrow(motifs_nulljds)))
+groups = vcat(fill("1-Empirical", nrow(motifs_all)),
+              fill("2-Null 1", nrow(motifs_nullco_all)),
+              fill("3-MaxEnt-co", nrow(motifs_maxentco_all)),
+              fill("4-Null 2", nrow(motifs_nulljds_all)),
+              fill("5-MaxEnt-jds", nrow(motifs_maxentjds_all)))
 
-motifs_emp_maxent_neutral = [motifs_emp; 
-                              motifs_maxentco; 
-                              motifs_maxentjds; 
-                              motifs_nullco;
-                              motifs_nulljds]
+motifs_emp_maxent_neutral = [motifs_all; 
+                              motifs_nullco_all;
+                              motifs_maxentco_all; 
+                              motifs_nulljds_all;
+                              motifs_maxentjds_all]
 insertcols!(motifs_emp_maxent_neutral, :group => groups)
 
 # motif distribution
@@ -1042,9 +1068,15 @@ groupedboxplot(motifs_emp_maxent_neutral.variable,
                   xtickfont=fonts, 
                   ytickfont=fonts,
                   legendfont=fonts,
+                  legendposition=:outertopright,
                   foreground_color_legend=nothing, 
                   background_color_legend=:white, 
                   xminorgrid=false,
+                  label=hcat("Empirical", 
+                        "Null 1",
+                        "MaxEnt-co",
+                        "Null 2",
+                        "MaxEnt-jds"),
                   ylims=(0,1),
                   xaxis="Motifs", 
                   yaxis="Proportion")
@@ -1055,10 +1087,12 @@ savefig(joinpath("figures", "motifs_distribution.png"))
 
 #### Motifs S1 vs S2 ####
 
-plotA = scatter(metrics_emp.S1,
-                  metrics_emp.S2,
-                  alpha=0.3,
-                  markersize=3,
+plotA = scatter(measures_all.S1,
+                  measures_all.S2,
+                  alpha=0.2,
+                  markersize=4,
+                  linealpha=0.9,
+                  linewidth=4,
                   smooth=true,
                   framestyle=:box, 
                   grid=false,
@@ -1078,47 +1112,50 @@ plotA = scatter(metrics_emp.S1,
                   xlims=(0,1),
                   ylims=(0,1))
 
-scatter!(metrics_maxentco.S1,
-                  metrics_maxentco.S2,
-                  alpha=0.3, 
-                  label="MaxEnt-co", 
-                  smooth=true, 
-                  markersize=3, 
-                  linestyle=:dot, 
-                  linealpha=1)
-                  
-scatter!(metrics_maxentjds.S1,
-                  metrics_maxentjds.S2,
-                  alpha=0.3, 
-                  label="MaxEnt-jds", 
-                  smooth=true, 
-                  markersize=3, 
-                  linestyle=:dot, 
-                  linealpha=1)
-
-scatter!(metrics_nullco_all.S1,
-                  metrics_nullco_all.S2,
-                  alpha=0.3, 
+scatter!(measures_nullco_all.S1,
+                  measures_nullco_all.S2,
+                  alpha=0.2, 
                   label="Null 1", 
                   smooth=true, 
-                  markersize=3, 
-                  linestyle=:dot, 
-                  linealpha=1)
+                  markersize=4, 
+                  linealpha=0.9,
+                  linewidth=4)
+
+scatter!(measures_maxentco_all.S1,
+                  measures_maxentco_all.S2,
+                  alpha=0.2, 
+                  label="MaxEnt-co", 
+                  smooth=true, 
+                  markersize=4, 
+                  linealpha=0.9,
+                  linewidth=4)
                   
-scatter!(metrics_nulljds_all.S1,
-                  metrics_nulljds_all.S2,
-                  alpha=0.3, 
+scatter!(measures_nulljds_all.S1,
+                  measures_nulljds_all.S2,
+                  alpha=0.2, 
                   label="Null 2", 
                   smooth=true, 
-                  markersize=3, 
-                  linestyle=:dot, 
-                  linealpha=1)
+                  markersize=4, 
+                  linealpha=0.9,
+                  linewidth=4)
+
+scatter!(measures_maxentjds_all.S1,
+                  measures_maxentjds_all.S2,
+                  alpha=0.2, 
+                  label="MaxEnt-jds", 
+                  smooth=true, 
+                  markersize=4, 
+                  linealpha=0.9,
+                  linewidth=4)
+                  
 
               
-plotB = scatter(metrics_emp.S4,
-                  metrics_emp.S5,
-                  alpha=0.3,
-                  markersize=3,
+plotB = scatter(measures_all.S4,
+                  measures_all.S5,
+                  alpha=0.2,
+                  markersize=4,
+                  linealpha=0.9,
+                  linewidth=4,
                   smooth=true,
                   framestyle=:box, 
                   grid=false,
@@ -1138,41 +1175,42 @@ plotB = scatter(metrics_emp.S4,
                   xlims=(0,1),
                   ylims=(0,1))
 
-scatter!(metrics_maxentco.S4, 
-            metrics_maxentco.S5,
-            alpha=0.3, 
-            label="MaxEnt-co", 
-            smooth=true, 
-            markersize=3, 
-            linestyle=:dot, 
-            linealpha=1)
-
-scatter!(metrics_maxentjds.S4,
-            metrics_maxentjds.S5,
-            alpha=0.3, 
-            label="MaxEnt-jds", 
-            smooth=true, 
-            markersize=3, 
-            linestyle=:dot, 
-            linealpha=1)
-
-scatter!(metrics_nullco_all.S4,
-            metrics_nullco_all.S5,
-            alpha=0.3, 
+scatter!(measures_nullco_all.S4,
+            measures_nullco_all.S5,
+            alpha=0.2, 
             label="Null 1", 
             smooth=true, 
-            markersize=3, 
-            linestyle=:dot, 
-            linealpha=1)
+            markersize=4, 
+            linealpha=0.9,
+            linewidth=4)
 
-scatter!(metrics_nulljds_all.S4,
-            metrics_nulljds_all.S5,
-            alpha=0.3, 
+scatter!(measures_maxentco_all.S4, 
+            measures_maxentco_all.S5,
+            alpha=0.2, 
+            label="MaxEnt-co", 
+            smooth=true, 
+            markersize=4, 
+            linealpha=0.9,
+            linewidth=4)
+
+scatter!(measures_nulljds_all.S4,
+            measures_nulljds_all.S5,
+            alpha=0.2, 
             label="Null 2", 
             smooth=true, 
-            markersize=3, 
-            linestyle=:dot, 
-            linealpha=1)
+            markersize=4, 
+            linealpha=0.9,
+            linewidth=4)
+
+scatter!(measures_maxentjds_all.S4,
+            measures_maxentjds_all.S5,
+            alpha=0.2, 
+            label="MaxEnt-jds", 
+            smooth=true, 
+            markersize=4, 
+            linealpha=0.9,
+            linewidth=4)
+
 
 plot(plotA, plotB,
      title = ["(a)" "(b)"],
