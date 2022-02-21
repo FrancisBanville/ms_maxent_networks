@@ -208,7 +208,9 @@ heatmap(Ss, qs, log.(p_disconnected),
         dpi=1000, 
         size=(800,500), 
         margin=5Plots.mm, 
-        guidefont=fonts, 
+        guidefont=fonts,
+        colorbar_titlefontsize=7,
+        colorbar_titlefontfamily="Arial",
         xtickfont=fonts, 
         ytickfont=fonts)
 # add the minimum number of links S-1 (quantile) on the plot 
