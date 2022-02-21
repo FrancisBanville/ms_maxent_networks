@@ -197,7 +197,6 @@ gmeasures_abund = combine(gmeasures_abund, valuecols(gmeasures_abund) .=> avg,
 CSV.write(joinpath("results", "gmeasures_abund.csv"), gmeasures_abund)
 
 
-
 #### Standardized mean difference between models and empirical measures 
 
 # all networks 
@@ -222,7 +221,7 @@ gmeasures_models_all = gmeasures_all_subset[Not(gmeasures_all.network .== "N_all
 gmeasures_diff_all = (gmeasures_models_all .- gmeasures_N_all) ./ gmeasures_N_all
 
 # add model names and reorder rows 
-insertcols!(gmeasures_diff_all, 1, :model => vcat("MaxEnt-co", "MaxEnt-jds", "null 1", "null 2"))
+insertcols!(gmeasures_diff_all, 1, :model => vcat("MaxEnt 1", "MaxEnt 2", "null 1", "null 2"))
 
 gmeasures_diff_all = gmeasures_diff_all[vcat(3,1,4,2),:]
 
@@ -258,7 +257,7 @@ gmeasures_models_abund = gmeasures_abund_subset[Not(gmeasures_abund.network .== 
 gmeasures_diff_abund = (gmeasures_models_abund .- gmeasures_N_abund) ./ gmeasures_N_abund
 
 # add model names and reorder rows 
-insertcols!(gmeasures_diff_abund, 1, :model => vcat("MaxEnt-co", "MaxEnt-jds", "null 1", "null 2", "neutral"))
+insertcols!(gmeasures_diff_abund, 1, :model => vcat("MaxEnt 1", "MaxEnt 2", "null 1", "null 2", "neutral"))
 
 gmeasures_diff_abund = gmeasures_diff_abund[vcat(5,3,1,4,2),:]
 
@@ -270,4 +269,3 @@ table_abund_path = joinpath("tables", "measures_abund.md")
 open(table_abund_path, "w") do io
     print(io, table_abund)
 end
-
