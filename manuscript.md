@@ -54,7 +54,7 @@ where $k_{in}$ and $k_{out}$ are the in and out-degrees, respectively. The type 
 
 We also used a neutral model of relative abundances, in which the probability of interaction is given by
 
-$$p_{i \rightarrow j} \propto \frac{n_i}{N} \times \frac{n_j}{N},$${#eq:type2null}
+$$p_{i \rightarrow j} \propto \frac{n_i}{N} \times \frac{n_j}{N},$${#eq:neutralmodel}
 
 where $n_i$ and $n_j$ are the abundances (or biomass) of both species, and $N$ is the total abundance (or biomass) of all species in the network. We predicted neutral abundance matrices for all empirical networks in our dataset with abundance data (n = 19).
 
