@@ -1,5 +1,5 @@
 {
-  "title": "First Estimates of Food-Web Structure Derived from Species Richness",
+  "title": "Maximum entropy modelling of food-web structure",
   "license": "CC-BY",
   "language": "en",
   "creators": [
@@ -36,10 +36,12 @@
       "orcid": "0000-0002-0735-5184"
     }
   ],
-  "description": "",
+  "description": "The principle of maximum entropy is a rigorous mathematical method of finding constrained probability distributions that has been proven useful in many ecological modelling problems. However, despite its broad application in graph and network theory, it has seldom been used to model ecological networks. Here we show how the (joint) degree distribution of maximum entropy can be directly derived using the number of species and the number of links in terrestrial and aquatic food webs. We also present a heuristic and flexible approach of finding the network of maximum entropy based on simulating annealing and SVD-entropy. We built two of these network models using constraints given by the connectance and the joint degree sequence, respectively. All maximum entropy models were compared against open access food-web data and null and neutral models commonly used in network ecology. We found that the maximum entropy network model constrained by the joint degree sequence was a good predictor of food-web structure, including nestedness and motifs distribution. Overall, our results suggest that many properties of ecological networks are driven by maximum entropy stochastic processes.",
   "keywords": [
+    "ecological modelling",
+    "ecological networks",
     "food webs",
     "maximum entropy",
-    "ecological modeling"
+    "null models"
   ]
 }
