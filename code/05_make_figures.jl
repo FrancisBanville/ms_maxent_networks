@@ -235,7 +235,6 @@ savefig(joinpath("figures","heatmap_disconnected.png"))
 ## get in and out degrees for all networks (empirical and maxent)
 
 # empirical data
-
 kout_emp = reduce(vcat, collect.(values.(degree.(N_all, dims=1))))
 kin_emp = reduce(vcat, collect.(values.(degree.(N_all, dims=2))))
 
@@ -246,57 +245,6 @@ kin_emp = reduce(vcat, collect.(values.(degree.(N_all, dims=2))))
 
 kout_maxent = reduce(vcat,[jds_maxent_all[i].kout for i in 1:length(jds_maxent_all)])
 kin_maxent = reduce(vcat,[jds_maxent_all[i].kin for i in 1:length(jds_maxent_all)])
-
-
-# plot the association between in and out degrees for empirical and simulated data
-plotA = scatter(kout_emp, 
-                kin_emp, 
-                alpha=0.2, 
-                markersize=5, 
-                label="",
-                framestyle=:box, 
-                grid=false,
-                minorgrid=false,
-                dpi=1000, 
-                size=(800,500), 
-                aspect_ratio=:equal,
-                margin=5Plots.mm, 
-                guidefont=fonts, 
-                xtickfont=fonts, 
-                ytickfont=fonts,
-                foreground_color_legend=nothing, 
-                background_color_legend=:white,
-                legendfont=fonts,
-                legendfontpointsize=7,
-                legendfontfamily="Arial")
-xaxis!(xlim=(-1, maximum(vcat(kout_emp, kout_maxent))), "Kout")
-yaxis!(ylim=(-1, maximum(vcat(kin_emp, kin_maxent))), "Kin")
-                
-plotB = scatter(kout_maxent, 
-                kin_maxent, 
-                alpha=0.2, 
-                markersize=5, 
-                label="",
-                framestyle=:box, 
-                grid=false,
-                minorgrid=false,
-                dpi=1000, 
-                size=(800,500), 
-                aspect_ratio=:equal,
-                margin=5Plots.mm, 
-                guidefont=fonts, 
-                xtickfont=fonts, 
-                ytickfont=fonts,
-                foreground_color_legend=nothing, 
-                background_color_legend=:white,
-                legendfont=fonts,
-                legendfontpointsize=7,
-                legendfontfamily="Arial")
-xaxis!(xlim=(-1, maximum(vcat(kout_emp, kout_maxent))), "Kout")
-yaxis!(ylim=(-1, maximum(vcat(kin_emp, kin_maxent))), "Kin")
-
-
-### Difference of in and out degrees ###
 
 # get degree sequence of empirical and MaxEnt networks
 # species' out and in degree sequence will be sorted using their total degree
@@ -311,11 +259,65 @@ S_id = reduce(vcat, [fill(measures_all.S[i], measures_all.S[i]) for i in 1:lengt
 k_emp_df = DataFrame(k_tot = k_emp,
                         kout = kout_emp,
                         kin = kin_emp,
+                        kout_rel = kout_emp ./ S_id,
+                        kin_rel = kin_emp ./ S_id,
                         N_id = N_id)
 k_maxent_df = DataFrame(k_tot = k_maxent,
                         kout = kout_maxent,
                         kin = kin_maxent,
+                        kout_rel = kout_maxent ./ S_id,
+                        kin_rel = kin_maxent ./ S_id,
                         N_id = N_id)
+
+# plot the association between in and out degrees for empirical and simulated data
+plotA = scatter(k_emp_df.kout_rel, 
+                k_emp_df.kin_rel, 
+                alpha=0.2, 
+                markersize=5, 
+                label="",
+                framestyle=:box, 
+                grid=false,
+                minorgrid=false,
+                dpi=1000, 
+                size=(800,500), 
+                aspect_ratio=:equal,
+                margin=5Plots.mm, 
+                guidefont=fonts, 
+                xtickfont=fonts, 
+                ytickfont=fonts,
+                foreground_color_legend=nothing, 
+                background_color_legend=:white,
+                legendfont=fonts,
+                legendfontpointsize=7,
+                legendfontfamily="Arial")
+xaxis!(xlim=(0, 1), "relative Kout")
+yaxis!(ylim=(0, 1), "relative Kin")
+                
+plotB = scatter(k_maxent_df.kout_rel, 
+                k_maxent_df.kin_rel, 
+                alpha=0.2, 
+                markersize=5, 
+                label="",
+                framestyle=:box, 
+                grid=false,
+                minorgrid=false,
+                dpi=1000, 
+                size=(800,500), 
+                aspect_ratio=:equal,
+                margin=5Plots.mm, 
+                guidefont=fonts, 
+                xtickfont=fonts, 
+                ytickfont=fonts,
+                foreground_color_legend=nothing, 
+                background_color_legend=:white,
+                legendfont=fonts,
+                legendfontpointsize=7,
+                legendfontfamily="Arial")
+xaxis!(xlim=(0, 1), "relative Kout")
+yaxis!(ylim=(0, 1), "relative Kin")
+
+
+### Difference of in and out degrees ###
 
 # get the difference in out and in degree of all species in all networks (except the largest) using different sortings
 function kin_kout_diff(k_emp_df::DataFrame, k_maxent_df::DataFrame, column_sort::String, output::String) 
@@ -339,20 +341,21 @@ function kin_kout_diff(k_emp_df::DataFrame, k_maxent_df::DataFrame, column_sort:
       return k_diff
 end
 
-kout_diff_sortedby_ktot = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kout")
-kin_diff_sortedby_ktot = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kin")
+kout_diff_sortedby_ktot = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kout_rel")
+kin_diff_sortedby_ktot = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kin_rel")
 
-kout_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kout")
-kin_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kin")
+kout_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kout_rel")
+kin_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kin_rel")
 
-kout_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kout")
-kin_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kin")
+kout_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kout_rel")
+kin_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kin_rel")
 
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by total degree)
 plotC = scatter(kout_diff_sortedby_ktot,
             kin_diff_sortedby_ktot,
-            markersize=S_id ./ 10,
+            markersize=5,
             alpha=0.2,
+            aspect_ratio=:equal,
             framestyle=:box, 
             grid=false,
             minorgrid=false,
@@ -368,9 +371,10 @@ plotC = scatter(kout_diff_sortedby_ktot,
             legendfontpointsize=7,
             legendfontfamily="Arial",
             legend=:topleft,
-            label="",
-            xlabel="\\Delta Kout",
-            ylabel="\\Delta Kin")
+            label="")
+xaxis!(xlim=(-1, 1), "\\Delta relative Kout")
+yaxis!(ylim=(-1, 1), "\\Delta relative Kin")
+            
 plot!([0], 
       seriestype=:vline, 
       linewidth=0.3,
@@ -396,8 +400,9 @@ savefig(joinpath("figures","joint_degree_dist.png"))
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by out degree)
 plotA = scatter(kout_diff_sortedby_kout,
             kin_diff_sortedby_kout,
-            markersize=S_id ./ 10,
+            markersize=5,
             alpha=0.2,
+            aspect_ratio=:equal,
             framestyle=:box, 
             grid=false,
             minorgrid=false,
@@ -413,9 +418,10 @@ plotA = scatter(kout_diff_sortedby_kout,
             legendfontpointsize=7,
             legendfontfamily="Arial",
             legend=:topleft,
-            label="",
-            xlabel="\\Delta Kout",
-            ylabel="\\Delta Kin")
+            label="")
+xaxis!(xlim=(-1, 1), "\\Delta relative Kout")
+yaxis!(ylim=(-1, 1), "\\Delta relative Kin")
+            
 plot!([0], 
       seriestype=:vline, 
       linewidth=0.3,
@@ -430,8 +436,9 @@ plot!([0],
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by in degree)
 plotB = scatter(kout_diff_sortedby_kin,
             kin_diff_sortedby_kin,
-            markersize=S_id ./ 10,
+            markersize=5,
             alpha=0.2,
+            aspect_ratio=:equal,
             framestyle=:box, 
             grid=false,
             minorgrid=false,
@@ -447,9 +454,10 @@ plotB = scatter(kout_diff_sortedby_kin,
             legendfontpointsize=7,
             legendfontfamily="Arial",
             legend=:topleft,
-            label="",
-            xlabel="\\Delta Kout",
-            ylabel="\\Delta Kin")
+            label="")
+xaxis!(xlim=(-1, 1), "\\Delta relative Kout")
+yaxis!(ylim=(-1, 1), "\\Delta relative Kin")
+
 plot!([0], 
       seriestype=:vline, 
       linewidth=0.3,
