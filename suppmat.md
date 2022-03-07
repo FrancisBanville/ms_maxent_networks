@@ -5,6 +5,7 @@ fontsize: 12pt
 output: pdf_document
 header-includes:
         - \usepackage{times}
+        - \renewcommand{\thefigure}{S\arabic{figure}}
 ---
 
 # Supplementary materials 
