@@ -59,6 +59,9 @@ jobs:
         run: |
           pandoc manuscript.md -s -o dist/draft.tex -F pandoc-crossref --citeproc --bibliography=references.json --metadata-file=metadata.json --metadata-file=affiliations.json --template=.assets/templates/draft.tex
           pandoc manuscript.md -s -o dist/preprint.tex -F pandoc-crossref --citeproc --bibliography=references.json --metadata-file=metadata.json --metadata-file=affiliations.json --template=.assets/templates/preprint.tex
+      - name: Build supplementary materials 
+        run: |
+         pandoc suppmat.md -s -o dist/suppmat.tex 
       - name: Save artifacts
         if: always()
         uses: actions/upload-artifact@master
@@ -72,7 +75,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        pdf-version: [preprint, draft]
+        pdf-version: [preprint, draft, suppmat]
     steps:
       - uses: actions/checkout@v2
       - name: Download dist folder
