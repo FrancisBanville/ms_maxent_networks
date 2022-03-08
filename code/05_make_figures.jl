@@ -477,6 +477,102 @@ plot(plotA, plotB,
 savefig(joinpath("figures", "kin_kout_difference.png"))
  
  
+### KL divergence between in and out degree distributions ###
+
+## get in and out degree sequences
+# maximum entropy joint degree sequence
+kin_maxent_all = [jds_maxent_all[i].kin for i in 1:length(jds_maxent_all)]
+kout_maxent_all = [jds_maxent_all[i].kout for i in 1:length(jds_maxent_all)]
+
+# empirical joint degree sequence
+jds_all = joint_degree_seq.(N_all)
+kin_all = [jds_all[i].kin .+ 1 for i in 1:length(jds_all)]
+kout_all = [jds_all[i].kout .+ 1 for i in 1:length(jds_all)]
+
+## get in and out degree distributions from in and out degree sequences
+function prop_k(ks::Vector{Int64}) # ks: in or out degree sequence
+      # number of species
+      S = length(ks)
+      # count the number of species having a in or out degree of k
+      ks_count = zeros(S + 1)
+      
+      for k in 0:S
+            ks_count[k+1] = sum(ks .== k) .+ 1 # add one for calculation of K-L divergence
+      end
+
+      return ks_count ./ S # in or out degree distribution
+end
+
+# maximum entropy in and out degree distributions
+kin_dist_maxent_all = prop_k.(kin_maxent_all)
+kout_dist_maxent_all = prop_k.(kout_maxent_all)
+
+# empirical in and out degree distributions
+kin_dist_all = prop_k.(kin_all)
+kout_dist_all = prop_k.(kout_all)
+
+## compute KL divergence between in and out degree distributions
+# maximum entropy in and out degree distributions
+kl_diverg_maxent_all = kl_divergence.(kin_dist_maxent_all, kout_dist_maxent_all)
+# empirical in and out degree distributions
+kl_diverg_all = kl_divergence.(kin_dist_all, kout_dist_all)
+
+## plot density of both KL divergence distributions
+plotA = density(kl_diverg_all,
+                  linesize=3,
+                  framestyle=:box, 
+                  grid=false,
+                  minorgrid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  legendfontpointsize=7,
+                  legendfontfamily="Arial",
+                  legend=:topright,
+                  label="Empirical",
+                  xlabel="KL divergence",
+                  ylabel="Density")
+density!(kl_diverg_maxent_all,
+            linesize=3,
+            label="MaxEnt",
+            ylim=(0,3.6))
+
+## plot difference in KL divergences as a function of connectance
+plotB = scatter(measures_all.C,
+                  kl_diverg_maxent_all.- kl_diverg_all,
+                  alpha=0.3,
+                  markersize=5,
+                  framestyle=:box, 
+                  grid=false,
+                  minorgrid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legend=:topright,
+                  legendfont=fonts,
+                  legendfontpointsize=7,
+                  legendfontfamily="Arial",
+                  label="",
+                  xlabel="Connectance",
+                  ylabel="\\Delta KL divergence")
+
+plot(plotA, plotB,  
+     title = ["(a)" "(b)"],
+     titleloc=:right, titlefont=fonts)
+
+savefig(joinpath("figures", "kl_divergence.png"))
+
 
 ### Measures of empirical and maximum entropy food webs ###
 
