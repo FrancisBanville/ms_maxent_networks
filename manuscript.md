@@ -21,12 +21,18 @@ bibliography: [references.bib]
     - Compare MaxEnt models with empirical data
     - Compare MaxEnt models with null and neutral models
 
+The principle of maximum entropy has been used in a wide range of disciplines, from thermodynamics to [@Martyushev2006MaxEnt].
+
 ## Box 1 - The principle of maximum entropy: A primer for ecologists
 
-- Presentation of the principle of maximum entropy
-    - Least-biased distribution
-    - Shannon or Gibbs entropy (SVD-entropy)
-    - Constraints
+The principle of maximum entropy is a mathematical method of finding probability distributions, strongly rooted in statistical mechanics and information theory [@Jaynes1957InfThe; @Jaynes1957InfThea]. Starting from a set of constraints given by prior knowledge of a system (i.e., the state variables), this method helps us find least-biased probability distributions subject to the constraints. The probability distribution derived by the principle of maximum entropy is guaranteed to be unique and represents the most we can say about a system without making more assumptions than the ones given by the constraints. For example, if the only thing we know on a biological community is its average number of individuals per species, the least-biased inference we could make on its species abundance distribution is the exponential distribution [@Frank2011SimDera; @Harte2014MaxInf]. However, this does not imply that this distribution will be the best fit to empirical data. The challenge is to find the right set of constraints that would best reproduce distributions found in nature. 
+
+Entropy measures the average amount of information given by the outcome of a random variable. Many measures of entropy have been developed in physics [@Beck2009GenInf], but only a fraction of them could be used as an optimization measure. According to @Beck2009GenInf and @Khinchin2013MatFou, a measure of entropy $H$ should satisfy four properties (discrete case): (1) it should be a function of a probability distribution $p(n)$ only; (2) it should be maximized when $p(n)$ is uniform; (3) it should not be influenced by outcomes with a null probability; and (4) it should be independent on the order of information acquisition. The Shannon's entropy [@Shannon1948MatThe]
+
+$$H = -\sum_{n} p(n) \log p(n)$${#eq:shannon}
+
+satisfies all these properties. In this contribution, we also use the SVD entropy, which is an application of Shannon's entropy to the relative non-zero singular values of a truncated singular value decomposition [t-SVD; @Strydom2021SvdEnt] of the adjacency matrix of food webs. This measure satisfies all four properties above-mentioned, while being a proper measure of the internal complexity of food webs [@Strydom2021SvdEnt].
+
 - Finding the maximum entropy distribution 
     - Method of the Lagrange multiplier
 
@@ -183,7 +189,7 @@ We found no correlation between the Jaccard distance of empirical and predicted 
 
 \input{tables/measures_abund.md}
 
-# Discussion
+# Conclusion 
 
 - Discuss how well MaxEnt predicts empirical data
 - Suggest other constraints that could be used
