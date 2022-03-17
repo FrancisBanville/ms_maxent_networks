@@ -37,11 +37,11 @@ $$F = H - \sum_{i=1}^m \lambda_i (g_i-c_i),$${#eq:F_jdd}
 
 where $g_i$ is the mathematical formulation of the constraint $i$ and $c_i$, its value. Note that $F$ is just Shannon's entropy to which we added terms that each sums to zero ($g_i = c_i$). $F$ is maximized by setting to $0$ its partial derivative with respect to $p(n)$. We will show how this can be done when we derive the joint degree distribution analytically from the number of species and the number of links in food webs.
 
-In this contribution, we also use the SVD entropy as a measure of entropy, which is an application of Shannon's entropy to the relative non-zero singular values of a truncated singular value decomposition [t-SVD; @Strydom2021SvdEnt] of a food web's adjacency matrix. This measure also satisfies all four properties above-mentioned, while being a proper measure of the internal complexity of food webs [@Strydom2021SvdEnt]. We used the SVD entropy as a measure of entropy for Boolean matrices. It is measured as follows: 
+In this contribution, we also use the SVD entropy as a measure of entropy, which is an application of Shannon's entropy to the relative non-zero singular values of a truncated singular value decomposition [t-SVD; @Strydom2021SvdEnt] of a food web's Boolean adjacency matrix. This measure also satisfies all four properties above-mentioned, while being a proper measure of the internal complexity of food webs [@Strydom2021SvdEnt]. We measured SVD entropy as follows: 
 
-$$H_{SVD} = -\frac{1}{\log R} \sum_{i=1}^R s_i \log s_i,$${#eq:svd-entropy}
+$$J = -\sum_{i=1}^R s_i \log s_i,$${#eq:svd-entropy}
 
-where $R$ is the rank of the matrix and $s_i$ are its relative singular values ($0 \leq s_i \leq 1$). We will show how this measure can be used to predict a network of maximum entropy (i.e., of maximum complexity) heuristically.
+where $s_i$ are the relative singular values ($s_i = \sigma_i / \sum_{i = 1}^R \sigma_i$, where $\sigma_i$ are the singular values). Following @Strydom2021SvdEnt, we standardized this measure with the rank $R$ of the matrix (i.e., $J / \ln(R)$) to account for the difference in dimensions between networks [Pielou's evenness; @Pielou1975EcoDiv]. We will show how SVD entropy can be used to predict a network of maximum entropy (i.e., of maximum complexity) heuristically.
 
 # Methods
 
