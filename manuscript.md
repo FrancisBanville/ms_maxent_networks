@@ -33,7 +33,7 @@ $$H = -\sum_{n} p(n) \log p(n)$${#eq:shannon}
 
 satisfies all of these properties. Finding the probability distribution $p(n)$ that maximizes $H$ under a set of $m$ constraints $g$ can be done using the method of Lagrange multipliers. These constraints could include one or many properties of the probability distribution (e.g., its mean, variance, and range). However, the normalization constraint always need to be included in $g$ in order to make sure that $p(n)$ sums to $1$. The objective is then to find the values of the Lagrange multipliers $\lambda_i$ that optimize a function $F$: 
 
-$$F = H - \sum_{i=1}^m \lambda_i (g_i-c_i),$${#eq:F_jdd}
+$$F = H - \sum_{i=1}^m \lambda_i (g_i-c_i),$${#eq:F}
 
 where $g_i$ is the mathematical formulation of the constraint $i$ and $c_i$, its value. Note that $F$ is just Shannon's entropy to which we added terms that each sums to zero ($g_i = c_i$). $F$ is maximized by setting to $0$ its partial derivative with respect to $p(n)$. We will show how this can be done when we derive the joint degree distribution analytically from the number of species and the number of links in food webs.
 
