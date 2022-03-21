@@ -4,17 +4,13 @@ bibliography: [references.bib]
 
 # Introduction 
 
-Statistical and mathematical models can help fill many gaps in our knowledge about species interactions. Two complementary types of models have been developed in network ecology for that purpose. On one hand, predictive models can partially alleviate the Eltonian shortfall, which describes our current lack of knowledge on food webs and other ecological networks [@Hortal2015SevSho]. A variety of such models have recently been developed using machine learning and other statistical tools, most of which are presented in @Strydom2021RoaPre. On the other hand, null models help us identify ecological mechanisms that drive species interactions.
+Statistical and mathematical models can help fill many gaps in our knowledge about species interactions. Two complementary types of models have been developed in network ecology for this purpose. On one hand, predictive models can partially alleviate the Eltonian shortfall, which describes our current lack of knowledge on food webs and other ecological networks [@Hortal2015SevSho]. A variety of such models have recently been developed using machine learning and other statistical tools, most of which are presented in @Strydom2021RoaPre. On the other hand, null models help us identify potential ecological mechanisms that drive species interactions. They do so by comparing empirical data with an unbiased distribution of measures generated using a set of rules that exclude the mechanism of interest [@Fortuna2006HabLos; @Delmas2019AnaEco]. Both types of models are frequently topological, i.e. they often predict the adjacency matrix or specific measures of network structure without taking into account species' identity. According to @Strydom2021RoaPre, these topological models could be used to make better predictions of pairwise species interactions by constraining the space of feasible networks. 
 
-can partially be alleviated using different types of statistical models, 
-
-most of which being presented in @Strydom2021RoaPre.
+The principle of maximum entropy is a topological and statistical model that can be used for both reasons, i.e. to make predictions on network structure and to better understand processes shaping ecological networks. 
 
 
-One advantage of using statistical and machine learning models over ecological ones such as the niche model [@Williams2000SimRul] is that they are not built around explicit ecological mechanisms, which makes their use more flexible and suitable to a greater variety of ecological systems. As pointed out by @Strydom2021RoaPre, the prediction of pairwise species interactions at a given location could be enhanced if the structure of the network was known beforehand. Paradoxically, however, network structure is usually measured on resolved networks [@Delmas2019AnaEco].
 
-Most models make predictions on the interactions between species pairs. 
-
+The principle of maximum entropy has been used in a wide range of disciplines, from thermodynamics to chemistry and biology [@Martyushev2006MaxEnt].
 
 - Predicting ecological networks 
     - Benefits of predicting network structure first 
@@ -31,7 +27,6 @@ Most models make predictions on the interactions between species pairs.
     - Compare MaxEnt models with empirical data
     - Compare MaxEnt models with null and neutral models
 
-The principle of maximum entropy has been used in a wide range of disciplines, from thermodynamics to [@Martyushev2006MaxEnt].
 
 We used two complementary approaches to predict the structure of food webs using the principle of maximum entropy. The first approach consists in deriving probability distributions of given network properties directly, whereas the second consists in finding the adjacency matrix of maximum entropy from which network properties can be measured. We built one MaxEnt model using the first approach, and two using the second. 
 
@@ -175,9 +170,7 @@ where $\mu$ is the average probability across food webs that a flexible link is 
 
 We fitted the flexible links model on all food webs in our dataset (i.e., the Mangal, New Zealand and Tuesday lake datasets). We estimated the parameters of @eq:BB using a Hamiltonian Monte Carlo sampler with static trajectory (1 chain and 3000 iterations):
 
-$$
-[\mu, \phi| \textbf{L}, \textbf{S}] \propto \prod_{i = 1}^{m} \mathrm{BB}(L_i - (S_i - 1) | S_i^2 - (S_i - 1)), \mu e^{\phi}, (1 - \mu) e^\phi) \times \mathrm{B}(\mu| 3 , 7 ) \times \mathcal{N}(\phi | 3, 0.5),
-$${#eq:BBpost}
+$$ [\mu, \phi| \textbf{L}, \textbf{S}] \propto \prod_{i = 1}^{m} \mathrm{BB}(L_i - (S_i - 1) | S_i^2 - (S_i - 1)), \mu e^{\phi}, (1 - \mu) e^\phi) \times \mathrm{B}(\mu| 3 , 7 ) \times \mathcal{N}(\phi | 3, 0.5), $${#eq:BBpost}
 
 where $m$ is the number of food webs ($m$ = 257) and $\textbf{L}$ and $\textbf{S}$ are respectively the vectors of their numbers of interactions and numbers of species. Our weakly-informative prior distributions were chosen following MacDonald2020RevLina, i.e. a beta distribution for $\mu$ and a normal distribution for $\phi$. The Monte Carlo sampling of the posterior distribution was conducted using the Julia library `Turing` v0.15.12.
 
