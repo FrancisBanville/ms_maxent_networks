@@ -4,9 +4,19 @@ bibliography: [references.bib]
 
 # Introduction 
 
+Statistical and mathematical models can help fill many gaps in our knowledge about species interactions. Two complementary types of models have been developed in network ecology for that purpose. On one hand, predictive models can partially alleviate the Eltonian shortfall, which describes our current lack of knowledge on food webs and other ecological networks [@Hortal2015SevSho]. A variety of such models have recently been developed using machine learning and other statistical tools, most of which are presented in @Strydom2021RoaPre. On the other hand, null models help us identify ecological mechanisms that drive species interactions.
+
+can partially be alleviated using different types of statistical models, 
+
+most of which being presented in @Strydom2021RoaPre.
+
+
+One advantage of using statistical and machine learning models over ecological ones such as the niche model [@Williams2000SimRul] is that they are not built around explicit ecological mechanisms, which makes their use more flexible and suitable to a greater variety of ecological systems. As pointed out by @Strydom2021RoaPre, the prediction of pairwise species interactions at a given location could be enhanced if the structure of the network was known beforehand. Paradoxically, however, network structure is usually measured on resolved networks [@Delmas2019AnaEco].
+
+Most models make predictions on the interactions between species pairs. 
+
+
 - Predicting ecological networks 
-    - Importance of predicting ecological networks
-    - Different approaches proposed (*e.g.* machine learning, ecological models)
     - Benefits of predicting network structure first 
 - Introduction to the use of MaxEnt in ecology
     - Aim of MaxEnt (least-biased distributions given constraints)
@@ -22,6 +32,12 @@ bibliography: [references.bib]
     - Compare MaxEnt models with null and neutral models
 
 The principle of maximum entropy has been used in a wide range of disciplines, from thermodynamics to [@Martyushev2006MaxEnt].
+
+We used two complementary approaches to predict the structure of food webs using the principle of maximum entropy. The first approach consists in deriving probability distributions of given network properties directly, whereas the second consists in finding the adjacency matrix of maximum entropy from which network properties can be measured. We built one MaxEnt model using the first approach, and two using the second. 
+
+First, we derived the joint degree distribution (a probability distribution) of maximum entropy using only the number of species $S$ and the number of interactions $L$ in a food web. Then, we predicted the degree distribution of maximum entropy directly from the joint degree distribution since the first is the sum of the marginal distributions of the second (a species' degree is the sum of its in and out-degrees). Because of the scarcity of empirical data on the number of links in ecological networks, in Box 2 we present a method to predict $L$ from $S$, thus allowing the prediction of the joint degree distribution from $S$ solely. The (joint) degree distributions of maximum entropy are derived and compared against empirical data in the next section. 
+
+Second, we predicted the adjacency matrix of maximum entropy using different constraints. Our type I MaxEnt network model is constrained by the connectance of the network (i.e., the ratio $L/S^2$), while our type II model is constrained by the whole joint degree sequence.  We predicted these food webs using a flexible and heuristic approach based on simulating annealing to find networks *close* to maximum entropy. Our choice stands from the very nature of food webs (i.e., simple directed networks allowing self-loops) that makes the analytical derivation of a maximum entropy graph model difficult. We used a simulating annealing algorithm with 4 chains, 2000 steps and an initial temperature of 0.2. For each chain, we first generated one random Boolean matrix that maintained rows and columns sums (our initial configurations). We then swapped interactions sequentially while maintaining the original connectance (type I MaxEnt network model) or the joint degree sequence (type II MaxEnt network model). We used the SVD-entropy as our measure of entropy, since it has been shown to be a reliable measure of food-web complexity [@Strydom2021SvdEnt]. We compared both MaxEnt models against empirical data and null and neutral models commonly used in network ecology. 
 
 ## Box 1 - The principle of maximum entropy: A primer for ecologists
 
@@ -43,15 +59,8 @@ $$J = -\sum_{i=1}^R s_i \log s_i,$${#eq:svd-entropy}
 
 where $s_i$ are the relative singular values ($s_i = \sigma_i / \sum_{i = 1}^R \sigma_i$, where $\sigma_i$ are the singular values). Following @Strydom2021SvdEnt, we standardized this measure with the rank $R$ of the matrix (i.e., $J / \ln(R)$) to account for the difference in dimensions between networks [Pielou's evenness; @Pielou1975EcoDiv]. We will show how SVD entropy can be used to predict a network of maximum entropy (i.e., of maximum complexity) heuristically.
 
-# Methods
+# Maximum entropy models
 
-## Maximum entropy models
-
-We used two complementary approaches to predict the structure of food webs using the principle of maximum entropy. The first approach consists in deriving probability distributions of given network properties directly, whereas the second consists in finding the adjacency matrix of maximum entropy from which network properties can be measured. We built one MaxEnt model using the first approach, and two using the second. 
-
-First, we derived the joint degree distribution (a probability distribution) of maximum entropy using only the number of species $S$ and the number of interactions $L$ in a food web. Then, we predicted the degree distribution of maximum entropy directly from the joint degree distribution since the first is the sum of the marginal distributions of the second (a species' degree is the sum of its in and out-degrees). Because of the scarcity of empirical data on the number of links in ecological networks, in Box 2 we present a method to predict $L$ from $S$, thus allowing the prediction of the joint degree distribution from $S$ solely. The (joint) degree distributions of maximum entropy are derived and compared against empirical data in the next section. 
-
-Second, we predicted the adjacency matrix of maximum entropy using different constraints. Our type I MaxEnt network model is constrained by the connectance of the network (i.e., the ratio $L/S^2$), while our type II model is constrained by the whole joint degree sequence.  We predicted these food webs using a flexible and heuristic approach based on simulating annealing to find networks *close* to maximum entropy. Our choice stands from the very nature of food webs (i.e., simple directed networks allowing self-loops) that makes the analytical derivation of a maximum entropy graph model difficult. We used a simulating annealing algorithm with 4 chains, 2000 steps and an initial temperature of 0.2. For each chain, we first generated one random Boolean matrix that maintained rows and columns sums (our initial configurations). We then swapped interactions sequentially while maintaining the original connectance (type I MaxEnt network model) or the joint degree sequence (type II MaxEnt network model). We used the SVD-entropy as our measure of entropy, since it has been shown to be a reliable measure of food-web complexity [@Strydom2021SvdEnt]. We compared both MaxEnt models against empirical data and null and neutral models commonly used in network ecology. 
 
 ## Null and neutral models
 
