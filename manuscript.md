@@ -30,37 +30,37 @@ In this contribution, we also use the SVD entropy as a measure of entropy, which
 
 $$J = -\sum_{i=1}^R s_i \log s_i,$${#eq:svd-entropy}
 
-where $s_i$ are the relative singular values ($s_i = \sigma_i / \sum_{i = 1}^R \sigma_i$, where $\sigma_i$ are the singular values). Following @Strydom2021SvdEnt, we standardized this measure with the rank $R$ of the matrix (i.e., $J / \ln(R)$) to account for the difference in dimensions between networks [Pielou's evenness; @Pielou1975EcoDiv]. We will show how SVD entropy can be used to predict a network of maximum entropy (i.e., of maximum complexity) heuristically.
+where $s_i$ are the relative singular values ($s_i = \sigma_i / \sum_{i = 1}^R \sigma_i$, where $\sigma_i$ are the singular values). Following @Strydom2021SvdEnt, we standardized this measure with the rank $R$ of the matrix (i.e., $J / \ln(R)$) to account for the difference in dimensions between networks [Pielou's evenness; @Pielou1975EcoDiv]. In a following section, we will show how SVD entropy can be used to predict a network of maximum entropy (i.e., of maximum complexity) heuristically.
 
-# Maximum entropy models
+# Testing MaxEnt models
 
+## Data
 
-## Null and neutral models
+We tested our MaxEnt models (both approaches) against open food-web data queried from three different sources and integrated into what we call our *complete dataset*. First, all food webs archived on `mangal.io` were directly queried from the database ($n = 235$). Most ecological networks archived on Mangal are multilayer networks, i.e. networks that describe different types of interactions. We kept all networks whose interactions were mainly of predation and herbivory types, and removed the largest network ($S = 714$) for computational efficiency reasons. Then, to this set we added food webs from two different sources: the New-Zealand dataset [$n = 21$; @Pomeranz2018DatInf] and the Tuesday lake dataset [$n = 2$; @Cohen2003EcoComa]. Of these two datasets, $19$ networks had data on species' relative abundances that were used in the neutral model presented in a following subsection. These networks are part of what we call our *abundance dataset*, which is a subset of our complete dataset.  
 
-We used two null models that returned probabilistic networks. The first is the type I null model of @Fortuna2006HabLos, in which the probability that species $i$ predates on species $j$ is given by
+All code and data to reproduce this article are available at the Open Science Framework. Data cleaning, simulations and analyses were conducted in Julia v1.5.4.
 
-$$p_{i \rightarrow j} = \frac{L}{S^2}$${#eq:type1null}
+## Null models
 
-The second is the type II null model of @Bascompte2003NesAssa, in which the probability of interaction is given by 
+Our maximum entropy network models (second approach only) were compared with two topological null models. The first is the type I null model of @Fortuna2006HabLos, in which the probability that a species $i$ predates on another species $j$ is given by
 
-$$p_{i \rightarrow j} = \frac{1}{2} \left(\frac{k_{in}(j)}{S} + \frac{k_{out}(i)}{S}\right),$${#eq:type2null}
+$$p(i \rightarrow j) = \frac{L}{S^2}.$${#eq:type1null}
 
-where $k_{in}$ and $k_{out}$ are the in and out-degrees, respectively. The type I null model is based on connectance, whereas the type II is based on the joint degree sequence. We predicted type I and type II null networks for all empirical networks in our dataset (n = 257).
+The second is the type II null model of @Bascompte2003NesAssa, in which the probability of interaction is instead given by 
 
-We also used a neutral model of relative abundances, in which the probability of interaction is given by
+$$p(i \rightarrow j) = \frac{1}{2} \left(\frac{k_{in}(j)}{S} + \frac{k_{out}(i)}{S}\right),$${#eq:type2null}
 
-$$p_{i \rightarrow j} \propto \frac{n_i}{N} \times \frac{n_j}{N},$${#eq:neutralmodel}
+where $k_{in}$ and $k_{out}$ are the in and out-degrees, respectively. The type I null model is based on connectance, whereas the type II null model is based on the joint degree sequence. Therefore, the type I and II topological null models correspond with our type I and II MaxEnt network models, respectively, since they use similar constraints. 
 
-where $n_i$ and $n_j$ are the abundances (or biomass) of both species, and $N$ is the total abundance (or biomass) of all species in the network. We predicted neutral abundance matrices for all empirical networks in our dataset with abundance data (n = 19).
+We predicted both types of null networks for all empirical networks in our complete dataset ($n = 257$). We converted all probabilistic networks to Boolean networks by generating $100$ random Boolean networks for each of these probabilistic webs. Then, we counted the number of times each interaction was sampled, and kept the $L$ entries that were drawn the most amount of time, with $L$ given by the number of links in each food web. This ensured that the resulting null networks had the same number of interactions as their empirical counterparts.
 
-We converted all probabilistic networks to Boolean networks by generating 100 random Boolean networks for each of these probabilistic webs. We counted the number of times each interaction was sampled, and kept the $L$ entries that were drawn the most amount of time, with $L$ given by the number of links in each food web. This ensured that the resulting null and neutral networks had the same number of interactions as their empirical counterparts.
+## Neutral model
 
-## Data 
+We also compared our MaxEnt network models with a neutral model of relative abundances, in which the probabilities of interaction are given by
 
-We used open food-web data from three different sources. All food webs archived on `mangal.io` were directly queried from the database (n = 234). Most ecological networks archived on Mangal are multilayer networks, i.e. networks that describe different types of interactions. We kept all networks whose interactions were mainly of predation and herbivory types. We removed the largest network archived on Mangal ($S$ = 714) for computational efficiency reasons. To this set we added food webs from two different sources : the New-Zealand dataset (n = 21)[@Pomeranz2018DatInf] and the Tuesday lake dataset (n = 2) [@Cohen2003EcoComa]. Of these two datasets, 19 networks had data on species' relative abundances that were used in our neutral model.
+$$p(i \rightarrow j) \propto \frac{n_i}{N} \times \frac{n_j}{N},$${#eq:neutralmodel}
 
-All code and data to reproduce this article are available at the Open Science Framework (TK). Our simulations and analyses were conducted in Julia v1.5.4.
-
+where $n_i$ and $n_j$ are the abundances (or biomass) of both species, and $N$ is the total abundance (or biomass) of all species in the network. We predicted neutral abundance matrices for all empirical networks in our abundance dataset ($n = 19$), and converted these weighted matrices to Boolean networks using an approach analogue to the one we used for our null models. 
 
 # Food-web measures of maximum entropy
 
