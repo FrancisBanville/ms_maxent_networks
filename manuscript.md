@@ -62,11 +62,11 @@ $$p(i \rightarrow j) \propto \frac{n_i}{N} \times \frac{n_j}{N},$${#eq:neutralmo
 
 where $n_i$ and $n_j$ are the abundances (or biomass) of both species, and $N$ is the total abundance (or biomass) of all species in the network. We predicted neutral abundance matrices for all empirical networks in our abundance dataset ($n = 19$), and converted these weighted matrices to Boolean networks using an approach analogue to the one we used for our null models. 
 
-# Food-web measures of maximum entropy
+# First approach: Measures of maximum entropy
 
 ## Joint degree distribution 
 
-The joint degree distribution $p(k_{in},k_{out})$ is a joint discrete probability distribution describing the probability that a species has $k_{in}$ predators and $k_{out}$ preys, with $k_{in}$ and $k_{out}$ $\epsilon$ $[0, S]$. Basal species (e.g., plants) have a $k_{out}$ of 0, whereas top predators have a $k_{in}$ of 0. In contrast, the maximum number of preys and predators a species can have is set by the number of species in the food web. Here we show how the joint degree distribution of maximum entropy can be obtained given knowledge of $S$ and $L$.
+The joint degree distribution $p(k_{in},k_{out})$ is a joint discrete probability distribution describing the probability that a species has $k_{in}$ predators and $k_{out}$ preys, with $k_{in}$ and $k_{out}$ $\epsilon$ $[0, S]$. Basal species (e.g., plants) have a $k_{out}$ of $0$, whereas top predators have a $k_{in}$ of $0$. In contrast, the maximum number of preys and predators a species can have is set by the number of species $S$ in the food web. Here we show how the joint degree distribution of maximum entropy can be obtained given knowledge of $S$ and $L$.
 
 We want to maximize Shannon's entropy 
 
@@ -74,55 +74,57 @@ $$H = -\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S p(k_{in},k_{out}) \log p(k_{in},k_{ou
 
 subject to the following constraints:
 
-$$g_1 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S p(k_{in},k_{out}) = 1$${#eq:g1}
+$$g_1 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S p(k_{in},k_{out}) = 1;$${#eq:g1}
 
-$$g_2 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{in} p(k_{in},k_{out}) = \langle k_{in} \rangle = \frac{L}{S}$${#eq:g2}
+$$g_2 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{in} p(k_{in},k_{out}) = \langle k_{in} \rangle = \frac{L}{S};$${#eq:g2}
 
-$$g_3 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{out} p(k_{in},k_{out}) = \langle k_{out} \rangle = \frac{L}{S}$${#eq:g3}
+$$g_3 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{out} p(k_{in},k_{out}) = \langle k_{out} \rangle = \frac{L}{S}.$${#eq:g3}
 
 The first constraint $g_1$ is our normalizing constraint, whereas the other two ($g_2$ and $g_3$) fix the average of the marginal distributions of $k_{in}$ and $k_{out}$ to the linkage density $L/S$. It is important to notice that $\langle k_{in} \rangle = \langle k_{out} \rangle$ because every edge is associated to a predator and a prey. Therefore, without any further constraints, we expect the joint degree distribution of maximum entropy to be a symmetric probability distribution with regards to $k_{in}$ and $k_{out}$. However, this does not mean that the joint degree *sequence* will be symmetric, since the joint degree sequence is essentially a random realization of its probabilistic counterpart. 
 
-The joint probability distribution of maximum entropy given these constraints is found using the method of Lagrange multipliers. To do so, we seek to maximize the following expression.
+The joint probability distribution of maximum entropy given these constraints is found using the method of Lagrange multipliers. To do so, we seek to maximize the following expression:
 
 $$F = H - \lambda_1(g_1-1)-\lambda_2\left( g_2-\frac{L}{S}\right) - \lambda_3 \left( g_3-\frac{L}{S}\right),$${#eq:F_jdd}
 
-where $\lambda_1$, $\lambda_2$, and $\lambda_3$ are the Lagrange multipliers. The probability distribution that maximizes entropy is obtained by finding these values. Note that $F$ is just Shannon's entropy to which we added terms that each sums to zero (our constraints). $F$ is maximized by setting to 0 its partial derivative with respect to $p(k_{in},k_{out})$. Because the derivative of a constant is zero, this gives us:
+where $\lambda_1$, $\lambda_2$, and $\lambda_3$ are the Lagrange multipliers. The probability distribution that maximizes entropy is obtained by finding these values. As pointed out in Box 1, $F$ is just Shannon's entropy to which we added terms that each sums to zero (our constraints). $F$ is maximized by setting to 0 its partial derivative with respect to $p(k_{in},k_{out})$. Because the derivative of a constant is zero, this gives us:
 
-$$\frac{\partial H}{\partial p(k_{in},k_{out})} = \lambda_1 \frac{\partial g_1}{\partial p(k_{in},k_{out})} + \lambda_2 \frac{\partial g_2}{\partial p(k_{in},k_{out})}+ \lambda_3 \frac{\partial g_3}{\partial p(k_{in},k_{out})}$${#eq:lagrange_jdd}
+$$\frac{\partial H}{\partial p(k_{in},k_{out})} = \lambda_1 \frac{\partial g_1}{\partial p(k_{in},k_{out})} + \lambda_2 \frac{\partial g_2}{\partial p(k_{in},k_{out})}+ \lambda_3 \frac{\partial g_3}{\partial p(k_{in},k_{out})}.$${#eq:lagrange_jdd}
 
 Evaluating the partial derivatives with respect to $p(k_{in},k_{out})$, we obtain:
 
-$$-\log p(k_{in},k_{out}) - 1 = \lambda_1 + \lambda_2 k_{in} + \lambda_3 k_{out}$${#eq:lagrange2_jdd}
+$$-\log p(k_{in},k_{out}) - 1 = \lambda_1 + \lambda_2 k_{in} + \lambda_3 k_{out}.$${#eq:lagrange2_jdd}
 
 Then, solving @eq:lagrange2_jdd for $p(k_{in},k_{out})$, we obtain:
 
 $$p(k_{in},k_{out}) = \frac{e^{-\lambda_2k_{in}-\lambda_3k_{out}}}{Z},$${#eq:lagrange3_jdd}
 
-where $Z = e^{1+\lambda_1}$ is called the partition function. The partition function ensures that probabilities sum to 1 (our normalization constraint). It can be expressed in terms of $\lambda_2$ and $\lambda_3$ as follows.
+where $Z = e^{1+\lambda_1}$ is called the partition function. The partition function ensures that probabilities sum to 1 (our normalization constraint). It can be expressed in terms of $\lambda_2$ and $\lambda_3$ as follows:
 
-$$Z = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S e^{-\lambda_2k_{in}-\lambda_3k_{out}}$${#eq:Z}
+$$Z = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S e^{-\lambda_2k_{in}-\lambda_3k_{out}}.$${#eq:Z}
 
-After substituting $p(k_{in},k_{out})$ in @eq:g2 and @eq:g3, we get a nonlinear system of two equations and two unknowns.
+After substituting $p(k_{in},k_{out})$ in @eq:g2 and @eq:g3, we get a nonlinear system of two equations and two unknowns:
 
-$$\frac{1}{Z}\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{in} e^{-\lambda_2k_{in}-\lambda_3k_{out}}  = \frac{L}{S}$${#eq:lagrange4_jdd}
+$$\frac{1}{Z}\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{in} e^{-\lambda_2k_{in}-\lambda_3k_{out}}  = \frac{L}{S};$${#eq:lagrange4_jdd}
 
-$$\frac{1}{Z}\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{out} e^{-\lambda_2k_{in}-\lambda_3k_{out}}  = \frac{L}{S}$${#eq:lagrange5_jdd}
+$$\frac{1}{Z}\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{out} e^{-\lambda_2k_{in}-\lambda_3k_{out}}  = \frac{L}{S}.$${#eq:lagrange5_jdd}
 
-We solved @eq:lagrange4_jdd and @eq:lagrange5_jdd numerically using the Julia library `JuMP.jl` v0.21.8 [@Dunning2017JumMod] for a range of values of $S$ and $L$. `JuMP.jl` supports nonlinear optimization problems by providing exact second derivatives that increase the accuracy and performance of its solvers. The estimated values of $\lambda_2$ and $\lambda_3$ can be substituted in @eq:lagrange3_jdd to have a more workable expression for the joint degree distribution. 
+We solved @eq:lagrange4_jdd and @eq:lagrange5_jdd numerically using the Julia library `JuMP.jl` v0.21.8 [@Dunning2017JumMod]. `JuMP.jl` supports nonlinear optimization problems by providing exact second derivatives that increase the accuracy and performance of its solvers. The estimated values of $\lambda_2$ and $\lambda_3$ can be substituted in @eq:lagrange3_jdd to have a more workable expression for the joint degree distribution. 
 
-We derived the joint degree distribution of maximum entropy for each food web in our dataset, i.e. using their numbers of species and numbers of links. We then sampled one realization of the degree sequence for each network using the probabilities given by the joint degree distribution. In @fig:joint_dd, we show the relationship between $k_{out}$ and $k_{in}$ in empirical and maximum entropy food webs, as well as the difference between predicted and empirical measures for each species in the dataset. The third panel of @fig:joint_dd presents these differences when species are ordered by their total degree in their network (i.e., by the sum of their in and out-degrees). In @fig:kin_kout_diff (Supp Mat), we show how these differences change when species are instead ordered by their out-degrees (left panel) and in-degrees (right panel), respectively.
+We predicted the joint degree distribution of maximum entropy for each food web in our complete dataset, i.e. using their numbers of species and numbers of links as state variables. We then sampled one realization of the degree sequence for each network using the probabilities given by the joint degree distribution. In @fig:joint_dd (left panels), we show the relationship between $k_{out}$ and $k_{in}$ standardized by the number of species in their networks, for empirical and maximum entropy joint degree distributions. We see that our model predicts a greater number of generalist species than empirical food webs (i.e., relative values of $k_{out}$ and $k_{in}$ closer to $1$). However, plotting the difference between predicted and empirical values for each species gives a different perspective. The right panel of @fig:joint_dd presents these differences when species are ordered by their total degree in their network (i.e., by the sum of their in and out-degrees). Indeed, our predicted joint degree sequences have the same number of species as their empirical counterparts, but they are species agnostic; in other words, instead of predicting a value for each species directly, we predicted the entire joint degree sequence without taking into account species' identity. When we associate predictions and empirical data according to their rank in total degrees, we see that species predicted to be have a higher generality (number of preys) generally have a lower vulnerability (number of preys) than what is observed (and conversely). In fig. S1, we show how these differences change when species are instead ordered by their out-degrees (left panel) and in-degrees (right panel), respectively.
 
-![Relative number of predators $k_{in}$ as a function of the relative number of preys ($k_{out}$) for each species in (a) empirical food webs and (b) maximum entropy food webs. Empirical networks include all food webs archived on Mangal, as well as the New-Zealand and Tuesday lake datasets. The joint degree sequence for simulated networks was obtained after sampling one realization of the joint degree distribution of maximum entropy for each network. (c) Difference between predicted and empirical values when species are ordered according to their total degrees. Each dot corresponds to a single species in one of the network of our dataset.](figures/joint_degree_dist.png){#fig:joint_dd}
+![Relative number of predators ($k_{in}$) as a function of the relative number of preys ($k_{out}$) for each species in (a) empirical and (b) maximum entropy joint degree sequences. Empirical networks include all food webs archived on Mangal, as well as the New-Zealand and Tuesday lake datasets (our complete dataset). The predicted joint degree sequences were obtained after sampling one realization of the joint degree distribution of maximum entropy for each network. (c) Difference between predicted and empirical values when species are ordered according to their total degrees. In all panels, each dot corresponds to a single species in one of the network of our complete dataset.](figures/joint_degree_dist.png){#fig:joint_dd}
 
-![(a) Probability density of KL divergence between in and out degree distributions of empirical and maximum entropy joint degree distributions. (b) Difference between the KL divergence of empirical and simulated networks as a function of connectance. In both panels, empirical networks include all food webs archived on Mangal, as well as the New-Zealand and Tuesday lake datasets. The joint degree sequence for simulated networks was obtained after sampling one realization of the joint degree distribution of maximum entropy for each network. The KL divergence was computed between the in and out degree distributions of all networks (empirical and simulated).](figures/kl_divergence.png){#fig:kl_diverg}
+We plotted the Kullback–Leibler divergence between in and out-degree distributions to compare the symmetry of empirical and maximum entropy joint degree sequences [@fig:kl_diverg]. As we expected, our model predicted more similar in-degree and out-degree distributions than empirical data. However, this difference decreased with connectance [right panel of @fig:kl_diverg]. Overall, this suggests that other ecological constraints might be needed to account for the asymmetry of the joint degree distribution, especially for networks with a lower connectance.
+
+![(a) Probability density of KL divergence between in and out-degree sequences of empirical and maximum entropy joint degree sequences. (b) Difference between the KL divergence of empirical and predicted networks as a function of connectance. In both panels, empirical networks include all food webs archived on Mangal, as well as the New-Zealand and Tuesday lake datasets (our complete dataset). The joint degree sequence of simulated networks was obtained after sampling one realization of the joint degree distribution of maximum entropy for each network.](figures/kl_divergence.png){#fig:kl_diverg}
 
 ## Degree distribution 
 
 The degree distribution $p(k)$ represents the probability that a species has $k$ links in a food web, with $k = k_{in} + k_{out}$. It can thus be directly obtained from the joint degree distribution:
 
-$$p(k) = \sum_{i=0}^k p(k_{in} = k - i, k_{out} = i)$$
+$$p(k) = \sum_{i=0}^k p(k_{in} = k - i, k_{out} = i).$$
 
-In @fig:heatmap (Supp Mat), we show that the degree distribution of maximum entropy, given $S$ and $L$, predicts very low probabilities that a species will be isolated in its food web (*i.e.*, having $k=0$). As @MacDonald2020RevLin pointed out, the size of food webs should at least be of $S-1$ links, since a lower number would yield isolated species, i.e. species without any predators or preys. Our results show that, under our purely information-theoretic model, this probability is quite high below this threshold. The expected proportion of isolated species rapidly declines by orders of magnitude with increasing numbers of species and links.  
+In fig. S2, we show that the degree distribution of maximum entropy, given $S$ and $L$, predicts very low probabilities that a species will be isolated in its food web (*i.e.*, having $k = 0$). As @MacDonald2020RevLin pointed out, the size of food webs should at least be of $S-1$ links, since a lower number would yield isolated species, i.e. species without any predators or preys. Our results show that, under our purely information-theoretic model, the probability that a species is isolated is quite high below this threshold. The expected proportion of isolated species rapidly declines by orders of magnitude with increasing numbers of species and links.  
 
 The degree distribution could also have been obtained directly using the principle of maximum entropy, as discussed in @Williams2011BioMet. This gives the following distribution: 
 
@@ -134,7 +136,7 @@ This can be solved numerically using the constraint of the average degree $\lang
 
 $$\frac{1}{Z}\sum_{k=0}^S k e^{-\lambda_2k} = \frac{2L}{S}$${#eq:lagrange2_dd}
 
-The numerical solution is identical to the one we obtained using the joint degree distribution as an intermediate. Ecologists wanting to model a system without considering isolated species could simply change the lower limit of $k$ to 1 and solve the resulting equation numerically. 
+The numerical solution is identical to the one we obtained using the joint degree distribution as an intermediate. Ecologists wanting to model a system without considering isolated species could simply change the lower limit of $k$ to $1$ and solve the resulting equation numerically. 
 
 ## Box 2 - Working with predicted numbers of links
 
