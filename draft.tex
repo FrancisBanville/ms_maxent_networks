@@ -1,0 +1,1260 @@
+%!TEX TS-program = xelatex
+\documentclass[11pt]{article}
+
+\usepackage[english]{babel}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{stix}
+\usepackage[scaled]{helvet}
+\usepackage[scaled]{inconsolata}
+
+\usepackage{lastpage}
+
+\usepackage{setspace}
+
+\usepackage{ccicons}
+
+\usepackage[hang,flushmargin]{footmisc}
+
+\usepackage{geometry}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{0pt}\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\makeatletter
+\newcounter{tableno}
+\newenvironment{tablenos:no-prefix-table-caption}{
+  \caption@ifcompatibility{}{
+    \let\oldthetable\thetable
+    \let\oldtheHtable\theHtable
+    \renewcommand{\thetable}{tableno:\thetableno}
+    \renewcommand{\theHtable}{tableno:\thetableno}
+    \stepcounter{tableno}
+    \captionsetup{labelformat=empty}
+  }
+}{
+  \caption@ifcompatibility{}{
+    \captionsetup{labelformat=default}
+    \let\thetable\oldthetable
+    \let\theHtable\oldtheHtable
+    \addtocounter{table}{-1}
+  }
+}
+\makeatother
+
+\usepackage{array}
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\let\PBS=\PreserveBackslash
+
+\usepackage[breaklinks=true]{hyperref}
+\hypersetup{colorlinks,%
+citecolor=blue,%
+filecolor=blue,%
+linkcolor=blue,%
+urlcolor=blue}
+\usepackage{url}
+
+\usepackage{caption}
+\setcounter{secnumdepth}{0}
+\usepackage{cleveref}
+
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+\else\Gin@nat@width\fi}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
+
+\usepackage{longtable}
+\usepackage{booktabs}
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[3] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1 \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces\fi
+  % set entry spacing
+  \ifnum #2 > 0
+  \setlength{\parskip}{#2\baselineskip}
+  \fi
+ }%
+ {}
+\usepackage{calc} % for \widthof, \maxof
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\maxof{\widthof{#1}}{\csllabelwidth}}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth}{#1}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}\geometry{verbose,letterpaper,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=4.5cm}
+
+\usepackage{lineno}
+\usepackage[nolists,noheads]{endfloat}
+
+\pagestyle{plain}
+
+\doublespacing
+
+\fancypagestyle{normal}
+{
+  \fancyhf{}
+  \fancyfoot[R]{\footnotesize\sffamily\thepage\ of \pageref*{LastPage}}
+}
+\begin{document}
+\thispagestyle{empty}
+{\Large\bfseries\sffamily Maximum entropy modelling of food-web
+structure}
+\vskip 5em
+
+%
+\href{https://orcid.org/0000-0001-9051-0597}{Francis\,Banville}%
+%
+\,\textsuperscript{1,2,3}\quad %
+\href{https://orcid.org/0000-0002-4498-7076}{Dominique\,Gravel}%
+%
+\,\textsuperscript{2,3}\quad %
+\href{https://orcid.org/0000-0002-0735-5184}{Timothée\,Poisot}%
+%
+\,\textsuperscript{1,3}
+
+\textsuperscript{1}\,Université de
+Montréal\quad \textsuperscript{2}\,Université de
+Sherbrooke\quad \textsuperscript{3}\,Quebec Centre for Biodiversity
+Science
+
+
+\textbf{Correspondance to:}\\
+Francis Banville --- \texttt{francis.banville@umontreal.ca}\\
+
+\vfill
+This work is released by its authors under a CC-BY 4.0 license\hfill\ccby\\
+Last revision: \emph{\today}
+
+\clearpage
+\thispagestyle{empty}
+
+\vfill
+\textbf{\sffamily Abstract: }The principle of maximum entropy is a
+rigorous mathematical method of finding constrained probability
+distributions that has been proven useful in many ecological modelling
+problems. However, despite its broad application in graph and network
+theory, it has seldom been used to model ecological networks. Here we
+show how the (joint) degree distribution of maximum entropy can be
+directly derived using the number of species and the number of links in
+terrestrial and aquatic food webs. We also present a heuristic and
+flexible approach of finding the network of maximum entropy based on
+simulating annealing and SVD entropy. We built two of these
+network-level models using constraints given by the connectance and the
+joint degree sequence, respectively. All maximum entropy models were
+compared against open access food-web data and null and neutral models
+commonly used in network ecology. We found that the maximum entropy
+network model constrained by the joint degree sequence was a good
+predictor of food-web structure, including nestedness and motifs
+distribution. Overall, our results suggest that many properties of
+ecological networks are mainly driven by the joint degree distribution
+and statistical phenomena.
+\vfill
+
+\clearpage
+\linenumbers
+\pagestyle{normal}
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+Statistical and mathematical models can help fill many gaps in our
+knowledge about species interactions. Two complementary types of models
+have been developed in network ecology for this purpose. On one hand,
+predictive models can partially alleviate the Eltonian shortfall, which
+describes our current lack of knowledge on food webs and other
+ecological networks (Hortal et al. 2015). A variety of such models have
+recently been developed using machine learning and other statistical
+tools, most of which are presented in Strydom et al. (2021). On the
+other hand, null models help us identify potential ecological mechanisms
+that drive species interactions. They do so by comparing empirical data
+with an unbiased distribution of measures generated using a set of rules
+that exclude the mechanism of interest (M. A. Fortuna and Bascompte
+2006; Delmas et al. 2019). Both types of models are frequently
+topological, i.e.~they often predict the adjacency matrix or specific
+measures of network structure without taking into account species'
+identity. According to Strydom et al. (2021), these topological models
+could be used to make better predictions of pairwise species
+interactions by constraining the space of feasible networks.
+
+The principle of maximum entropy (MaxEnt) is a statistical and
+topological model that can be used for both of these purposes, i.e.~to
+make predictions of network structure and to better understand processes
+shaping ecological networks. This mathematical method, briefly presented
+in Box 1, has been used in a wide range of disciplines, from
+thermodynamics to chemistry and biology (Martyushev and Seleznev 2006).
+It has also been proven useful in ecology, e.g.~in species distribution
+models (Phillips, Anderson, and Schapire 2006) and macroecological
+models (J. Harte et al. 2008; John Harte and Newman 2014). As discussed
+in Box 1, maximizing a measure of entropy ensures that the derived
+probability distributions are unique and least biased under the set of
+constraints used. These constraints are built using state variables,
+i.e.~variables that represent the macrostate of the system. The
+challenge is to find the set of state variables that best represent
+natural systems and to translate them into appropriate statistical
+constraints. Having a validated maximum entropy model for the system at
+hand allows us to make rigorous predictions using a minimal amount of
+data, as well as helping us describe the most important factors driving
+that system.
+
+Despite its extensive use in graph and network theories (e.g., Park and
+Newman 2004; van der Hoorn, Lippner, and Krioukov 2018), MaxEnt has in
+comparison been little used in network ecology. The very nature of
+ecological networks (directed simple graphs frequently having
+self-loops) makes the mathematical optimization of maximum entropy graph
+models more complicated than with many other types of (non-ecological)
+networks. MaxEnt has nevertheless been used to predict the degree
+distribution of bipartite ecological networks from the number of species
+and the number of interactions (Williams 2011) and to predict
+interaction strengths between species pairs using their relative
+abundances within an optimal transportation theory regularized with
+information entropy (Stock, Poisot, and De Baets 2021). However, to the
+best of our knowledge, MaxEnt has never been used to predict food-web
+structure directly, even though food webs are among the most documented
+and widespread ecological networks.
+
+In this contribution, we used two complementary approaches to predict
+the structure of food webs using the principle of maximum entropy. We
+then compared our predictions against empirical data and null and
+neutral models commonly used in network ecology. The first approach
+consists in deriving constrained probability distributions of given
+network properties directly. We derived the joint degree distribution (a
+probability distribution) of maximum entropy using only the number of
+species \(S\) and the number of interactions \(L\) as state variables.
+Then, we predicted the degree distribution of maximum entropy directly
+from the joint degree distribution since the first is the sum of the
+marginal distributions of the second (a species' degree is the sum of
+its in and out-degrees). Because of the scarcity of empirical data on
+the number of links in ecological networks, in Box 2 we present a method
+to predict \(L\) from \(S\), thus allowing the prediction of the joint
+degree distribution from \(S\) solely. In turn, the second approach
+consists in finding, using different constraints, the adjacency matrix
+of maximum entropy from which network properties can be measured. To do
+so, we used a flexible and heuristic approach based on simulating
+annealing to find networks \emph{close} to maximum entropy. As discussed
+above, our choice of algorithm stands from the very nature of food webs
+(i.e., simple directed networks allowing self-loops) that makes the
+analytical derivation of a maximum entropy graph model difficult. We
+first built our type I MaxEnt network model constrained by the
+connectance of the network (i.e., the ratio \(L/S^2\)). A comparison of
+this model against empirical data indicated that connectance alone was
+not sufficient to predict many aspects of network structure. For this
+reason, we built our type II MaxEnt network model, which instead uses
+the whole joint degree sequence as a constraint. Overall, we found that
+this second model was much better at predicting food-web structure than
+the one based on connectance.
+
+\hypertarget{box-1---the-principle-of-maximum-entropy-a-primer-for-ecologists}{%
+\section{Box 1 - The principle of maximum entropy: A primer for
+ecologists}\label{box-1---the-principle-of-maximum-entropy-a-primer-for-ecologists}}
+
+The principle of maximum entropy is a mathematical method of finding
+probability distributions, strongly rooted in statistical mechanics and
+information theory (Jaynes 1957a, 1957b; Harremoës and Topsøe 2001).
+Starting from a set of constraints given by prior knowledge of a system
+(i.e., what we call state variables), this method helps us find
+least-biased probability distributions subject to the constraints. These
+probability distributions are guaranteed to be unique given our prior
+knowledge and represent the most we can say about a system without
+making more assumptions. For example, if the only thing we know about a
+biological community is its average number of individuals per species,
+the least-biased inference we could make on its species abundance
+distribution is the exponential distribution (Frank and Smith 2011; John
+Harte and Newman 2014). However, this does not imply that this
+distribution will be the best fit to empirical data. The challenge is to
+find the right set of constraints that would best reproduce
+distributions found in nature.
+
+Entropy measures the amount of information given by the outcome of a
+random variable. Many measures of entropy have been developed in physics
+(Beck 2009), but only a fraction of them could be used as an
+optimization measure with the principle of maximum entropy. According to
+Beck (2009) and Khinchin (2013), a measure of entropy \(H\) should
+satisfy four properties in the discrete case: (1) it should be a
+function of a probability distribution \(p(n)\) only; (2) it should be
+maximized when \(p(n)\) is uniform; (3) it should not be influenced by
+outcomes with a null probability; and (4) it should be independent of
+the order of information acquisition. The Shannon's entropy (Shannon
+1948)
+
+\begin{equation}\protect\hypertarget{eq:shannon}{}{H = -\sum_{n} p(n) \log p(n)}\label{eq:shannon}\end{equation}
+
+satisfies all of these properties. Finding the probability distribution
+\(p(n)\) that maximizes \(H\) under a set of \(m\) constraints \(g\) can
+be done using the method of Lagrange multipliers. These constraints
+could include one or many properties of the probability distribution
+(e.g., its mean, variance, and range). However, the normalization
+constraint always need to be included in \(g\) in order to make sure
+that \(p(n)\) sums to \(1\). The objective is then to find the values of
+the Lagrange multipliers \(\lambda_i\) that optimize a function \(F\):
+
+\begin{equation}\protect\hypertarget{eq:F}{}{F = H - \sum_{i=1}^m \lambda_i (g_i-c_i),}\label{eq:F}\end{equation}
+
+where \(g_i\) is the mathematical formulation of the constraint \(i\)
+and \(c_i\), its value. Note that \(F\) is just Shannon's entropy to
+which we added terms that each sums to zero (\(g_i = c_i\)). \(F\) is
+maximized by setting to \(0\) its partial derivative with respect to
+\(p(n)\). We will show how this can be done when we derive the joint
+degree distribution analytically from the number of species and the
+number of links in food webs.
+
+In this contribution, we also use the SVD entropy as a measure of
+entropy, which is an application of Shannon's entropy to the relative
+non-zero singular values of a truncated singular value decomposition
+(t-SVD; Strydom, Dalla Riva, and Poisot 2021) of a food web's Boolean
+adjacency matrix. This measure also satisfies all four properties
+above-mentioned, while being a proper measure of the internal complexity
+of food webs (Strydom, Dalla Riva, and Poisot 2021). We measured SVD
+entropy as follows:
+
+\begin{equation}\protect\hypertarget{eq:svd-entropy}{}{J = -\sum_{i=1}^R s_i \log s_i,}\label{eq:svd-entropy}\end{equation}
+
+where \(s_i\) are the relative singular values
+(\(s_i = \sigma_i / \sum_{i = 1}^R \sigma_i\), where \(\sigma_i\) are
+the singular values). Following Strydom, Dalla Riva, and Poisot (2021),
+we standardized this measure with the rank \(R\) of the matrix (i.e.,
+\(J / \ln(R)\)) to account for the difference in dimensions between
+networks (Pielou's evenness; Pielou 1975). In a following section, we
+will show how SVD entropy can be used to predict a network of maximum
+entropy (i.e., of maximum complexity) heuristically.
+
+\hypertarget{testing-maxent-models}{%
+\section{Testing MaxEnt models}\label{testing-maxent-models}}
+
+\hypertarget{data}{%
+\subsection{Data}\label{data}}
+
+We tested our MaxEnt models (both approaches) against open food-web data
+queried from three different sources and integrated into what we call
+our \emph{complete dataset}. First, all food webs archived on
+\texttt{mangal.io} were directly queried from the database
+(\(n = 235\)). Most ecological networks archived on Mangal are
+multilayer networks, i.e.~networks that describe different types of
+interactions. We kept all networks whose interactions were mainly of
+predation and herbivory types, and removed the largest network
+(\(S = 714\)) for computational efficiency reasons. Then, to this set we
+added food webs from two different sources: the New-Zealand dataset
+(\(n = 21\); Pomeranz et al. 2018) and the Tuesday lake dataset
+(\(n = 2\); Cohen, Jonsson, and Carpenter 2003). Of these two datasets,
+\(19\) networks had data on species' relative abundances that were used
+in the neutral model presented in a following subsection. These networks
+are part of what we call our \emph{abundance dataset}, which is a subset
+of our complete dataset.
+
+All code and data to reproduce this article are available at the Open
+Science Framework. Data cleaning, simulations and analyses were
+conducted in Julia v1.5.4.
+
+\hypertarget{null-models-types-i-and-ii}{%
+\subsection{Null models (types I and
+II)}\label{null-models-types-i-and-ii}}
+
+Our maximum entropy network models (second approach only) were compared
+with two topological null models. The first is the type I null model of
+M. A. Fortuna and Bascompte (2006), in which the probability that a
+species \(i\) predates on another species \(j\) is given by
+
+\begin{equation}\protect\hypertarget{eq:type1null}{}{p(i \rightarrow j) = \frac{L}{S^2}.}\label{eq:type1null}\end{equation}
+
+The second is the type II null model of Bascompte et al. (2003), in
+which the probability of interaction is instead given by
+
+\begin{equation}\protect\hypertarget{eq:type2null}{}{p(i \rightarrow j) = \frac{1}{2} \left(\frac{k_{in}(j)}{S} + \frac{k_{out}(i)}{S}\right),}\label{eq:type2null}\end{equation}
+
+where \(k_{in}\) and \(k_{out}\) are the in and out-degrees,
+respectively. The type I null model is based on connectance, whereas the
+type II null model is based on the joint degree sequence. Therefore, the
+type I and II topological null models correspond with our type I and II
+MaxEnt network models, respectively, since they use similar constraints.
+
+We predicted both types of null networks for all empirical networks in
+our complete dataset (\(n = 257\)). We converted all probabilistic
+networks to Boolean networks by generating \(100\) random Boolean
+networks for each of these probabilistic webs. Then, we counted the
+number of times each interaction was sampled, and kept the \(L\) entries
+that were drawn the most amount of time, with \(L\) given by the number
+of links in each food web. This ensured that the resulting null networks
+had the same number of interactions as their empirical counterparts.
+
+\hypertarget{neutral-model}{%
+\subsection{Neutral model}\label{neutral-model}}
+
+We also compared our MaxEnt network models with a neutral model of
+relative abundances, in which the probabilities of interaction are given
+by
+
+\begin{equation}\protect\hypertarget{eq:neutralmodel}{}{p(i \rightarrow j) \propto \frac{n_i}{N} \times \frac{n_j}{N},}\label{eq:neutralmodel}\end{equation}
+
+where \(n_i\) and \(n_j\) are the abundances (or biomass) of both
+species, and \(N\) is the total abundance (or biomass) of all species in
+the network. We predicted neutral abundance matrices for all empirical
+networks in our abundance dataset (\(n = 19\)), and converted these
+weighted matrices to Boolean networks using an approach analogue to the
+one we used for our null models.
+
+\hypertarget{analytical-models-measures-of-maximum-entropy}{%
+\section{Analytical models: Measures of maximum
+entropy}\label{analytical-models-measures-of-maximum-entropy}}
+
+\hypertarget{joint-degree-distribution}{%
+\subsection{Joint degree distribution}\label{joint-degree-distribution}}
+
+The joint degree distribution \(p(k_{in},k_{out})\) is a joint discrete
+probability distribution describing the probability that a species has
+\(k_{in}\) predators and \(k_{out}\) preys, with \(k_{in}\) and
+\(k_{out}\) \(\epsilon\) \([0, S]\). Basal species (e.g., plants) have a
+\(k_{out}\) of \(0\), whereas top predators have a \(k_{in}\) of \(0\).
+In contrast, the maximum number of preys and predators a species can
+have is set by the number of species \(S\) in the food web. Here we show
+how the joint degree distribution of maximum entropy can be obtained
+given knowledge of \(S\) and \(L\).
+
+We want to maximize Shannon's entropy
+
+\begin{equation}\protect\hypertarget{eq:entropy_jdd}{}{H = -\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S p(k_{in},k_{out}) \log p(k_{in},k_{out})}\label{eq:entropy_jdd}\end{equation}
+
+subject to the following constraints:
+
+\begin{equation}\protect\hypertarget{eq:g1}{}{g_1 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S p(k_{in},k_{out}) = 1;}\label{eq:g1}\end{equation}
+
+\begin{equation}\protect\hypertarget{eq:g2}{}{g_2 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{in} p(k_{in},k_{out}) = \langle k_{in} \rangle = \frac{L}{S};}\label{eq:g2}\end{equation}
+
+\begin{equation}\protect\hypertarget{eq:g3}{}{g_3 = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{out} p(k_{in},k_{out}) = \langle k_{out} \rangle = \frac{L}{S}.}\label{eq:g3}\end{equation}
+
+The first constraint \(g_1\) is our normalizing constraint, whereas the
+other two (\(g_2\) and \(g_3\)) fix the average of the marginal
+distributions of \(k_{in}\) and \(k_{out}\) to the linkage density
+\(L/S\). It is important to notice that
+\(\langle k_{in} \rangle = \langle k_{out} \rangle\) because every edge
+is associated to a predator and a prey. Therefore, without any further
+constraints, we expect the joint degree distribution of maximum entropy
+to be a symmetric probability distribution with regards to \(k_{in}\)
+and \(k_{out}\). However, this does not mean that the joint degree
+\emph{sequence} will be symmetric, since the joint degree sequence is
+essentially a random realization of its probabilistic counterpart.
+
+The joint probability distribution of maximum entropy given these
+constraints is found using the method of Lagrange multipliers. To do so,
+we seek to maximize the following expression:
+
+\begin{equation}\protect\hypertarget{eq:F_jdd}{}{F = H - \lambda_1(g_1-1)-\lambda_2\left( g_2-\frac{L}{S}\right) - \lambda_3 \left( g_3-\frac{L}{S}\right),}\label{eq:F_jdd}\end{equation}
+
+where \(\lambda_1\), \(\lambda_2\), and \(\lambda_3\) are the Lagrange
+multipliers. The probability distribution that maximizes entropy is
+obtained by finding these values. As pointed out in Box 1, \(F\) is just
+Shannon's entropy to which we added terms that each sums to zero (our
+constraints). \(F\) is maximized by setting to 0 its partial derivative
+with respect to \(p(k_{in},k_{out})\). Because the derivative of a
+constant is zero, this gives us:
+
+\begin{equation}\protect\hypertarget{eq:lagrange_jdd}{}{\frac{\partial H}{\partial p(k_{in},k_{out})} = \lambda_1 \frac{\partial g_1}{\partial p(k_{in},k_{out})} + \lambda_2 \frac{\partial g_2}{\partial p(k_{in},k_{out})}+ \lambda_3 \frac{\partial g_3}{\partial p(k_{in},k_{out})}.}\label{eq:lagrange_jdd}\end{equation}
+
+Evaluating the partial derivatives with respect to
+\(p(k_{in},k_{out})\), we obtain:
+
+\begin{equation}\protect\hypertarget{eq:lagrange2_jdd}{}{-\log p(k_{in},k_{out}) - 1 = \lambda_1 + \lambda_2 k_{in} + \lambda_3 k_{out}.}\label{eq:lagrange2_jdd}\end{equation}
+
+Then, solving eq.~\ref{eq:lagrange2_jdd} for \(p(k_{in},k_{out})\), we
+obtain:
+
+\begin{equation}\protect\hypertarget{eq:lagrange3_jdd}{}{p(k_{in},k_{out}) = \frac{e^{-\lambda_2k_{in}-\lambda_3k_{out}}}{Z},}\label{eq:lagrange3_jdd}\end{equation}
+
+where \(Z = e^{1+\lambda_1}\) is called the partition function. The
+partition function ensures that probabilities sum to 1 (our
+normalization constraint). It can be expressed in terms of \(\lambda_2\)
+and \(\lambda_3\) as follows:
+
+\begin{equation}\protect\hypertarget{eq:Z}{}{Z = \sum_{k_{in}=0}^S\sum_{k_{out}=0}^S e^{-\lambda_2k_{in}-\lambda_3k_{out}}.}\label{eq:Z}\end{equation}
+
+After substituting \(p(k_{in},k_{out})\) in eq.~\ref{eq:g2} and
+eq.~\ref{eq:g3}, we get a nonlinear system of two equations and two
+unknowns:
+
+\begin{equation}\protect\hypertarget{eq:lagrange4_jdd}{}{\frac{1}{Z}\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{in} e^{-\lambda_2k_{in}-\lambda_3k_{out}}  = \frac{L}{S};}\label{eq:lagrange4_jdd}\end{equation}
+
+\begin{equation}\protect\hypertarget{eq:lagrange5_jdd}{}{\frac{1}{Z}\sum_{k_{in}=0}^S\sum_{k_{out}=0}^S k_{out} e^{-\lambda_2k_{in}-\lambda_3k_{out}}  = \frac{L}{S}.}\label{eq:lagrange5_jdd}\end{equation}
+
+We solved eq.~\ref{eq:lagrange4_jdd} and eq.~\ref{eq:lagrange5_jdd}
+numerically using the Julia library \texttt{JuMP.jl} v0.21.8 (Dunning,
+Huchette, and Lubin 2017). \texttt{JuMP.jl} supports nonlinear
+optimization problems by providing exact second derivatives that
+increase the accuracy and performance of its solvers. The estimated
+values of \(\lambda_2\) and \(\lambda_3\) can be substituted in
+eq.~\ref{eq:lagrange3_jdd} to have a more workable expression for the
+joint degree distribution.
+
+We predicted the joint degree distribution of maximum entropy for each
+food web in our complete dataset, i.e.~using their numbers of species
+and numbers of links as state variables. We then sampled one realization
+of the degree sequence for each network using the probabilities given by
+the joint degree distribution. In fig.~\ref{fig:joint_dd} (left panels),
+we show the relationship between \(k_{out}\) and \(k_{in}\) standardized
+by the number of species in their networks, for empirical and maximum
+entropy joint degree distributions. We see that our model predicts a
+greater number of generalist species than empirical food webs (i.e.,
+relative values of \(k_{out}\) and \(k_{in}\) closer to \(1\)). However,
+plotting the difference between predicted and empirical values for each
+species gives a different perspective. The right panel of
+fig.~\ref{fig:joint_dd} presents these differences when species are
+ordered by their total degree in their network (i.e., by the sum of
+their in and out-degrees). Indeed, our predicted joint degree sequences
+have the same number of species as their empirical counterparts, but
+they are species agnostic; in other words, instead of predicting a value
+for each species directly, we predicted the entire joint degree sequence
+without taking into account species' identity. When we associate
+predictions and empirical data according to their rank in total degrees,
+we see that species predicted to be have a higher generality (number of
+preys) generally have a lower vulnerability (number of preys) than what
+is observed (and conversely). In fig.~S1, we show how these differences
+change when species are instead ordered by their out-degrees (left
+panel) and in-degrees (right panel), respectively.
+
+\begin{figure}
+\hypertarget{fig:joint_dd}{%
+\centering
+\includegraphics{figures/joint_degree_dist.png}
+\caption{Relative number of predators (\(k_{in}\)) as a function of the
+relative number of preys (\(k_{out}\)) for each species in (a) empirical
+and (b) maximum entropy joint degree sequences. Empirical networks
+include all food webs archived on Mangal, as well as the New-Zealand and
+Tuesday lake datasets (our complete dataset). The predicted joint degree
+sequences were obtained after sampling one realization of the joint
+degree distribution of maximum entropy for each network. (c) Difference
+between predicted and empirical values when species are ordered
+according to their total degrees. In all panels, each dot corresponds to
+a single species in one of the network of our complete
+dataset.}\label{fig:joint_dd}
+}
+\end{figure}
+
+We plotted the Kullback--Leibler divergence between in and out-degree
+distributions to compare the symmetry of empirical and maximum entropy
+joint degree sequences fig.~\ref{fig:kl_diverg}. As we expected, our
+model predicted more similar in-degree and out-degree distributions than
+empirical data. However, this difference decreased with connectance
+right panel of \ref{fig:kl_diverg}. Overall, this suggests that other
+ecological constraints might be needed to account for the asymmetry of
+the joint degree distribution, especially for networks with a lower
+connectance.
+
+\begin{figure}
+\hypertarget{fig:kl_diverg}{%
+\centering
+\includegraphics{figures/kl_divergence.png}
+\caption{(a) Probability density of KL divergence between in and
+out-degree sequences of empirical and maximum entropy joint degree
+sequences. (b) Difference between the KL divergence of empirical and
+predicted networks as a function of connectance. In both panels,
+empirical networks include all food webs archived on Mangal, as well as
+the New-Zealand and Tuesday lake datasets (our complete dataset). The
+joint degree sequence of simulated networks was obtained after sampling
+one realization of the joint degree distribution of maximum entropy for
+each network.}\label{fig:kl_diverg}
+}
+\end{figure}
+
+\hypertarget{degree-distribution}{%
+\subsection{Degree distribution}\label{degree-distribution}}
+
+The degree distribution \(p(k)\) represents the probability that a
+species has \(k\) links in a food web, with \(k = k_{in} + k_{out}\). It
+can thus be directly obtained from the joint degree distribution:
+
+\[p(k) = \sum_{i=0}^k p(k_{in} = k - i, k_{out} = i).\]
+
+In fig.~S2, we show that the degree distribution of maximum entropy,
+given \(S\) and \(L\), predicts very low probabilities that a species
+will be isolated in its food web (\emph{i.e.}, having \(k = 0\)). As
+MacDonald, Banville, and Poisot (2020) pointed out, the size of food
+webs should at least be of \(S-1\) links, since a lower number would
+yield isolated species, i.e.~species without any predators or preys. Our
+results show that, under our purely information-theoretic model, the
+probability that a species is isolated is quite high below this
+threshold. The expected proportion of isolated species rapidly declines
+by orders of magnitude with increasing numbers of species and links.
+
+The degree distribution could also have been obtained directly using the
+principle of maximum entropy, as discussed in Williams (2011). This
+gives the following distribution:
+
+\begin{equation}\protect\hypertarget{eq:lagrange_dd}{}{p(k) = \frac{e^{-\lambda_2k}}{Z},}\label{eq:lagrange_dd}\end{equation}
+
+with \(Z = \sum_{k=0}^S e^{-\lambda_2k}.\)
+
+This can be solved numerically using the constraint of the average
+degree \(\langle k \rangle = \frac{2L}{S}\) of a species. Note that the
+mean degree is twice the value of the linkage density, because every
+link must be counted twice when we add in and out-degrees together.
+
+\begin{equation}\protect\hypertarget{eq:lagrange2_dd}{}{\frac{1}{Z}\sum_{k=0}^S k e^{-\lambda_2k} = \frac{2L}{S}}\label{eq:lagrange2_dd}\end{equation}
+
+The numerical solution is identical to the one we obtained using the
+joint degree distribution as an intermediate. Ecologists wanting to
+model a system without considering isolated species could simply change
+the lower limit of \(k\) to \(1\) and solve the resulting equation
+numerically.
+
+In this section, we showed how important measures of food-web structure,
+namely the degree distribution and the joint degree distribution, could
+be derived with the principle of maximum entropy using minimal knowledge
+on a biological community. This type of models, although useful to make
+least-biased predictions on many network properties, can be hard to
+apply for other measures. Indeed, there are dozens of measures of
+network structure (Delmas et al. 2019) and many are not calculated with
+mathematical equations, but with algorithms. Moreover, the applicability
+of this method to empirical systems is limited by the state variables we
+can actually measure and use. In the next section, we propose a more
+flexible method to predict many measures of network structure
+simultaneously, i.e.~by finding networks of maximum entropy
+heuristically.
+
+\hypertarget{box-2---working-with-predicted-numbers-of-links}{%
+\section{Box 2 - Working with predicted numbers of
+links}\label{box-2---working-with-predicted-numbers-of-links}}
+
+Our models need information on the number of species and the number of
+links. However, since the later is rarely estimated empirically,
+ecologists might need to use predictive methods to estimate the total
+number of links in a food web.
+
+We used the flexible links model of MacDonald, Banville, and Poisot
+(2020) to predict the number of interactions from the number of species.
+The flexible links model, in contrast to other predictive models of the
+number of links, incorporates meaningful ecological constraints into the
+prediction of \(L\), namely the minimum \(S-1\) and maximum \(S^2\)
+numbers of interactions in food webs. It estimates the proportion of the
+\(S^2 - (S - 1)\) \emph{flexible links} that are realized. More
+precisely, this model states that the number of \emph{realized} flexible
+links \(L_{FL}\) in a food web represents the number of realized
+interactions above the minimum (i.e., \(L = L_{FL} + S - 1\)) and is
+obtained from a beta-binomial distribution with \(S^2 - (S - 1)\) trials
+and parameters \(\alpha = \mu e^\phi\) and \(\beta = (1 - \mu) e^\phi\):
+
+\begin{equation}\protect\hypertarget{eq:BB}{}{L_{FL} \sim \mathrm{BB}(S^2 - (S - 1), \mu e^\phi, (1 - \mu) e^\phi),}\label{eq:BB}\end{equation}
+
+where \(\mu\) is the average probability across food webs that a
+flexible link is realized, and \(\phi\) is the concentration parameter
+around \(\mu\).
+
+We fitted the flexible links model on all food webs in our complete
+dataset, and estimated the parameters of eq.~\ref{eq:BB} using a
+Hamiltonian Monte Carlo sampler with static trajectory (\(1\) chain and
+\(3000\) iterations):
+
+\begin{equation}\protect\hypertarget{eq:BBpost}{}{ [\mu, \phi| \textbf{L}, \textbf{S}] \propto \prod_{i = 1}^{m} \mathrm{BB}(L_i - (S_i - 1) | S_i^2 - (S_i - 1)), \mu e^{\phi}, (1 - \mu) e^\phi) \times \mathrm{B}(\mu| 3 , 7 ) \times \mathcal{N}(\phi | 3, 0.5), }\label{eq:BBpost}\end{equation}
+
+where \(m\) is the number of food webs (\(m = 257\)) and \(\textbf{L}\)
+and \(\textbf{S}\) are respectively the vectors of their numbers of
+interactions and numbers of species. Our weakly-informative prior
+distributions were chosen following MacDonald, Banville, and Poisot
+(2020), i.e.~a beta distribution for \(\mu\) and a normal distribution
+for \(\phi\). The Monte Carlo sampling of the posterior distribution was
+conducted using the Julia library \texttt{Turing} v0.15.12.
+
+The flexible links model is a generative model, i.e.~it can generate
+plausible values of the predicted variable. We thus simulated \(1000\)
+values of \(L\) for different values of \(S\) using the joint posterior
+distribution of our model parameters, and calculated the mean degree for
+each simulated values. The resulting distributions are shown in the left
+panel of fig.~\ref{fig:degree_dist_fl} for three different values of
+species richness. In the right panel of fig.~\ref{fig:degree_dist_fl},
+we show how the probability distribution for the mean degree constraints
+can be used to generate a distribution of maximum entropy degree
+distributions, since each simulated value of mean degree generates a
+different maximum entropy degree distribution.
+
+\begin{figure}
+\hypertarget{fig:degree_dist_fl}{%
+\centering
+\includegraphics{figures/maxent_degree_dist_fl.png}
+\caption{(a) Probability density of the predicted mean degree for
+different values of species richness. The number of links was predicted
+using the flexible links model fitted to all empirical networks in our
+complete dataset. (b) Degree distributions of maximum entropy for a
+network of \(27\) species and different numbers of links. The numbers of
+links correspond to the lower and upper bounds of the \(67%
+\), \(89%
+\), and \(97%
+\) percentile intervals (PI), as well as the median, of the
+counterfactuals of the flexible links model.}\label{fig:degree_dist_fl}
+}
+\end{figure}
+
+\hypertarget{heuristical-models-networks-of-maximum-entropy}{%
+\section{Heuristical models: Networks of maximum
+entropy}\label{heuristical-models-networks-of-maximum-entropy}}
+
+\hypertarget{maxent-network-models-types-i-and-ii}{%
+\subsection{MaxEnt network models (types I and
+II)}\label{maxent-network-models-types-i-and-ii}}
+
+We define networks of maximum entropy as the configuration of the
+adjacency matrix with the highest SVD entropy under a set of
+constraints. As mentioned in Box 1, we used the SVD entropy as our
+measure of entropy since it has been shown to be a reliable measure of
+food-web complexity (Strydom, Dalla Riva, and Poisot 2021), in addition
+to having the required properties of a proper measure of information
+entropy. We thus seek to find the network with the highest complexity,
+or randomness, that exactly reproduces specified constraints on its
+structure. Our method is in contrast with maximum entropy graph models
+that predict a probability distribution on networks under soft or hard
+constraints Cimini et al. (2019). We believe our approach to be more
+flexible, easier to compute, while allowing direct comparisons of
+empirical food webs with more complex networks with similar structure.
+
+We built two types of MaxEnt network models: one based on connectance
+(type I MaxEnt network model) and the other based on the joint degree
+sequence (type II MaxEnt network model). They are based on the same
+constraints as the types I and II null models presented above. For both
+models, we used a simulating annealing algorithm with \(4\) chains,
+\(2000\) steps and an initial temperature of \(0.2\). For each chain, we
+first generated one random Boolean matrix with the same order (number of
+species) as empirical webs, while maintaining the total number of
+interactions (type I MaxEnt network model) or rows and columns sums
+(type II MaxEnt network model). These are our initial configurations.
+Then, we swapped interactions sequentially while maintaining the
+original connectance or the joint degree sequence for types I and II
+MaxEnt network model, respectively. Configurations with a higher SVD
+entropy than the previous one in the chain were always accepted, whereas
+they were accepted with a probability conditional to a decreasing
+temperature when lower. The final configuration with the highest SVD
+entropy among the four chains constitute our estimated MaxEnt network.
+Even though we decided to work with point estimates, it is possible to
+have a (non MaxEnt) probability distribution of networks when working
+with the entire chains after burn-in. For each network in our complete
+and abundance datasets, we estimated their configuration with maximum
+entropy using both types of MaxEnt network models.
+
+\hypertarget{structure-of-maxent-networks}{%
+\subsection{Structure of MaxEnt
+networks}\label{structure-of-maxent-networks}}
+
+We compared different measures of the structure of empirical food webs
+with the ones of null, neutral, and MaxEnt networks
+tbl.~\ref{tbl:measures_all}, and \ref{tbl:measures_abund}. For instance,
+we measured the nestedness \(\rho\) according to Staniczenko, Kopp, and
+Allesina (2013), i.e.~using the spectral radius of the adjacency matrix.
+Nestedness indicates how much the diet of specialist species is a subset
+of the one of generalists, and is strongly associated with network
+modularity (Miguel A. Fortuna et al. 2010). We also measured the maximum
+trophic level \emph{maxtl}, network diameter \emph{diam} (i.e., the
+longest of the shortest paths between all species pairs; Albert and
+Barabasi 2002), the average maximum similarity between species pairs
+\emph{MxSim}, the proportion of cannibal species \emph{Cannib} (i.e.,
+the proportion of self loops), and the proportion of omnivorous species
+\emph{Omniv} (i.e., species whose preys are of different trophic
+levels). \emph{MxSim}, \emph{Cannib}, and \emph{Omniv} are more deeply
+defined in Williams and Martinez (2000).
+
+Overall, we found that models based on the joint degree sequence (type
+II null and MaxEnt network models) reproduced the structure of empirical
+networks much better than the ones based on connectance and the neutral
+model of relative abundances. On average, the type II MaxEnt network
+model was better at predicting nestedness (\(0.62 \pm 0.08\)) than its
+corresponding null model (\(0.73 \pm 0.05\); empirical networks:
+\(0.63 \pm 0.09\)), as well as the proportion of cannibal species.
+However, the type II null model was better at predicting network
+diameter and average maximum similarity between species pairs.
+Predictions were similar between both type II models for the maximum
+trophic level and the proportion of omnivorous species.
+
+\hypertarget{tbl:measures_all}{}
+\begin{longtable}[]{@{}rrrrrrrr@{}}
+\caption{\label{tbl:measures_all}Standardized mean differences of
+predicted network measures with empirical data for all networks
+(\(n = 257\)). Positive (negative) values indicate that the measure is
+overestimated (underestimated) on average. Empirical networks are all
+food webs archived on Mangal, as well as the New Zealand and Tuesday
+lake food webs (our complete dataset). Null 1: Type I null model based
+on connectance. MaxEnt 1: Type I MaxEnt network model based on
+connectance. Null 2: Type II null model based on the joint degree
+sequence. MaxEnt 2: Type II MaxEnt network model based on the joint
+degree sequence. \(\rho\): nestedness measured by the spectral radius of
+the adjacency matrix. \emph{maxtl}: maximum trophic level. \emph{diam}:
+network diameter. \emph{MxSim}: average maximum similarity between
+species pairs. \emph{Cannib}: proportion of cannibal species (self
+loops). \emph{Omniv}: proportion of omnivorous species. \emph{entropy}:
+SVD entropy.}\tabularnewline
+\toprule
+model & rho & maxtl & diam & MxSim & Cannib & Omniv &
+entropy\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+model & rho & maxtl & diam & MxSim & Cannib & Omniv &
+entropy\tabularnewline
+\midrule
+\endhead
+null 1 & -0.167 & 0.980 & 1.428 & -0.502 & 2.007 & 1.493 &
+0.056\tabularnewline
+MaxEnt 1 & -0.226 & 0.831 & 1.274 & -0.524 & 1.982 & 1.863 &
+0.106\tabularnewline
+null 2 & 0.160 & -0.125 & 0.016 & 0.007 & 1.078 & 0.559 &
+-0.023\tabularnewline
+MaxEnt 2 & -0.015 & 0.178 & 0.565 & -0.282 & 0.698 & 0.589 &
+0.058\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{tbl:measures_abund}{}
+\begin{longtable}[]{@{}rrrrrrrr@{}}
+\caption{\label{tbl:measures_abund}Standardized mean differences of
+predicted network measures with empirical data for networks having
+abundance data (\(n = 19\)). Positive (negative) values indicate that
+the measure is overestimated (underestimated) on average. Empirical
+networks are all New Zealand and Tuesday lake food webs with abundance
+data (our abundance dataset). Null 1: Type I null model based on
+connectance. MaxEnt 1: Type I MaxEnt network model based on connectance.
+Null 2: Type II null model based on the joint degree sequence. MaxEnt 2:
+Type II MaxEnt network model based on the joint degree sequence.
+\(\rho\): nestedness measured by the spectral radius of the adjacency
+matrix. \emph{maxtl}: maximum trophic level. \emph{diam}: network
+diameter. \emph{MxSim}: average maximum similarity between species
+pairs. \emph{Cannib}: proportion of cannibal species (self loops).
+\emph{Omniv}: proportion of omnivorous species. \emph{entropy}: SVD
+entropy.}\tabularnewline
+\toprule
+model & rho & maxtl & diam & MxSim & Cannib & Omniv &
+entropy\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+model & rho & maxtl & diam & MxSim & Cannib & Omniv &
+entropy\tabularnewline
+\midrule
+\endhead
+neutral & 0.367 & -0.090 & 0.027 & 0.266 & 6.870 & 0.576 &
+-0.083\tabularnewline
+null 1 & -0.134 & 0.950 & 1.919 & -0.369 & 2.077 & 0.614 &
+0.068\tabularnewline
+MaxEnt 1 & -0.229 & 1.020 & 1.946 & -0.355 & 2.215 & 0.801 &
+0.121\tabularnewline
+null 2 & 0.128 & -0.115 & -0.135 & 0.157 & 1.444 & 0.029 &
+-0.021\tabularnewline
+MaxEnt 2 & -0.010 & 0.054 & 0.243 & -0.062 & -0.038 & 0.083 &
+0.038\tabularnewline
+\bottomrule
+\end{longtable}
+
+The picture slightly changes when we consider another important property
+of ecological networks, i.e.~their motifs profile. We measured the
+proportion of three-species motifs, which can be considered as simple
+building blocks of ecological networks (Milo et al. 2002; Stouffer et
+al. 2007). Motifs are the backbone of complex ecological networks from
+which network structure is built upon and play a crucial role in
+community dynamics and assembly (Bastolla et al. 2009; Stouffer and
+Bascompte 2011). In fig.~\ref{fig:motifs}, we show that the motifs
+profile of networks generated using the type II MaxEnt network model was
+very close to the one of empirical data, and that they made better
+predictions than the type II null model. This is also shown in
+fig.~\ref{fig:motifs_rel}, where we see that relationships between
+motifs pairs of empirical food webs are very similar to the ones of the
+type II MaxEnt networks. Overall, these results suggest that the type II
+MaxEnt network model can reproduce many aspects of network structure.
+This highlights the importance of the joint degree sequence in shaping
+ecological networks.
+
+\begin{figure}
+\hypertarget{fig:motifs}{%
+\centering
+\includegraphics{figures/motifs_distribution.png}
+\caption{Motifs profile of empirical, maximum entropy, and null food
+webs. Empirical networks include all food webs archived on Mangal, as
+well as the New-Zealand and Tuesday lake datasets (our complete
+dataset). Maximum entropy networks were estimated using a simulating
+annealing algorithm to find the network of maximum SVD entropy while
+maintaining the connectance (type I MaxEnt network model) or the joint
+degree sequence (type II MaxEnt network model). The predictions of the
+types I and II null models are also plotted. Boxplots display the median
+proportions of each motif (middle horizontal lines), as well as the
+first (bottom horizontal lines) and third (top horizontal lines)
+quartiles. Vertical lines encompass all data points that fall within
+\(1.5\) times the interquartile range from both quartiles, and dots are
+data points that fall outside this range. Motifs names are from Stouffer
+et al. (2007).}\label{fig:motifs}
+}
+\end{figure}
+
+\begin{figure}
+\hypertarget{fig:motifs_rel}{%
+\centering
+\includegraphics{figures/motifs_relations.png}
+\caption{Relationship between motifs proportions of empirical, maximum
+entropy, and null food webs. Empirical networks include all food webs
+archived on Mangal, as well as the New-Zealand and Tuesday lake datasets
+(our complete dataset). Maximum entropy networks were estimated using a
+simulating annealing algorithm to find the network of maximum SVD
+entropy while maintaining the connectance (type I MaxEnt network model)
+or the joint degree sequence (type II MaxEnt network model). The
+predictions of the types I and II null models are also plotted.
+Regression lines are plotted in each panel. Motifs names are from
+Stouffer et al. (2007).}\label{fig:motifs_rel}
+}
+\end{figure}
+
+Moreover, we found that empirical networks are close to their maximum
+entropy considering a fixed joint degree sequence (fig.~S3). Empirical
+networks had an SVD entropy of \(0.89 \pm 0.04\), compared to type II
+MaxEnt networks which had values of \(0.94 \pm 0.03\). The relationship
+between the SVD entropy of empirical food webs and their maximum entropy
+configuration is plotted in the last panel of fig.~\ref{fig:measures}.
+We also found no relationship between the difference in SVD entropy
+between empirical and type II MaxEnt networks and species richness, the
+number of links, or connectance (fig.~S4). Similarly, we found no
+correlation between the difference in SVD entropy and the Jaccard
+distance of empirical and type II MaxEnt networks.
+
+Finally, in fig.~\ref{fig:measures} we also show how well empirical
+measures are predicted using the type II MaxEnt network model. In
+accordance with our previous results, we found that nestedness was very
+well predicted by our model. However, the type II MaxEnt network model
+overestimated the maximum trophic level and network diameter, especially
+for networks with high empirical values. In fig.~S5, we show that the
+pairwise relationships between these four measures and species richness
+in empirical food webs are similar (in magnitude and sign) to the ones
+in type II MaxEnt networks.
+
+\begin{figure}
+\hypertarget{fig:measures}{%
+\centering
+\includegraphics{figures/measures_emp_maxent.png}
+\caption{Relationship between the structure of empirical and maximum
+entropy food webs. Empirical networks include all food webs archived on
+Mangal, as well as the New-Zealand and Tuesday lake datasets (our
+complete dataset). Maximum entropy networks were estimated using a
+simulating annealing algorithm to find the network of maximum SVD
+entropy while maintaining the joint degree sequence (type II MaxEnt
+network model). (a) Nestedness (estimated using the spectral radius of
+the adjacency matrix), (b) the maximum trophic level, (c) the network
+diameter, and (d) the SVD entropy were measured on these empirical and
+maximum entropy food webs. The identity line is plotted in each
+panel.}\label{fig:measures}
+}
+\end{figure}
+
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
+
+The principle of maximum entropy is a robust mathematical method of
+finding least-biased probability distributions that have some desired
+properties given by prior knowledge on a system. We first used MaxEnt to
+predict the joint degree distribution and the degree distribution of
+maximum entropy given known numbers of species and of interactions. We
+found that the resulting joint degree distributions were more symmetric
+than the ones of empirical food webs, which suggests that other
+constraints might be needed to improve those predictions. We also used
+MaxEnt to predict networks of maximum entropy with a specified
+structure. These networks are the most complex, or random, given the
+constraints used. Likewise, we found that knowledge of species richness
+and of the number of links were not sufficient to reproduce many aspects
+of network structure found in nature. However, a model based on the
+entire joint degree sequence, i.e.~on the number of preys and predators
+for each species, gave more convincing results. Our type II MaxEnt
+network model yielded better or similar predictions than the type II
+null model, also based on the joint degree sequence, for most measures
+considered including the motifs profile. This suggests that the joint
+degree sequence drives many aspects of network structure. Indeed,
+considering our findings that empirical networks are close to maximum
+entropy for a given joint degree sequence, our results suggest that
+food-web topology is configured almost entirely randomly around these
+marginal numbers of predators and preys.
+
+Our method and results could be used for different purposes. First, they
+could be used as first-order approximations of network structure when
+only state variables are known. This could prove useful when predicting
+network structure at large spatial scales, where few ecological
+information is known at that scale. Second, they could be used as
+informative priors in Bayesian analyses of the structure of ecological
+networks. Third, they could be used to make better predictions of
+pairwise species interactions by constraining the space of feasible
+networks, as discussed in Strydom et al. (2021). Finally, they could be
+used as alternative null models of ecological networks to better
+understand ecological mechanisms driving food-web structure. In that
+case, our model might need to be slightly adapted to give a probability
+distribution of Boolean networks (in contrast with point estimates of
+maximum entropy networks).
+
+One of the biggest challenges in using the principle of maximum entropy
+is to identify the set of state variables that best reproduce empirical
+data. We found that the numbers of preys and predators for each species
+are important state variables for the prediction of maximum entropy
+networks. However, our predictions overestimated some measures of
+network structure, especially the maximum trophic level and network
+diameter. Therefore, we should continue playing the ecological detective
+to find these other topological constraints that would improve the
+predictions of our MaxEnt network models.
+
+\hypertarget{acknowledgments}{%
+\section{Acknowledgments}\label{acknowledgments}}
+
+We acknowledge that this study was conducted on land within the
+traditional unceded territory of the Saint Lawrence Iroquoian,
+Anishinabewaki, Mohawk, Huron-Wendat, and Omàmiwininiwak nations. This
+work was supported by the Institute for Data Valorisation (IVADO) and
+the NSERC BIOS\(^2\) CREATE program.
+
+\hypertarget{references}{%
+\section*{References}\label{references}}
+\addcontentsline{toc}{section}{References}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\hypertarget{ref-Albert2002StaMec}{}%
+Albert, R., and A. L. Barabasi. 2002. {``Statistical Mechanics of
+Complex Networks.''} \emph{Reviews of Modern Physics} 74 (1): 47--97.
+\url{https://doi.org/10.1103/RevModPhys.74.47}.
+
+\leavevmode\hypertarget{ref-Bascompte2003NesAssa}{}%
+Bascompte, J., P. Jordano, C. J. Melian, and J. M. Olesen. 2003. {``The
+Nested Assembly of Plant-Animal Mutualistic Networks.''}
+\emph{Proceedings of the National Academy of Sciences of the United
+States of America} 100 (16): 9383--87.
+\url{https://doi.org/10.1073/pnas.1633576100}.
+
+\leavevmode\hypertarget{ref-Bastolla2009ArcMut}{}%
+Bastolla, Ugo, Miguel A. Fortuna, Alberto Pascual-Garcia, Antonio
+Ferrera, Bartolo Luque, and Jordi Bascompte. 2009. {``The Architecture
+of Mutualistic Networks Minimizes Competition and Increases
+Biodiversity.''} \emph{Nature} 458 (7241): 1018--U91.
+\url{https://doi.org/10.1038/nature07950}.
+
+\leavevmode\hypertarget{ref-Beck2009GenInf}{}%
+Beck, Christian. 2009. {``Generalised Information and Entropy Measures
+in Physics.''} \emph{Contemporary Physics} 50 (4): 495--510.
+\url{https://doi.org/10.1080/00107510902823517}.
+
+\leavevmode\hypertarget{ref-Cimini2019StaPhy}{}%
+Cimini, Giulio, Tiziano Squartini, Fabio Saracco, Diego Garlaschelli,
+Andrea Gabrielli, and Guido Caldarelli. 2019. {``The Statistical Physics
+of Real-World Networks.''} \emph{Nature Reviews Physics} 1 (1): 58--71.
+\url{https://doi.org/10.1038/s42254-018-0002-6}.
+
+\leavevmode\hypertarget{ref-Cohen2003EcoComa}{}%
+Cohen, Joel E., Tomas Jonsson, and Stephen R. Carpenter. 2003.
+{``Ecological Community Description Using the Food Web, Species
+Abundance, and Body Size.''} \emph{Proceedings of the National Academy
+of Sciences} 100 (4): 1781--86.
+\url{https://doi.org/10.1073/pnas.232715699}.
+
+\leavevmode\hypertarget{ref-Delmas2019AnaEco}{}%
+Delmas, Eva, Mathilde Besson, Marie Hélène Brice, Laura A. Burkle,
+Giulio V. Dalla Riva, Marie Josée Fortin, Dominique Gravel, et al. 2019.
+{``Analysing Ecological Networks of Species Interactions.''}
+\emph{Biological Reviews}. \url{https://doi.org/10.1111/brv.12433}.
+
+\leavevmode\hypertarget{ref-Dunning2017JumMod}{}%
+Dunning, Iain, Joey Huchette, and Miles Lubin. 2017. {``JuMP: A Modeling
+Language for Mathematical Optimization.''} \emph{SIAM Review} 59 (2):
+295--320. \url{https://doi.org/10.1137/15M1020575}.
+
+\leavevmode\hypertarget{ref-Fortuna2006HabLos}{}%
+Fortuna, M. A., and J. Bascompte. 2006. {``Habitat Loss and the
+Structure of Plant-Animal Mutualistic Networks.''} \emph{Ecology
+Letters} 9 (3): 278--83.
+\url{https://doi.org/10.1111/j.1461-0248.2005.00868.x}.
+
+\leavevmode\hypertarget{ref-Fortuna2010NesMod}{}%
+Fortuna, Miguel A., Daniel B. Stouffer, Jens M. Olesen, Pedro Jordano,
+David Mouillot, Boris R. Krasnov, Robert Poulin, and Jordi Bascompte.
+2010. {``Nestedness Versus Modularity in Ecological Networks: Two Sides
+of the Same Coin?''} \emph{Journal of Animal Ecology} 79 (4): 811--17.
+\url{https://doi.org/10.1111/j.1365-2656.2010.01688.x}.
+
+\leavevmode\hypertarget{ref-Frank2011SimDera}{}%
+Frank, S. A., and E. Smith. 2011. {``A Simple Derivation and
+Classification of Common Probability Distributions Based on Information
+Symmetry and Measurement Scale.''} \emph{Journal of Evolutionary
+Biology} 24 (3): 469--84.
+\url{https://doi.org/10.1111/j.1420-9101.2010.02204.x}.
+
+\leavevmode\hypertarget{ref-Harremoes2001MaxEnt}{}%
+Harremoës, Peter, and Flemming Topsøe. 2001. {``Maximum Entropy
+Fundamentals.''} \emph{Entropy} 3 (3): 191--226.
+\url{https://doi.org/10.3390/e3030191}.
+
+\leavevmode\hypertarget{ref-Harte2008MaxEnt}{}%
+Harte, J., T. Zillio, E. Conlisk, and A. B. Smith. 2008. {``Maximum
+Entropy and the State-Variable Approach to Macroecology.''}
+\emph{Ecology} 89 (10): 2700--2711.
+\url{https://doi.org/10.1890/07-1369.1}.
+
+\leavevmode\hypertarget{ref-Harte2014MaxInf}{}%
+Harte, John, and Erica A. Newman. 2014. {``Maximum Information Entropy:
+A Foundation for Ecological Theory.''} \emph{Trends in Ecology \&
+Evolution} 29 (7): 384--89.
+\url{https://doi.org/10.1016/j.tree.2014.04.009}.
+
+\leavevmode\hypertarget{ref-vanderHoorn2018SpaMaxa}{}%
+Hoorn, Pim van der, Gabor Lippner, and Dmitri Krioukov. 2018. {``Sparse
+Maximum-Entropy Random Graphs with a Given Power-Law Degree
+Distribution.''} \emph{Journal of Statistical Physics} 173 (3): 806--44.
+\url{https://doi.org/10.1007/s10955-017-1887-7}.
+
+\leavevmode\hypertarget{ref-Hortal2015SevSho}{}%
+Hortal, Joaquín, Francesco de Bello, José Alexandre F. Diniz-Filho,
+Thomas M. Lewinsohn, Jorge M. Lobo, and Richard J. Ladle. 2015. {``Seven
+Shortfalls That Beset Large-Scale Knowledge of Biodiversity.''}
+\emph{Annual Review of Ecology, Evolution, and Systematics} 46 (1):
+523--49. \url{https://doi.org/10.1146/annurev-ecolsys-112414-054400}.
+
+\leavevmode\hypertarget{ref-Jaynes1957InfThe}{}%
+Jaynes, E. T. 1957a. {``Information Theory and Statistical Mechanics.''}
+\emph{Physical Review} 106 (4): 620--30.
+\url{https://doi.org/10.1103/PhysRev.106.620}.
+
+\leavevmode\hypertarget{ref-Jaynes1957InfThea}{}%
+---------. 1957b. {``Information Theory and Statistical Mechanics.
+II.''} \emph{Physical Review} 108 (2): 171--90.
+\url{https://doi.org/10.1103/PhysRev.108.171}.
+
+\leavevmode\hypertarget{ref-Khinchin2013MatFou}{}%
+Khinchin, A. Ya. 2013. \emph{Mathematical Foundations of Information
+Theory}. Courier Corporation.
+
+\leavevmode\hypertarget{ref-MacDonald2020RevLin}{}%
+MacDonald, Arthur Andrew Meahan, Francis Banville, and Timothée Poisot.
+2020. {``Revisiting the Links-Species Scaling Relationship in Food
+Webs.''} \emph{Patterns} 0 (0).
+\url{https://doi.org/10.1016/j.patter.2020.100079}.
+
+\leavevmode\hypertarget{ref-Martyushev2006MaxEnt}{}%
+Martyushev, L. M., and V. D. Seleznev. 2006. {``Maximum Entropy
+Production Principle in Physics, Chemistry and Biology.''} \emph{Physics
+Reports-Review Section of Physics Letters} 426 (1): 1--45.
+\url{https://doi.org/10.1016/j.physrep.2005.12.001}.
+
+\leavevmode\hypertarget{ref-Milo2002NetMot}{}%
+Milo, R., S. Shen-Orr, S. Itzkovitz, N. Kashtan, D. Chklovskii, and U.
+Alon. 2002. {``Network Motifs: Simple Building Blocks of Complex
+Networks.''} \emph{Science} 298 (5594): 824--27.
+\url{https://doi.org/10.1126/science.298.5594.824}.
+
+\leavevmode\hypertarget{ref-Park2004StaMeca}{}%
+Park, Juyong, and M. E. J. Newman. 2004. {``Statistical Mechanics of
+Networks.''} \emph{Physical Review E} 70 (6): 066117.
+\url{https://doi.org/10.1103/PhysRevE.70.066117}.
+
+\leavevmode\hypertarget{ref-Phillips2006MaxEnta}{}%
+Phillips, Steven J., Robert P. Anderson, and Robert E. Schapire. 2006.
+{``Maximum Entropy Modeling of Species Geographic Distributions.''}
+\emph{Ecological Modelling} 190 (3): 231--59.
+\url{https://doi.org/10.1016/j.ecolmodel.2005.03.026}.
+
+\leavevmode\hypertarget{ref-Pielou1975EcoDiv}{}%
+Pielou, Evelyn C. 1975. {``Ecological Diversity.''} In. 574.524018 P5.
+
+\leavevmode\hypertarget{ref-Pomeranz2018DatInf}{}%
+Pomeranz, Justin Page, Ross M. Thompson, Timothée Poisot, Jon S.
+Harding, and Justin P. F. Pomeranz. 2018. {``Data from: Inferring
+Predator-Prey Interactions in Food Webs.''} Dryad.
+\url{https://doi.org/10.5061/DRYAD.K59M37F}.
+
+\leavevmode\hypertarget{ref-Shannon1948MatThe}{}%
+Shannon, C. E. 1948. {``A Mathematical Theory of Communication.''}
+\emph{The Bell System Technical Journal} 27 (3): 379--423.
+\url{https://doi.org/10.1002/j.1538-7305.1948.tb01338.x}.
+
+\leavevmode\hypertarget{ref-Staniczenko2013GhoNes}{}%
+Staniczenko, Phillip P. A., Jason C. Kopp, and Stefano Allesina. 2013.
+{``The Ghost of Nestedness in Ecological Networks.''} \emph{Nature
+Communications} 4 (1): 1391. \url{https://doi.org/10.1038/ncomms2422}.
+
+\leavevmode\hypertarget{ref-Stock2021OptTra}{}%
+Stock, Michiel, Timothée Poisot, and Bernard De Baets. 2021. {``Optimal
+Transportation Theory for Species Interaction Networks.''} \emph{Ecology
+and Evolution} 11 (9): 3841--55.
+\url{https://doi.org/10.1002/ece3.7254}.
+
+\leavevmode\hypertarget{ref-Stouffer2011ComInc}{}%
+Stouffer, Daniel B., and Jordi Bascompte. 2011. {``Compartmentalization
+Increases Food-Web Persistence.''} \emph{Proceedings of the National
+Academy of Sciences} 108 (9): 3648--52.
+\url{https://doi.org/10.1073/pnas.1014353108}.
+
+\leavevmode\hypertarget{ref-Stouffer2007EviExi}{}%
+Stouffer, Daniel B., Juan Camacho, Wenxin Jiang, and Luis A. Nunes
+Amaral. 2007. {``Evidence for the Existence of a Robust Pattern of Prey
+Selection in Food Webs.''} \emph{Proceedings of the Royal Society
+B-Biological Sciences} 274 (1621): 1931--40.
+\url{https://doi.org/10.1098/rspb.2007.0571}.
+
+\leavevmode\hypertarget{ref-Strydom2021RoaPre}{}%
+Strydom, Tanya, Michael D. Catchen, Francis Banville, Dominique Caron,
+Gabriel Dansereau, Philippe Desjardins-Proulx, Norma R. Forero-Muñoz, et
+al. 2021. {``A Roadmap Towards Predicting Species Interaction Networks
+(across Space and Time).''} \emph{Philosophical Transactions of the
+Royal Society B: Biological Sciences} 376 (1837): 20210063.
+\url{https://doi.org/10.1098/rstb.2021.0063}.
+
+\leavevmode\hypertarget{ref-Strydom2021SvdEnt}{}%
+Strydom, Tanya, Giulio V. Dalla Riva, and Timothee Poisot. 2021. {``SVD
+Entropy Reveals the High Complexity of Ecological Networks.''}
+\emph{Frontiers in Ecology and Evolution} 9: 623141.
+\url{https://doi.org/10.3389/fevo.2021.623141}.
+
+\leavevmode\hypertarget{ref-Williams2011BioMet}{}%
+Williams, Richard J. 2011. {``Biology, Methodology or Chance? The Degree
+Distributions of Bipartite Ecological Networks.''} \emph{PLOS ONE} 6
+(3): e17645. \url{https://doi.org/10.1371/journal.pone.0017645}.
+
+\leavevmode\hypertarget{ref-Williams2000SimRul}{}%
+Williams, Richard J., and Neo D. Martinez. 2000. {``Simple Rules Yield
+Complex Food Webs.''} \emph{Nature} 404 (6774): 180--83.
+\url{https://doi.org/10.1038/35004572}.
+
+\end{CSLReferences}
+
+\end{document}

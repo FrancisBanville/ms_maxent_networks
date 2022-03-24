@@ -1,0 +1,162 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  12pt,
+]{article}
+\usepackage[]{times}
+\usepackage{amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+  \usepackage{amssymb}
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{times}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\author{}
+\date{}
+
+\begin{document}
+
+\hypertarget{supplementary-materials}{%
+\section{Supplementary materials}\label{supplementary-materials}}
+
+\begin{figure}
+\hypertarget{fig:kin_kout_diff}{%
+\centering
+\includegraphics{figures/kin_kout_difference.png}
+\caption{Difference between predicted and empirical values for the
+number of predators \(k_{in}\) and the number of preys \(k_{out}\) when
+species are ordered according to (a) their out-degree and (b) their
+in-degree. Empirical networks include all food webs archived on Mangal,
+as well as the New-Zealand and Tuesday lake datasets (our complete
+dataset). The joint degree sequences for simulated networks were
+obtained after sampling one realization of the joint degree distribution
+of maximum entropy for each network. Each dot corresponds to a single
+species in one of the network of our dataset.}\label{fig:kin_kout_diff}
+}
+\end{figure}
+
+\begin{figure}
+\hypertarget{fig:heatmap}{%
+\centering
+\includegraphics{figures/heatmap_disconnected.png}
+\caption{Probability that a species is isolated in its food web
+according to the degree distribution of maximum entropy. We derived
+degree distributions of maximum entropy given a range of values of \(S\)
+and \(L\), and plotted the probability that a species has a degree \(k\)
+of \(0\) (log-scale color bar). Here species richness varies between
+\(5\) and \(100\) species, by increment of \(5\) species. For each level
+of species richness, the numbers of links correspond to all 20-quantiles
+of the interval between \(0\) and \(S^2\). The black line marks the
+\(S-1\) minimum numbers of links required to have no isolated
+species.}\label{fig:heatmap}
+}
+\end{figure}
+
+\begin{figure}
+\hypertarget{fig:entropy_dist}{%
+\centering
+\includegraphics{figures/entropy_distribution.png}
+\caption{(a) Distribution of the SVD entropy of MaxEnt food webs (type
+II MaxEnt network model) and of empirical food webs. Empirical networks
+include all food webs archived on Mangal, as well as the New Zealand and
+Tuesday lake datasets (our complete dataset). Maximum entropy networks
+were derived using a simulating annealing algorithm to find the network
+of maximum SVD entropy while maintaining the joint degree sequence. (b)
+Distribution of z-scores of the SVD entropy of all empirical food webs.
+Z-scores were computed using the mean and standard deviation of the
+distribution of SVD entropy of MaxEnt food webs (type II MaxEnt network
+model). The dash line corresponds to the median
+z-score.}\label{fig:entropy_dist}
+}
+\end{figure}
+
+\begin{figure}
+\hypertarget{fig:entropy_size}{%
+\centering
+\includegraphics{figures/difference_entropy.png}
+\caption{Difference in SVD entropy between MaxEnt (type II MaxEnt
+network model) and empirical food webs as a function of (a) species
+richness, (b) the number of links, and (c) connectance. Empirical
+networks include all food webs archived on Mangal, as well as the New
+Zealand and Tuesday lake datasets (our complete dataset). Maximum
+entropy networks were derived using a simulating annealing algorithm to
+find the network of maximum SVD entropy while maintaining the joint
+degree sequence. Regression lines are plotted in each
+panel.}\label{fig:entropy_size}
+}
+\end{figure}
+
+\begin{figure}
+\hypertarget{fig:measures_richness}{%
+\centering
+\includegraphics{figures/measures_richness.png}
+\caption{Structure of empirical and maximum entropy food webs (type II
+MaxEnt network model) as a function of species richness. Empirical
+networks include all food webs archived on Mangal, as well as the New
+Zealand and Tuesday lake datasets (our complete dataset). Maximum
+entropy networks were derived using a simulating annealing algorithm to
+find the network of maximum SVD entropy while maintaining the joint
+degree sequence. (a) Nestedness (estimated with the spectral radius of
+the adjacency matrix), (b) the maximum trophic level, (c) the network
+diameter (i.e., the longest shortest path between all species pairs),
+and (d) the SVD entropy were measured on these empirical and predicted
+food webs and plotted against species richness. Regression lines are
+plotted in each panel.}\label{fig:measures_richness}
+}
+\end{figure}
+
+\end{document}
