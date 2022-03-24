@@ -170,7 +170,6 @@ We built two types of MaxEnt network models: one based on connectance (type I Ma
 
 ## Structure of MaxEnt networks
 
-
 We found no correlation between the Jaccard distance of empirical and predicted adjacency matrices (type II MaxEnt model) and the difference in SVD-entropy. 
 
 ![Motifs profile of empirical, maximum entropy, and null food webs. Empirical networks include all food webs archived on Mangal, as well as the New-Zealand and Tuesday lake datasets. Predicted webs were derived using a simulating annealing algorithm to find the network of maximum SVD-entropy while maintaining the connectance (type I MaxEnt network model) and the joint degree sequence (type II MaxEnt network model). The predictions of the types I and II null models are also plotted. Boxplots display the median proportions of each motif (middle horizontal lines), as well as the first (bottom horizontal lines) and third (top horizontal lines) quartiles. Vertical lines encompass all data points that fall within 1.5 times the interquartile range from both quartiles, and dots are data points that fall outside this range. Motifs names are from @Stouffer2007EviExi.](figures/motifs_distribution.png){#fig:motifs}
