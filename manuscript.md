@@ -160,6 +160,7 @@ The flexible links model is a generative model, i.e. it can generate plausible v
 
 ![(a) Probability density of the predicted mean degree for different values of species richness. The number of links was predicted using the flexible links model fitted to all empirical networks in our complete dataset. (b) Degree distributions of maximum entropy for a network of $27$ species and different numbers of links. The numbers of links correspond to the lower and upper bounds of the $67%$, $89%$, and $97%$ percentile intervals (PI), as well as the median, of the counterfactuals of the flexible links model.](figures/maxent_degree_dist_fl.png){#fig:degree_dist_fl}
 
+
 # Heuristical models: Networks of maximum entropy
 
 ## MaxEnt network models (types I and II)
