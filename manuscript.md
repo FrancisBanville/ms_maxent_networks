@@ -40,7 +40,7 @@ We tested our MaxEnt models (both approaches) against open food-web data queried
 
 All code and data to reproduce this article are available at the Open Science Framework. Data cleaning, simulations and analyses were conducted in Julia v1.5.4.
 
-## Null models
+## Null models (types I and II)
 
 Our maximum entropy network models (second approach only) were compared with two topological null models. The first is the type I null model of @Fortuna2006HabLos, in which the probability that a species $i$ predates on another species $j$ is given by
 
@@ -62,7 +62,7 @@ $$p(i \rightarrow j) \propto \frac{n_i}{N} \times \frac{n_j}{N},$${#eq:neutralmo
 
 where $n_i$ and $n_j$ are the abundances (or biomass) of both species, and $N$ is the total abundance (or biomass) of all species in the network. We predicted neutral abundance matrices for all empirical networks in our abundance dataset ($n = 19$), and converted these weighted matrices to Boolean networks using an approach analogue to the one we used for our null models. 
 
-# First approach: Measures of maximum entropy
+# Analytical models: Measures of maximum entropy
 
 ## Joint degree distribution 
 
@@ -138,6 +138,8 @@ $$\frac{1}{Z}\sum_{k=0}^S k e^{-\lambda_2k} = \frac{2L}{S}$${#eq:lagrange2_dd}
 
 The numerical solution is identical to the one we obtained using the joint degree distribution as an intermediate. Ecologists wanting to model a system without considering isolated species could simply change the lower limit of $k$ to $1$ and solve the resulting equation numerically. 
 
+In this section, we showed how important measures of food-web structure, namely the degree distribution and the joint degree distribution, could be derived with the principle of maximum entropy using minimal knowledge on a biological community. This type of models, although useful to make least-biased predictions on many network properties, can be hard to apply for other measures. Indeed, there are dozens of measures of network structure [@Delmas2019AnaEco] and many are not calculated with mathematical equations, but with algorithms. Moreover, the applicability of this method to empirical systems is limited by the state variables we can actually measure and use. In the next section, we propose a more flexible method to predict many measures of network structure simultaneously, i.e. by finding networks of maximum entropy heuristically. 
+
 # Box 2 - Working with predicted numbers of links
 
 Our models need information on the number of species and the number of links. However, since the later is rarely estimated empirically, ecologists might need to use predictive methods to estimate the total number of links in a food web.
@@ -158,11 +160,16 @@ The flexible links model is a generative model, i.e. it can generate plausible v
 
 ![(a) Probability density of the predicted mean degree for different values of species richness. The number of links was predicted using the flexible links model fitted to all empirical networks in our complete dataset. (b) Degree distributions of maximum entropy for a network of $27$ species and different numbers of links. The numbers of links correspond to the lower and upper bounds of the $67%$, $89%$, and $97%$ percentile intervals (PI), as well as the median, of the counterfactuals of the flexible links model.](figures/maxent_degree_dist_fl.png){#fig:degree_dist_fl}
 
-# Networks of maximum entropy
+# Heuristical models: Networks of maximum entropy
 
-We used a simulating annealing algorithm with 4 chains, 2000 steps and an initial temperature of 0.2. For each chain, we first generated one random Boolean matrix that maintained rows and columns sums (our initial configurations). We then swapped interactions sequentially while maintaining the original connectance (type I MaxEnt network model) or the joint degree sequence (type II MaxEnt network model). We used the SVD-entropy as our measure of entropy, since it has been shown to be a reliable measure of food-web complexity [@Strydom2021SvdEnt].
+## MaxEnt network models (types I and II)
 
-![Comparison of the structure of empirical and maximum entropy food webs. Empirical networks include all food webs archived on Mangal, as well as the New-Zealand and Tuesday lake datasets. Predicted webs were derived using a simulating annealing algorithm to find the network of maximum SVD-entropy while maintaining the joint degree sequence. (a) Nestedness (estimated using the spectral radius of the adjacency matrix), (b) the maximum trophic level, (c) the network diameter (i.e. the longest shortest path between all species pairs), and (d) the SVD-entropy were measured on these empirical and predicted food webs. The identity line is plotted in each panel.](figures/measures_emp_maxent.png){#fig:measures}
+We define networks of maximum entropy as the configuration of the adjacency matrix with the highest SVD entropy under a set of constraints. As mentioned in Box 1, we used the SVD entropy as our measure of entropy since it has been shown to be a reliable measure of food-web complexity [@Strydom2021SvdEnt], in addition to having the required properties of a proper measure of information entropy. We thus seek to find the network with the highest complexity, or randomness, that exactly reproduces specified constraints on its structure. Our method is in contrast with maximum entropy graph models that predict a probability distribution on networks under soft or hard constraints [see for example, @Park2004StaMeca and @Cimini2019StaPhy]. We believe our approach to be more flexible, easier to compute, while allowing direct comparisons of empirical food webs with more complex networks with similar structure.
+
+We built two types of MaxEnt network models: one based on connectance (type I MaxEnt network model) and the other based on the joint degree sequence (type II MaxEnt network model). They are based on the same constraints as the types I and II null models presented above. For both models, we used a simulating annealing algorithm with $4$ chains, $2000$ steps and an initial temperature of $0.2$. For each chain, we first generated one random Boolean matrix with the same order (number of species) as empirical webs, while maintaining the total number of interactions (type I MaxEnt network model) or rows and columns sums (type II MaxEnt network model). These are our initial configurations. Then, we swapped interactions sequentially while maintaining the original connectance or the joint degree sequence for types I and II MaxEnt network model, respectively. Configurations with a higher SVD entropy than the previous one in the chain were always accepted, whereas they were accepted with a probability conditional to a decreasing temperature when lower. The final configuration with the highest SVD entropy among the four chains constitute our estimated MaxEnt network. Even though we decided to work with point estimates, it is possible to have a (non MaxEnt) probability distribution of networks when working with the entire chains after burn-in. For each network in our complete and abundance datasets, we estimated their configuration with maximum entropy using both types of MaxEnt network models. 
+
+## Structure of MaxEnt networks
+
 
 We found no correlation between the Jaccard distance of empirical and predicted adjacency matrices (type II MaxEnt model) and the difference in SVD-entropy. 
 
@@ -178,6 +185,9 @@ We found no correlation between the Jaccard distance of empirical and predicted 
 : Standardized mean differences of predicted network measures with empirical networks having abundance data. Empirical networks are all New Zealand and Tuesday lake food webs with abundance data (n = 19). Null 1: Type 1 null model based on connectance. MaxEnt 1: Maximum entropy food-web model constrained by connectance. Null 2: Type II null model based on the joint degree sequence. MaxEnt 2: Maximum entropy food-web model constrained by the joint degree sequence. $\rho$: nestedness given by the spectral radius of the adjacency matrix. maxtl: maximum trophic level. diam: network diameter. MxSim: average maximum similarity between species pairs. Cannib: proportion of cannibal species (self loops). Omniv: proportion of omnivorous species (species whose preys are of different trophic levels). entropy: SVD-entropy. {#tbl:measures_abund}
 
 \input{tables/measures_abund.md}
+
+![Comparison of the structure of empirical and maximum entropy food webs. Empirical networks include all food webs archived on Mangal, as well as the New-Zealand and Tuesday lake datasets. Predicted webs were derived using a simulating annealing algorithm to find the network of maximum SVD-entropy while maintaining the joint degree sequence. (a) Nestedness (estimated using the spectral radius of the adjacency matrix), (b) the maximum trophic level, (c) the network diameter (i.e. the longest shortest path between all species pairs), and (d) the SVD-entropy were measured on these empirical and predicted food webs. The identity line is plotted in each panel.](figures/measures_emp_maxent.png){#fig:measures}
+
 
 # Conclusion 
 
