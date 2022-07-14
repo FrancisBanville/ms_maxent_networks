@@ -358,7 +358,7 @@
         "author": [
             {
                 "family": "Fortuna",
-                "given": "Miguel A."
+                "given": "M. A."
             },
             {
                 "family": "Stouffer",
@@ -501,7 +501,7 @@
         "author": [
             {
                 "family": "Harte",
-                "given": "John"
+                "given": "J."
             },
             {
                 "family": "Newman",
@@ -518,7 +518,6 @@
                 ]
             ]
         },
-        "other-ids": "HartNewm14",
         "page": "384-389",
         "title": "Maximum information entropy: A foundation for ecological theory",
         "type": "article-journal",

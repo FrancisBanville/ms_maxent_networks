@@ -282,13 +282,13 @@ tools, most of which are presented in Strydom et al. (2021). On the
 other hand, null models help us identify potential ecological mechanisms
 that drive species interactions. They do so by comparing empirical data
 with an unbiased distribution of measures generated using a set of rules
-that exclude the mechanism of interest (M. A. Fortuna and Bascompte
-2006; Delmas et al. 2019). Both types of models are frequently
-topological, i.e.~they often predict the adjacency matrix or specific
-measures of network structure without taking into account species'
-identity. According to Strydom et al. (2021), these topological models
-could be used to make better predictions of pairwise species
-interactions by constraining the space of feasible networks.
+that exclude the mechanism of interest (Fortuna and Bascompte 2006;
+Delmas et al. 2019). Both types of models are frequently topological,
+i.e.~they often predict the adjacency matrix or specific measures of
+network structure without taking into account species' identity.
+According to Strydom et al. (2021), these topological models could be
+used to make better predictions of pairwise species interactions by
+constraining the space of feasible networks.
 
 The principle of maximum entropy (MaxEnt) is a statistical and
 topological model that can be used for both of these purposes, i.e.~to
@@ -298,17 +298,16 @@ in Box 1, has been used in a wide range of disciplines, from
 thermodynamics to chemistry and biology (Martyushev and Seleznev 2006).
 It has also been proven useful in ecology, e.g.~in species distribution
 models (Phillips, Anderson, and Schapire 2006) and macroecological
-models (J. Harte et al. 2008; John Harte and Newman 2014). As discussed
-in Box 1, maximizing a measure of entropy ensures that the derived
-probability distributions are unique and least biased under the set of
-constraints used. These constraints are built using state variables,
-i.e.~variables that represent the macrostate of the system. The
-challenge is to find the set of state variables that best represent
-natural systems and to translate them into appropriate statistical
-constraints. Having a validated maximum entropy model for the system at
-hand allows us to make rigorous predictions using a minimal amount of
-data, as well as helping us describe the most important factors driving
-that system.
+models (Harte et al. 2008; Harte and Newman 2014). As discussed in Box
+1, maximizing a measure of entropy ensures that the derived probability
+distributions are unique and least biased under the set of constraints
+used. These constraints are built using state variables, i.e.~variables
+that represent the macrostate of the system. The challenge is to find
+the set of state variables that best represent natural systems and to
+translate them into appropriate statistical constraints. Having a
+validated maximum entropy model for the system at hand allows us to make
+rigorous predictions using a minimal amount of data, as well as helping
+us describe the most important factors driving that system.
 
 Despite its extensive use in graph and network theories (e.g., Park and
 Newman 2004; van der Hoorn, Lippner, and Krioukov 2018), MaxEnt has in
@@ -372,7 +371,7 @@ knowledge and represent the most we can say about a system without
 making more assumptions. For example, if the only thing we know about a
 biological community is its average number of individuals per species,
 the least-biased inference we could make on its species abundance
-distribution is the exponential distribution (Frank and Smith 2011; John
+distribution is the exponential distribution (Frank and Smith 2011;
 Harte and Newman 2014). However, this does not imply that this
 distribution will be the best fit to empirical data. The challenge is to
 find the right set of constraints that would best reproduce
@@ -464,8 +463,8 @@ II)}\label{null-models-types-i-and-ii}}
 
 Our maximum entropy network models (second approach only) were compared
 with two topological null models. The first is the type I null model of
-M. A. Fortuna and Bascompte (2006), in which the probability that a
-species \(i\) predates on another species \(j\) is given by
+Fortuna and Bascompte (2006), in which the probability that a species
+\(i\) predates on another species \(j\) is given by
 
 \begin{equation}\protect\hypertarget{eq:type1null}{}{p(i \rightarrow j) = \frac{L}{S^2}.}\label{eq:type1null}\end{equation}
 
@@ -849,15 +848,15 @@ we measured the nestedness \(\rho\) according to Staniczenko, Kopp, and
 Allesina (2013), i.e.~using the spectral radius of the adjacency matrix.
 Nestedness indicates how much the diet of specialist species is a subset
 of the one of generalists, and is strongly associated with network
-modularity (Miguel A. Fortuna et al. 2010). We also measured the maximum
-trophic level \emph{maxtl}, network diameter \emph{diam} (i.e., the
-longest of the shortest paths between all species pairs; Albert and
-Barabasi 2002), the average maximum similarity between species pairs
-\emph{MxSim}, the proportion of cannibal species \emph{Cannib} (i.e.,
-the proportion of self loops), and the proportion of omnivorous species
-\emph{Omniv} (i.e., species whose preys are of different trophic
-levels). \emph{MxSim}, \emph{Cannib}, and \emph{Omniv} are more deeply
-defined in Williams and Martinez (2000).
+modularity (Fortuna et al. 2010). We also measured the maximum trophic
+level \emph{maxtl}, network diameter \emph{diam} (i.e., the longest of
+the shortest paths between all species pairs; Albert and Barabasi 2002),
+the average maximum similarity between species pairs \emph{MxSim}, the
+proportion of cannibal species \emph{Cannib} (i.e., the proportion of
+self loops), and the proportion of omnivorous species \emph{Omniv}
+(i.e., species whose preys are of different trophic levels).
+\emph{MxSim}, \emph{Cannib}, and \emph{Omniv} are more deeply defined in
+Williams and Martinez (2000).
 
 Overall, we found that models based on the joint degree sequence (type
 II null and MaxEnt network models) reproduced the structure of empirical
@@ -1167,10 +1166,10 @@ Letters} 9 (3): 278--83.
 \url{https://doi.org/10.1111/j.1461-0248.2005.00868.x}.
 
 \leavevmode\hypertarget{ref-Fortuna2010NesMod}{}%
-Fortuna, Miguel A., Daniel B. Stouffer, Jens M. Olesen, Pedro Jordano,
-David Mouillot, Boris R. Krasnov, Robert Poulin, and Jordi Bascompte.
-2010. {``Nestedness Versus Modularity in Ecological Networks: Two Sides
-of the Same Coin?''} \emph{Journal of Animal Ecology} 79 (4): 811--17.
+Fortuna, M. A., Daniel B. Stouffer, Jens M. Olesen, Pedro Jordano, David
+Mouillot, Boris R. Krasnov, Robert Poulin, and Jordi Bascompte. 2010.
+{``Nestedness Versus Modularity in Ecological Networks: Two Sides of the
+Same Coin?''} \emph{Journal of Animal Ecology} 79 (4): 811--17.
 \url{https://doi.org/10.1111/j.1365-2656.2010.01688.x}.
 
 \leavevmode\hypertarget{ref-Frank2011SimDera}{}%
@@ -1185,17 +1184,17 @@ Harremoës, Peter, and Flemming Topsøe. 2001. {``Maximum Entropy
 Fundamentals.''} \emph{Entropy} 3 (3): 191--226.
 \url{https://doi.org/10.3390/e3030191}.
 
+\leavevmode\hypertarget{ref-Harte2014MaxInf}{}%
+Harte, J., and Erica A. Newman. 2014. {``Maximum Information Entropy: A
+Foundation for Ecological Theory.''} \emph{Trends in Ecology \&
+Evolution} 29 (7): 384--89.
+\url{https://doi.org/10.1016/j.tree.2014.04.009}.
+
 \leavevmode\hypertarget{ref-Harte2008MaxEnt}{}%
 Harte, J., T. Zillio, E. Conlisk, and A. B. Smith. 2008. {``Maximum
 Entropy and the State-Variable Approach to Macroecology.''}
 \emph{Ecology} 89 (10): 2700--2711.
 \url{https://doi.org/10.1890/07-1369.1}.
-
-\leavevmode\hypertarget{ref-Harte2014MaxInf}{}%
-Harte, John, and Erica A. Newman. 2014. {``Maximum Information Entropy:
-A Foundation for Ecological Theory.''} \emph{Trends in Ecology \&
-Evolution} 29 (7): 384--89.
-\url{https://doi.org/10.1016/j.tree.2014.04.009}.
 
 \leavevmode\hypertarget{ref-vanderHoorn2018SpaMaxa}{}%
 Hoorn, Pim van der, Gabor Lippner, and Dmitri Krioukov. 2018. {``Sparse
