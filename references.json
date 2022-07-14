@@ -222,6 +222,47 @@
         "volume": "1"
     },
     {
+        "DOI": "10.1111/2041-210X.13180",
+        "author": [
+            {
+                "family": "Cirtwill",
+                "given": "Alyssa R."
+            },
+            {
+                "family": "Eklof",
+                "given": "Anna"
+            },
+            {
+                "family": "Roslin",
+                "given": "Tomas"
+            },
+            {
+                "family": "Wootton",
+                "given": "Kate"
+            },
+            {
+                "family": "Gravel",
+                "given": "Dominique"
+            }
+        ],
+        "container-title": "Methods in Ecology and Evolution",
+        "id": "Cirtwill2019QuaFrac",
+        "issue": "6",
+        "issued": {
+            "date-parts": [
+                [
+                    2019
+                ]
+            ]
+        },
+        "page": "902-911",
+        "publisher": "Wiley",
+        "publisher-place": "Hoboken",
+        "title": "A quantitative framework for investigating the reliability of empirical network construction",
+        "type": "article-journal",
+        "volume": "10"
+    },
+    {
         "DOI": "10.1073/pnas.232715699",
         "author": [
             {
