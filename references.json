@@ -29,6 +29,37 @@
         "volume": "74"
     },
     {
+        "DOI": "10.21105/joss.02721",
+        "author": [
+            {
+                "family": "Banville",
+                "given": "Francis"
+            },
+            {
+                "family": "Vissault",
+                "given": "Steve"
+            },
+            {
+                "family": "Poisot",
+                "given": "Timoth\u00e9e"
+            }
+        ],
+        "container-title": "Journal of Open Source Software",
+        "id": "Banville2021ManJla",
+        "issue": "61",
+        "issued": {
+            "date-parts": [
+                [
+                    2021
+                ]
+            ]
+        },
+        "page": "2721",
+        "title": "Mangal.jl and EcologicalNetworks.jl: Two complementary packages for analyzing ecological networks in Julia",
+        "type": "article-journal",
+        "volume": "6"
+    },
+    {
         "DOI": "10.1073/pnas.1633576100",
         "author": [
             {
@@ -817,6 +848,67 @@
         },
         "title": "Ecological diversity",
         "type": "chapter"
+    },
+    {
+        "DOI": "10.1111/ecog.00976",
+        "author": [
+            {
+                "family": "Poisot",
+                "given": "Timothee"
+            },
+            {
+                "family": "Baiser",
+                "given": "Benjamin"
+            },
+            {
+                "family": "Dunne",
+                "given": "Jennifer A."
+            },
+            {
+                "family": "Kefi",
+                "given": "Sonia"
+            },
+            {
+                "family": "Massol",
+                "given": "Francois"
+            },
+            {
+                "family": "Mouquet",
+                "given": "Nicolas"
+            },
+            {
+                "family": "Romanuk",
+                "given": "Tamara N."
+            },
+            {
+                "family": "Stouffer",
+                "given": "Daniel B."
+            },
+            {
+                "family": "Wood",
+                "given": "Spencer A."
+            },
+            {
+                "family": "Gravel",
+                "given": "Dominique"
+            }
+        ],
+        "container-title": "Ecography",
+        "id": "Poisot2016ManMakb",
+        "issue": "4",
+        "issued": {
+            "date-parts": [
+                [
+                    2016
+                ]
+            ]
+        },
+        "page": "384-390",
+        "publisher": "Wiley",
+        "publisher-place": "Hoboken",
+        "title": "Mangal - making ecological network analysis simple",
+        "type": "article-journal",
+        "volume": "39"
     },
     {
         "DOI": "10.5061/DRYAD.K59M37F",

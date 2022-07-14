@@ -342,7 +342,7 @@ to predict \(L\) from \(S\), thus allowing the prediction of the joint
 degree distribution from \(S\) solely. In turn, the second approach
 consists in finding, using different constraints, the adjacency matrix
 of maximum entropy from which network properties can be measured. To do
-so, we used a flexible and heuristic approach based on simulating
+so, we used a flexible and heuristic approach based on simulated
 annealing to find networks \emph{close} to maximum entropy. As discussed
 above, our choice of algorithm stands from the very nature of food webs
 (i.e., simple directed networks allowing self-loops) that makes the
@@ -439,19 +439,20 @@ entropy (i.e., of maximum complexity) heuristically.
 We tested our MaxEnt models (both approaches) against open food-web data
 queried from three different sources and integrated into what we call
 our \emph{complete dataset}. First, all food webs archived on
-\texttt{mangal.io} were directly queried from the database
-(\(n = 235\)). Most ecological networks archived on Mangal are
-multilayer networks, i.e.~networks that describe different types of
-interactions. We kept all networks whose interactions were mainly of
-predation and herbivory types, and removed the largest network
-(\(S = 714\)) for computational efficiency reasons. Then, to this set we
-added food webs from two different sources: the New-Zealand dataset
-(\(n = 21\); Pomeranz et al. 2018) and the Tuesday lake dataset
-(\(n = 2\); Cohen, Jonsson, and Carpenter 2003). Of these two datasets,
-\(19\) networks had data on species' relative abundances that were used
-in the neutral model presented in a following subsection. These networks
-are part of what we call our \emph{abundance dataset}, which is a subset
-of our complete dataset.
+\texttt{mangal.io} (Poisot et al. 2016; Banville, Vissault, and Poisot
+2021) were directly queried from the database (\(n = 235\)). Most
+ecological networks archived on Mangal are multilayer networks,
+i.e.~networks that describe different types of interactions. We kept all
+networks whose interactions were mainly of predation and herbivory
+types, and removed the largest network (\(S = 714\)) for computational
+efficiency reasons. Then, to this set we added food webs from two
+different sources: the New-Zealand dataset (\(n = 21\); Pomeranz et al.
+2018) and the Tuesday lake dataset (\(n = 2\); Cohen, Jonsson, and
+Carpenter 2003). Of these two datasets, \(19\) networks had data on
+species' relative abundances that were used in the neutral model
+presented in a following subsection. These networks are part of what we
+call our \emph{abundance dataset}, which is a subset of our complete
+dataset.
 
 All code and data to reproduce this article are available at the Open
 Science Framework. Data cleaning, simulations and analyses were
@@ -818,7 +819,7 @@ We built two types of MaxEnt network models: one based on connectance
 (type I MaxEnt network model) and the other based on the joint degree
 sequence (type II MaxEnt network model). They are based on the same
 constraints as the types I and II null models presented above. For both
-models, we used a simulating annealing algorithm with \(4\) chains,
+models, we used a simulated annealing algorithm with \(4\) chains,
 \(2000\) steps and an initial temperature of \(0.2\). For each chain, we
 first generated one random Boolean matrix with the same order (number of
 species) as empirical webs, while maintaining the total number of
@@ -973,7 +974,7 @@ ecological networks.
 \caption{Motifs profile of empirical, maximum entropy, and null food
 webs. Empirical networks include all food webs archived on Mangal, as
 well as the New-Zealand and Tuesday lake datasets (our complete
-dataset). Maximum entropy networks were estimated using a simulating
+dataset). Maximum entropy networks were estimated using a simulated
 annealing algorithm to find the network of maximum SVD entropy while
 maintaining the connectance (type I MaxEnt network model) or the joint
 degree sequence (type II MaxEnt network model). The predictions of the
@@ -995,12 +996,12 @@ et al. (2007).}\label{fig:motifs}
 entropy, and null food webs. Empirical networks include all food webs
 archived on Mangal, as well as the New-Zealand and Tuesday lake datasets
 (our complete dataset). Maximum entropy networks were estimated using a
-simulating annealing algorithm to find the network of maximum SVD
-entropy while maintaining the connectance (type I MaxEnt network model)
-or the joint degree sequence (type II MaxEnt network model). The
-predictions of the types I and II null models are also plotted.
-Regression lines are plotted in each panel. Motifs names are from
-Stouffer et al. (2007).}\label{fig:motifs_rel}
+simulated annealing algorithm to find the network of maximum SVD entropy
+while maintaining the connectance (type I MaxEnt network model) or the
+joint degree sequence (type II MaxEnt network model). The predictions of
+the types I and II null models are also plotted. Regression lines are
+plotted in each panel. Motifs names are from Stouffer et al.
+(2007).}\label{fig:motifs_rel}
 }
 \end{figure}
 
@@ -1034,10 +1035,10 @@ in type II MaxEnt networks.
 entropy food webs. Empirical networks include all food webs archived on
 Mangal, as well as the New-Zealand and Tuesday lake datasets (our
 complete dataset). Maximum entropy networks were estimated using a
-simulating annealing algorithm to find the network of maximum SVD
-entropy while maintaining the joint degree sequence (type II MaxEnt
-network model). (a) Nestedness (estimated using the spectral radius of
-the adjacency matrix), (b) the maximum trophic level, (c) the network
+simulated annealing algorithm to find the network of maximum SVD entropy
+while maintaining the joint degree sequence (type II MaxEnt network
+model). (a) Nestedness (estimated using the spectral radius of the
+adjacency matrix), (b) the maximum trophic level, (c) the network
 diameter, and (d) the SVD entropy were measured on these empirical and
 maximum entropy food webs. The identity line is plotted in each
 panel.}\label{fig:measures}
@@ -1115,6 +1116,12 @@ the NSERC BIOS\(^2\) CREATE program.
 Albert, R., and A. L. Barabasi. 2002. {``Statistical Mechanics of
 Complex Networks.''} \emph{Reviews of Modern Physics} 74 (1): 47--97.
 \url{https://doi.org/10.1103/RevModPhys.74.47}.
+
+\leavevmode\hypertarget{ref-Banville2021ManJla}{}%
+Banville, Francis, Steve Vissault, and Timothée Poisot. 2021.
+{``Mangal.jl and EcologicalNetworks.jl: Two Complementary Packages for
+Analyzing Ecological Networks in Julia.''} \emph{Journal of Open Source
+Software} 6 (61): 2721. \url{https://doi.org/10.21105/joss.02721}.
 
 \leavevmode\hypertarget{ref-Bascompte2003NesAssa}{}%
 Bascompte, J., P. Jordano, C. J. Melian, and J. M. Olesen. 2003. {``The
@@ -1254,6 +1261,13 @@ Phillips, Steven J., Robert P. Anderson, and Robert E. Schapire. 2006.
 
 \leavevmode\hypertarget{ref-Pielou1975EcoDiv}{}%
 Pielou, Evelyn C. 1975. {``Ecological Diversity.''} In. 574.524018 P5.
+
+\leavevmode\hypertarget{ref-Poisot2016ManMakb}{}%
+Poisot, Timothee, Benjamin Baiser, Jennifer A. Dunne, Sonia Kefi,
+Francois Massol, Nicolas Mouquet, Tamara N. Romanuk, Daniel B. Stouffer,
+Spencer A. Wood, and Dominique Gravel. 2016. {``Mangal - Making
+Ecological Network Analysis Simple.''} \emph{Ecography} 39 (4): 384--90.
+\url{https://doi.org/10.1111/ecog.00976}.
 
 \leavevmode\hypertarget{ref-Pomeranz2018DatInf}{}%
 Pomeranz, Justin Page, Ross M. Thompson, Timothée Poisot, Jon S.

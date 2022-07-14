@@ -59,7 +59,7 @@ counterfactuals of the flexible links model.}\label{fig:degree_dist_fl}
 \caption{Motifs profile of empirical, maximum entropy, and null food
 webs. Empirical networks include all food webs archived on Mangal, as
 well as the New-Zealand and Tuesday lake datasets (our complete
-dataset). Maximum entropy networks were estimated using a simulating
+dataset). Maximum entropy networks were estimated using a simulated
 annealing algorithm to find the network of maximum SVD entropy while
 maintaining the connectance (type I MaxEnt network model) or the joint
 degree sequence (type II MaxEnt network model). The predictions of the
@@ -82,12 +82,12 @@ et al. (2007).}\label{fig:motifs}
 entropy, and null food webs. Empirical networks include all food webs
 archived on Mangal, as well as the New-Zealand and Tuesday lake datasets
 (our complete dataset). Maximum entropy networks were estimated using a
-simulating annealing algorithm to find the network of maximum SVD
-entropy while maintaining the connectance (type I MaxEnt network model)
-or the joint degree sequence (type II MaxEnt network model). The
-predictions of the types I and II null models are also plotted.
-Regression lines are plotted in each panel. Motifs names are from
-Stouffer et al. (2007).}\label{fig:motifs_rel}
+simulated annealing algorithm to find the network of maximum SVD entropy
+while maintaining the connectance (type I MaxEnt network model) or the
+joint degree sequence (type II MaxEnt network model). The predictions of
+the types I and II null models are also plotted. Regression lines are
+plotted in each panel. Motifs names are from Stouffer et al.
+(2007).}\label{fig:motifs_rel}
 }
 \end{figure}
 \efloatseparator
@@ -100,10 +100,10 @@ Stouffer et al. (2007).}\label{fig:motifs_rel}
 entropy food webs. Empirical networks include all food webs archived on
 Mangal, as well as the New-Zealand and Tuesday lake datasets (our
 complete dataset). Maximum entropy networks were estimated using a
-simulating annealing algorithm to find the network of maximum SVD
-entropy while maintaining the joint degree sequence (type II MaxEnt
-network model). (a) Nestedness (estimated using the spectral radius of
-the adjacency matrix), (b) the maximum trophic level, (c) the network
+simulated annealing algorithm to find the network of maximum SVD entropy
+while maintaining the joint degree sequence (type II MaxEnt network
+model). (a) Nestedness (estimated using the spectral radius of the
+adjacency matrix), (b) the maximum trophic level, (c) the network
 diameter, and (d) the SVD entropy were measured on these empirical and
 maximum entropy food webs. The identity line is plotted in each
 panel.}\label{fig:measures}
