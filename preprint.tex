@@ -205,8 +205,8 @@ urlcolor=blue}
 
 \newcommand{\colorRule}[3][black]{\textcolor[HTML]{#1}{\rule{#2}{#3}}}
 
-\noindent {\LARGE \textbf{\textsf{Maximum entropy modelling of food-web
-structure}}}
+\noindent {\LARGE \textbf{\textsf{What constrains food webs? A maximum
+entropy framework for predicting their structure with minimal biases}}}
 
 \medskip
 \begin{flushleft}
@@ -244,25 +244,36 @@ entropy\\null models\\}
 }
 
 
-\textbf{Abstract}:\,The principle of maximum entropy is a rigorous
-mathematical method of finding constrained probability distributions
-that has been proven useful in many ecological modelling problems.
-However, despite its broad application in graph and network theory, it
-has seldom been used to model ecological networks. Here we show how the
-(joint) degree distribution of maximum entropy can be directly derived
-using the number of species and the number of links in terrestrial and
-aquatic food webs. We also present a heuristic and flexible approach of
-finding the network of maximum entropy based on simulating annealing and
-SVD entropy. We built two of these network-level models using
-constraints given by the connectance and the joint degree sequence,
-respectively. All maximum entropy models were compared against open
-access food-web data and null and neutral models commonly used in
-network ecology. We found that the maximum entropy network model
-constrained by the joint degree sequence was a good predictor of
-food-web structure, including nestedness and motifs distribution.
-Overall, our results suggest that many properties of ecological networks
-are mainly driven by the joint degree distribution and statistical
-phenomena.
+\textbf{Abstract}:\,Food webs are complex ecological networks whose
+structure is both ecologically and statistically constrained, with many
+network properties being correlated with each other. Despite the
+recognition of these invariable relationships in food webs, the use of
+the principle of maximum entropy (MaxEnt) in network ecology is still
+rare. This is surprising considering that MaxEnt is a renowned and
+rigorous statistical tool precisely designed for understanding and
+predicting many different types of constrained systems. Precisely, this
+principle asserts that the least-biased probability distribution of a
+system's property, constrained by prior knowledge about that system, is
+the one with maximum information entropy. MaxEnt has been proven useful
+in many ecological modelling problems, but its application in food webs
+and other ecological networks is limited. Here we show how MaxEnt can be
+used to derive many food-web properties both analytically and
+heuristically. First, we show how the joint degree distribution (the
+joint probability distribution of the numbers of prey and predators for
+each species in the network) can be derived analytically using the
+number of species and the number of interactions in food webs. Second,
+we present a heuristic and flexible approach of finding a network's
+adjacency matrix (the network's representation in matrix format) based
+on simulated annealing and SVD entropy. We built two heuristic models
+using the connectance and the joint degree sequence as statistical
+constraints, respectively. We compared both models' predictions against
+corresponding null and neutral models commonly used in network ecology
+using open access data of terrestrial and aquatic food webs sampled
+globally (N = 257). We found that the heuristic model constrained by the
+joint degree sequence was a good predictor of many measures of food-web
+structure, especially the nestedness and motifs distribution.
+Specifically, our results suggest that the structure of terrestrial and
+aquatic food webs is mainly driven by their joint degree distribution.
 
 \vskip 2em
 \makebox[0pt][l]{\colorRule[CCCCCC]{2.0\textwidth}{0.5pt}}
@@ -1113,7 +1124,10 @@ We acknowledge that this study was conducted on land within the
 traditional unceded territory of the Saint Lawrence Iroquoian,
 Anishinabewaki, Mohawk, Huron-Wendat, and Omàmiwininiwak nations. This
 work was supported by the Institute for Data Valorisation (IVADO) and
-the NSERC BIOS\(^2\) CREATE program.
+the Natural Sciences and Engineering Research Council of Canada (NSERC)
+Collaborative Research and Training Experience (CREATE) program, through
+the Computational Biodiversity Science and Services (BIOS\(^2\))
+program.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
