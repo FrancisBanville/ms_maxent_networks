@@ -245,21 +245,32 @@ of feasible networks.
 The principle of maximum entropy (MaxEnt) is a statistical and
 topological model that can be used for both of these purposes, i.e.~to
 make predictions of network structure and to better understand processes
-shaping ecological networks. This mathematical method, briefly presented
-in Box 1, has been used in a wide range of disciplines, from
-thermodynamics to chemistry and biology (Martyushev and Seleznev 2006).
-It has also been proven useful in ecology, e.g.~in species distribution
-models (Phillips, Anderson, and Schapire 2006) and macroecological
-models (Harte et al. 2008; Harte and Newman 2014). As discussed in Box
-1, maximizing a measure of entropy ensures that the derived probability
-distributions are unique and least biased under the set of constraints
-used. These constraints are built using state variables, i.e.~variables
-that represent the macrostate of the system. The challenge is to find
-the set of state variables that best represent natural systems and to
-translate them into appropriate statistical constraints. Having a
-validated maximum entropy model for the system at hand allows us to make
-rigorous predictions using a minimal amount of data, as well as helping
-us describe the most important factors driving that system.
+shaping ecological networks. Food-web properties that can be derived
+using MaxEnt are varied and pertain to different elements of the network
+(i.e.~at the species (node), the interaction (edge) or the community
+(network) levels). For example, at the species level, MaxEnt can be used
+to predict the distribution of trophic levels among species, as well as
+the distribution of species' vulnerability (number of predators) and
+generality (number of preys). By contrast, at the interaction level,
+predictions can be made on the distribution of interaction strengths in
+weighted food webs. At the community level, it can give us a probability
+distribution of potential networks or of specific measures of their
+emerging structure. The applicability and performance of this method
+depend on the ecological information available and on our capacity to
+find the set of state variables that best represent natural systems and
+to translate them into appropriate statistical constraints. MaxEnt has
+been used in a wide range of disciplines, from thermodynamics to
+chemistry and biology (Martyushev and Seleznev 2006). It has also been
+proven useful in ecology, e.g.~in species distribution models (Phillips,
+Anderson, and Schapire 2006) and macroecological models (Harte et al.
+2008; Harte and Newman 2014). Maximizing a measure of entropy ensures
+that the derived probability distributions are unique and least biased
+under the set of constraints used. These constraints are built using
+state variables, i.e.~variables that represent the macrostate of the
+system. Having a validated maximum entropy model for the system at hand
+allows us to make rigorous predictions using a minimal amount of data,
+as well as helping us describe the most important factors driving that
+system.
 
 Despite its extensive use in graph and network theories (e.g., Park and
 Newman 2004; van der Hoorn, Lippner, and Krioukov 2018), MaxEnt has in
@@ -291,7 +302,7 @@ from the joint degree distribution since the first is the sum of the
 marginal distributions of the second (a species' degree is the sum of
 its in and out-degrees). Because of the scarcity of empirical data on
 the number of interactions in ecological networks, we present a method
-to predict \(L\) from \(S\) (Box 2), thus allowing the prediction of the
+to predict \(L\) from \(S\) (Box 1), thus allowing the prediction of the
 joint degree distribution from \(S\) solely. In turn, the second
 approach consists in finding, using different constraints, the adjacency
 matrix of maximum entropy from which network properties can be measured.
@@ -309,9 +320,9 @@ the whole joint degree sequence as a constraint. Overall, we found that
 this second model was much better at predicting food-web structure than
 the one based on connectance.
 
-\hypertarget{box-1---the-principle-of-maximum-entropy-a-primer-for-ecologists}{%
-\section{Box 1 - The principle of maximum entropy: A primer for
-ecologists}\label{box-1---the-principle-of-maximum-entropy-a-primer-for-ecologists}}
+\hypertarget{the-principle-of-maximum-entropy-a-primer-for-ecologists}{%
+\subsection{The principle of maximum entropy: A primer for
+ecologists}\label{the-principle-of-maximum-entropy-a-primer-for-ecologists}}
 
 The principle of maximum entropy is a mathematical method of finding
 probability distributions, strongly rooted in statistical mechanics and
@@ -363,31 +374,34 @@ maximized by setting to \(0\) its partial derivative with respect to
 degree distribution analytically from the number of species and the
 number of interactions in food webs.
 
-In this contribution, we also use the SVD entropy as a measure of
-entropy, which is an application of Shannon's entropy to the relative
-non-zero singular values of a truncated singular value decomposition
-(t-SVD; Strydom, Dalla Riva, and Poisot 2021) of a food web's Boolean
-adjacency matrix. This measure also satisfies all four properties
-above-mentioned, while being a proper measure of the internal complexity
-of food webs (Strydom, Dalla Riva, and Poisot 2021). We measured SVD
+Shannon's entropy can only be calculated on conventional probability
+distributions such as the joint degree distribution. This is an issue
+when working with ecological networks, which are frequently represented
+as adjacency matrices. For this reason, in this contribution, we also
+use the SVD entropy as a measure of entropy, which is an application of
+Shannon's entropy to the relative non-zero singular values of a
+truncated singular value decomposition (t-SVD; Strydom, Dalla Riva, and
+Poisot 2021) of a food web's Boolean adjacency matrix. We measured SVD
 entropy as follows:
 
 \begin{equation}\protect\hypertarget{eq:svd-entropy}{}{J = -\sum_{i=1}^R s_i \log s_i,}\label{eq:svd-entropy}\end{equation}
 
-where \(s_i\) are the relative singular values
+where \(s_i\) are the relative singular values of the adjacency matrix
 (\(s_i = \sigma_i / \sum_{i = 1}^R \sigma_i\), where \(\sigma_i\) are
-the singular values). Following Strydom, Dalla Riva, and Poisot (2021),
-we standardized this measure with the rank \(R\) of the matrix
-(i.e.~\(J / \ln(R)\)) to account for the difference in dimensions
-between networks (\emph{sensu} Pielou's evenness; Pielou 1975). In a
-following section, we will show how SVD entropy can be used to predict a
-network of maximum entropy (i.e.~of maximum complexity) heuristically.
+the singular values). Note that the distribution of relative singular
+values is analogous to a probability distribution, with \(0 < s_i < 1\)
+and \(\sum s_i = 1\). Thus, this measure also satisfies all four
+properties above-mentioned, while being a proper measure of the internal
+complexity of food webs (Strydom, Dalla Riva, and Poisot 2021).
+Following Strydom, Dalla Riva, and Poisot (2021), we standardized this
+measure with the rank \(R\) of the matrix (i.e.~\(J / \ln(R)\)) to
+account for the difference in dimensions between networks (\emph{sensu}
+Pielou's evenness; Pielou 1975). We will show how SVD entropy can be
+used to predict the network of maximum entropy (i.e.~of maximum
+complexity) heuristically given a predetermined set of constraints.
 
-\hypertarget{testing-maxent-models}{%
-\section{Testing MaxEnt models}\label{testing-maxent-models}}
-
-\hypertarget{data}{%
-\subsection{Data}\label{data}}
+\hypertarget{data-and-code}{%
+\section{Data and code}\label{data-and-code}}
 
 We tested our MaxEnt models (both approaches) against open food-web data
 queried from three different sources and integrated into what we call
@@ -410,54 +424,6 @@ dataset.
 All code and data to reproduce this article are available at the Open
 Science Framework. Data cleaning, simulations and analyses were
 conducted in Julia v1.5.4.
-
-\hypertarget{null-models-types-i-and-ii}{%
-\subsection{Null models (types I and
-II)}\label{null-models-types-i-and-ii}}
-
-Our maximum entropy network models (second approach only) were compared
-with two topological null models. The first is the type I null model of
-Fortuna and Bascompte (2006), in which the probability that a species
-\(i\) predates on another species \(j\) is given by
-
-\begin{equation}\protect\hypertarget{eq:type1null}{}{p(i \rightarrow j) = \frac{L}{S^2}.}\label{eq:type1null}\end{equation}
-
-The second is the type II null model of Bascompte et al. (2003), in
-which the probability of interaction is instead given by
-
-\begin{equation}\protect\hypertarget{eq:type2null}{}{p(i \rightarrow j) = \frac{1}{2} \left(\frac{k_{in}(j)}{S} + \frac{k_{out}(i)}{S}\right),}\label{eq:type2null}\end{equation}
-
-where \(k_{in}\) and \(k_{out}\) are the in and out-degrees,
-respectively. The type I null model is based on connectance, whereas the
-type II null model is based on the joint degree sequence. Therefore, the
-type I and II topological null models correspond with our type I and II
-MaxEnt network models, respectively, since they use similar constraints.
-
-We predicted both types of null networks for all empirical networks in
-our complete dataset (\(n = 257\)). We converted all probabilistic
-networks to Boolean networks by generating \(100\) random Boolean
-networks for each of these probabilistic webs. Then, we counted the
-number of times each interaction was sampled, and kept the \(L\) entries
-that were drawn the most amount of time, with \(L\) given by the number
-of interactions in each food web. This ensured that the resulting null
-networks had the same number of interactions as their empirical
-counterparts.
-
-\hypertarget{neutral-model}{%
-\subsection{Neutral model}\label{neutral-model}}
-
-We also compared our MaxEnt network models with a neutral model of
-relative abundances, in which the probabilities of interaction are given
-by
-
-\begin{equation}\protect\hypertarget{eq:neutralmodel}{}{p(i \rightarrow j) \propto \frac{n_i}{N} \times \frac{n_j}{N},}\label{eq:neutralmodel}\end{equation}
-
-where \(n_i\) and \(n_j\) are the abundances (or biomass) of both
-species, and \(N\) is the total abundance (or biomass) of all species in
-the network. We predicted neutral abundance matrices for all empirical
-networks in our abundance dataset (\(n = 19\)), and converted these
-weighted matrices to Boolean networks using an approach analogue to the
-one we used for our null models.
 
 \hypertarget{analytical-models-measures-of-maximum-entropy}{%
 \section{Analytical models: Measures of maximum
@@ -508,11 +474,11 @@ we seek to maximize the following expression:
 
 where \(\lambda_1\), \(\lambda_2\), and \(\lambda_3\) are the Lagrange
 multipliers. The probability distribution that maximizes entropy is
-obtained by finding these values. As pointed out in Box 1, \(F\) is just
-Shannon's entropy to which we added terms that each sums to zero (our
-constraints). \(F\) is maximized by setting to 0 its partial derivative
-with respect to \(p(k_{in},k_{out})\). Because the derivative of a
-constant is zero, this gives us:
+obtained by finding these values. As pointed out in the introduction,
+\(F\) is just Shannon's entropy to which we added terms that each sums
+to zero (our constraints). \(F\) is maximized by setting to 0 its
+partial derivative with respect to \(p(k_{in},k_{out})\). Because the
+derivative of a constant is zero, this gives us:
 
 \begin{equation}\protect\hypertarget{eq:lagrange_jdd}{}{\frac{\partial H}{\partial p(k_{in},k_{out})} = \lambda_1 \frac{\partial g_1}{\partial p(k_{in},k_{out})} + \lambda_2 \frac{\partial g_2}{\partial p(k_{in},k_{out})}+ \lambda_3 \frac{\partial g_3}{\partial p(k_{in},k_{out})}.}\label{eq:lagrange_jdd}\end{equation}
 
@@ -638,10 +604,10 @@ Banville, and Poisot (2020) pointed out, the size of food webs should at
 least be of \(S-1\) interactions, since a lower number would yield
 isolated species, i.e.~species without any predators or preys. Our
 results show that, under our purely information-theoretic model, the
-probability that a species is isolated is quite high below this
-threshold. The expected proportion of isolated species rapidly declines
-by orders of magnitude with increasing numbers of species and
-interactions.
+probability that a species is isolated is quite high when the total
+number of interactions is below this threshold. The expected proportion
+of isolated species rapidly declines by orders of magnitude with
+increasing numbers of species and interactions.
 
 The degree distribution could also have been obtained directly using the
 principle of maximum entropy, as discussed in Williams (2011). This
@@ -678,9 +644,9 @@ flexible method to predict many measures of network structure
 simultaneously, i.e.~by finding networks of maximum entropy
 heuristically.
 
-\hypertarget{box-2---working-with-predicted-numbers-of-interactions}{%
-\section{Box 2 - Working with predicted numbers of
-interactions}\label{box-2---working-with-predicted-numbers-of-interactions}}
+\hypertarget{box-1---working-with-predicted-numbers-of-interactions}{%
+\section{Box 1 - Working with predicted numbers of
+interactions}\label{box-1---working-with-predicted-numbers-of-interactions}}
 
 Our models need information on the number of species and the number of
 interactions. However, since the later is rarely estimated empirically,
@@ -752,6 +718,58 @@ counterfactuals of the flexible links model.}\label{fig:degree_dist_fl}
 }
 \end{figure}
 
+\hypertarget{box-2---corresponding-null-and-neutral-models}{%
+\section{Box 2 - Corresponding null and neutral
+models}\label{box-2---corresponding-null-and-neutral-models}}
+
+\hypertarget{null-models-types-i-and-ii}{%
+\subsection{Null models (types I and
+II)}\label{null-models-types-i-and-ii}}
+
+Our maximum entropy network models (second approach only) were compared
+with two topological null models. The first is the type I null model of
+Fortuna and Bascompte (2006), in which the probability that a species
+\(i\) predates on another species \(j\) is given by
+
+\begin{equation}\protect\hypertarget{eq:type1null}{}{p(i \rightarrow j) = \frac{L}{S^2}.}\label{eq:type1null}\end{equation}
+
+The second is the type II null model of Bascompte et al. (2003), in
+which the probability of interaction is instead given by
+
+\begin{equation}\protect\hypertarget{eq:type2null}{}{p(i \rightarrow j) = \frac{1}{2} \left(\frac{k_{in}(j)}{S} + \frac{k_{out}(i)}{S}\right),}\label{eq:type2null}\end{equation}
+
+where \(k_{in}\) and \(k_{out}\) are the in and out-degrees,
+respectively. The type I null model is based on connectance, whereas the
+type II null model is based on the joint degree sequence. Therefore, the
+type I and II topological null models correspond with our type I and II
+MaxEnt network models, respectively, since they use similar constraints.
+
+We predicted both types of null networks for all empirical networks in
+our complete dataset (\(n = 257\)). We converted all probabilistic
+networks to Boolean networks by generating \(100\) random Boolean
+networks for each of these probabilistic webs. Then, we counted the
+number of times each interaction was sampled, and kept the \(L\) entries
+that were drawn the most amount of time, with \(L\) given by the number
+of interactions in each food web. This ensured that the resulting null
+networks had the same number of interactions as their empirical
+counterparts.
+
+\hypertarget{neutral-model}{%
+\subsection{Neutral model}\label{neutral-model}}
+
+We also compared our MaxEnt network models with a neutral model of
+relative abundances, in which the probabilities of interaction are given
+by
+
+\begin{equation}\protect\hypertarget{eq:neutralmodel}{}{p(i \rightarrow j) \propto \frac{n_i}{N} \times \frac{n_j}{N},}\label{eq:neutralmodel}\end{equation}
+
+where \(n_i\) and \(n_j\) are the abundances (or biomass) of both
+species, and \(N\) is the total abundance (or biomass) of all species in
+the network. We predicted neutral abundance matrices for all empirical
+networks in our abundance dataset (\(n = 19\)), and converted these
+weighted matrices to Boolean networks using an approach analogue to the
+one we used for our null models.
+
 \hypertarget{heuristical-models-networks-of-maximum-entropy}{%
 \section{Heuristical models: Networks of maximum
 entropy}\label{heuristical-models-networks-of-maximum-entropy}}
@@ -762,12 +780,12 @@ II)}\label{maxent-network-models-types-i-and-ii}}
 
 We define networks of maximum entropy as the configuration of the
 adjacency matrix with the highest SVD entropy under a set of
-constraints. As mentioned in Box 1, we used the SVD entropy as our
-measure of entropy since it has been shown to be a reliable measure of
-food-web complexity (Strydom, Dalla Riva, and Poisot 2021), in addition
-to having the required properties of a proper measure of information
-entropy. We thus seek to find the network with the highest complexity,
-or randomness, that exactly reproduces specified constraints on its
+constraints. As mentioned above, we used the SVD entropy as our measure
+of entropy since it has been shown to be a reliable measure of food-web
+complexity (Strydom, Dalla Riva, and Poisot 2021), in addition to having
+the required properties of a proper measure of information entropy. We
+thus seek to find the network with the highest complexity, or
+randomness, that exactly reproduces specified constraints on its
 structure. Our method is in contrast with maximum entropy graph models
 that predict a probability distribution on networks under soft or hard
 constraints (e.g., Park and Newman 2004; Cimini et al. 2019). We believe
