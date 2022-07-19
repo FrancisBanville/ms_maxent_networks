@@ -100,7 +100,7 @@ The degree distribution $p(k)$ represents the probability that a species has $k$
 
 $$p(k) = \sum_{i=0}^k p(k_{in} = k - i, k_{out} = i).$$
 
-In fig. S2, we show that the degree distribution of maximum entropy, given $S$ and $L$, predicts very low probabilities that a species will be isolated in its food web (i.e. having $k = 0$). As @MacDonald2020RevLin pointed out, the size of food webs should at least be of $S-1$ interactions, since a lower number would yield isolated species, i.e. species without any predators or preys. Our results show that, under our purely information-theoretic model, the probability that a species is isolated is quite high below this threshold. The expected proportion of isolated species rapidly declines by orders of magnitude with increasing numbers of species and interactions.  
+In fig. S2, we show that the degree distribution of maximum entropy, given $S$ and $L$, predicts very low probabilities that a species will be isolated in its food web (i.e. having $k = 0$). As @MacDonald2020RevLin pointed out, the size of food webs should at least be of $S-1$ interactions, since a lower number would yield isolated species, i.e. species without any predators or preys. Our results show that, under our purely information-theoretic model, the probability that a species is isolated is quite high when the total number of interactions is below this threshold. The expected proportion of isolated species rapidly declines by orders of magnitude with increasing numbers of species and interactions.  
 
 The degree distribution could also have been obtained directly using the principle of maximum entropy, as discussed in @Williams2011BioMet. This gives the following distribution: 
 
