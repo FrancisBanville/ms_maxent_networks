@@ -308,77 +308,82 @@ make predictions of network structure and to better understand processes
 shaping ecological networks. Food-web properties that can be derived
 using MaxEnt are varied and pertain to different elements of the network
 (i.e.~at the species (node), the interaction (edge) or the community
-(network) levels). For example, at the species level, MaxEnt can be used
-to predict the distribution of trophic levels among species, as well as
-the distribution of species' vulnerability (number of predators) and
-generality (number of preys). By contrast, at the interaction level,
-predictions can be made on the distribution of interaction strengths in
-weighted food webs. At the community level, it can give us a probability
-distribution of potential networks or of specific measures of their
-emerging structure. The applicability and performance of this method
-depend on the ecological information available and on our capacity to
-find the set of state variables that best represent natural systems and
-to translate them into appropriate statistical constraints. MaxEnt has
-been used in a wide range of disciplines, from thermodynamics to
-chemistry and biology (Martyushev and Seleznev 2006). It has also been
-proven useful in ecology, e.g.~in species distribution models (Phillips,
-Anderson, and Schapire 2006) and macroecological models (Harte et al.
-2008; Harte and Newman 2014). Maximizing a measure of entropy ensures
-that the derived probability distributions are unique and least biased
-under the set of constraints used. These constraints are built using
-state variables, i.e.~variables that represent the macrostate of the
-system. Having a validated maximum entropy model for the system at hand
-allows us to make rigorous predictions using a minimal amount of data,
-as well as helping us describe the most important factors driving that
-system.
+(network) levels). Because MaxEnt is a method of finding probability
+distributions that are least biased given partial knowledge about a
+system, these properties need to be represented probabilistically.
+Otherwise, some data transformation might be needed. For example, at the
+species level, MaxEnt can be used to predict the distribution of trophic
+levels among species, as well as the distribution of species'
+vulnerability (number of predators) and generality (number of preys). By
+contrast, at the interaction level, predictions can be made on the
+distribution of interaction strengths in weighted food webs. At the
+community level, it can give us a probability distribution of potential
+networks or of specific measures of their emerging structure. The
+applicability and performance of this method depend on the ecological
+information available and on our capacity to find the set of state
+variables that best represent natural systems and to translate them into
+appropriate statistical constraints. MaxEnt has been used in a wide
+range of disciplines, from thermodynamics to chemistry and biology
+(Martyushev and Seleznev 2006). It has also been proven useful in
+ecology, e.g.~in species distribution models (Phillips, Anderson, and
+Schapire 2006) and macroecological models (Harte et al. 2008; Harte and
+Newman 2014). The probability distribution of the variable of interest
+with the maximum entropy value is unique and least biased under the set
+of constraints used. These constraints are built using state variables,
+i.e.~variables that represent the macrostate of the system. Having a
+validated maximum entropy model for the system at hand allows us to make
+rigorous predictions using a minimal amount of data, as well as helping
+us describe the most important factors driving that system.
 
 Despite its extensive use in graph and network theories (e.g., Park and
 Newman 2004; van der Hoorn, Lippner, and Krioukov 2018), MaxEnt has in
 comparison been little used in network ecology. Like other real system
-networks, ecological networks are represented mathematically as graphs.
-However, the very nature of ecological networks (directed simple graphs
-frequently having self-loops) makes the mathematical optimization of
-maximum entropy graph models more complicated than with many other types
-of (non-ecological) networks. MaxEnt has nevertheless been used to
-predict the degree distribution of bipartite ecological networks from
-the number of species and the number of interactions (Williams 2011) and
-to predict interaction strengths between species pairs using their
-relative abundances within an optimal transportation theory regularized
-with information entropy (Stock, Poisot, and De Baets 2021). However, to
-the best of our knowledge, MaxEnt has never been used to predict
-food-web structure directly, even though food webs are among the most
-documented and widespread ecological networks.
+networks, food webs and other ecological networks are represented
+mathematically as graphs. However, the very nature of food webs
+(directed simple graphs frequently having self-loops) makes the
+mathematical optimization of maximum entropy graph models more
+complicated than with many other types of (non-ecological) networks.
+MaxEnt has nevertheless been used to predict the degree distribution of
+bipartite ecological networks from the number of species and the number
+of interactions (Williams 2011) and to predict interaction strengths
+between species pairs using their relative abundances within an optimal
+transportation theory regularized with information entropy (Stock,
+Poisot, and De Baets 2021). However, to the best of our knowledge,
+MaxEnt has never been used to predict food-web structure directly, even
+though food webs are among the most documented and widespread ecological
+networks.
 
 In this contribution, we used two complementary approaches to predict
 the structure of food webs using the principle of maximum entropy. We
 then compared our predictions against empirical data and null and
 neutral models commonly used in network ecology. The first approach
 consists in deriving constrained probability distributions of given
-network properties directly. We derived the joint degree distribution (a
-probability distribution) of maximum entropy using only the number of
-species \(S\) and the number of interactions \(L\) as state variables.
-Then, we predicted the degree distribution of maximum entropy directly
-from the joint degree distribution since the first is the sum of the
-marginal distributions of the second (a species' degree is the sum of
-its in and out-degrees). Because of the scarcity of empirical data on
-the number of interactions in ecological networks, we present a method
-to predict \(L\) from \(S\) (Box 1), thus allowing the prediction of the
-joint degree distribution from \(S\) solely. In turn, the second
+network properties directly. We derived the joint degree distribution
+(the joint probability distribution that a species has a given number of
+prey and predators in a food web) of maximum entropy using only the
+number of species \(S\) and the number of interactions \(L\) as state
+variables. Then, we predicted the degree distribution of maximum entropy
+directly from the joint degree distribution since the first is the sum
+of the marginal distributions of the second (a species' degree is the
+sum of its in and out-degrees). Because of the scarcity of empirical
+data on the number of interactions in ecological networks, we present a
+method to predict \(L\) from \(S\) (Box 1), thus allowing the prediction
+of the joint degree distribution from \(S\) solely. In turn, the second
 approach consists in finding, using different constraints, the adjacency
 matrix of maximum entropy from which network properties can be measured.
 To do so, we used a flexible and heuristic approach based on simulated
-annealing to find networks \emph{close} to maximum entropy. As discussed
-above, our choice of algorithm stands from the very nature of food webs
-(i.e.~simple directed networks allowing self-loops) that makes the
-analytical derivation of a maximum entropy graph model difficult. We
-first built our type I MaxEnt network model constrained by the
-connectance of the network (i.e.~the ratio \(L/S^2\)). A comparison of
-this model against empirical data indicated that connectance alone was
-not sufficient to predict many aspects of network structure. For this
-reason, we built our type II MaxEnt network model, which instead uses
-the whole joint degree sequence as a constraint. Overall, we found that
-this second model was much better at predicting food-web structure than
-the one based on connectance.
+annealing (an optimization algorithm) to find networks \emph{close} to
+maximum entropy. As discussed above, our choice of algorithm stands from
+the very nature of food webs (i.e.~simple directed networks allowing
+self-loops) that makes the analytical derivation of a maximum entropy
+graph model difficult. We first built our type I MaxEnt network model
+constrained by the connectance of the network (i.e.~the ratio
+\(L/S^2\)). A comparison of this model against empirical data indicated
+that connectance alone was not sufficient to predict many aspects of
+network structure. For this reason, we built our type II MaxEnt network
+model, which instead uses the whole joint degree sequence as a
+constraint. Overall, we found that this second model was much better at
+predicting food-web structure than the one based on connectance.
 
 \hypertarget{the-principle-of-maximum-entropy-a-primer-for-ecologists}{%
 \subsection{The principle of maximum entropy: A primer for
@@ -401,17 +406,19 @@ distribution will be the best fit to empirical data. The challenge is to
 find the right set of constraints that would best reproduce
 distributions found in nature.
 
-Entropy measures the amount of information given by the outcome of a
-random variable. Many measures of entropy have been developed in physics
-(Beck 2009), but only a fraction of them could be used as an
-optimization measure with the principle of maximum entropy. According to
-Beck (2009) and Khinchin (2013), a measure of entropy \(H\) should
-satisfy four properties in the discrete case: (1) it should be a
-function of a probability distribution \(p(n)\) only; (2) it should be
-maximized when \(p(n)\) is uniform; (3) it should not be influenced by
-outcomes with a null probability; and (4) it should be independent of
-the order of information acquisition. The Shannon's entropy (Shannon
-1948)
+The least-biased probability distribution given the constraints used is
+the one with the highest entropy among all probability distributions
+that satisfy these constraints. Entropy is a measure of the average
+amount of information given by the outcome of a random variable. Many
+measures of entropy have been developed in physics (Beck 2009), but only
+a fraction of them could be used as an optimization measure with the
+principle of maximum entropy. According to Beck (2009) and Khinchin
+(2013), a measure of entropy \(H\) should satisfy four properties in the
+discrete case: (1) it should be a function of a probability distribution
+\(p(n)\) only; (2) it should be maximized when \(p(n)\) is uniform; (3)
+it should not be influenced by outcomes with a null probability; and (4)
+it should be independent of the order of information acquisition. The
+Shannon's entropy (Shannon 1948)
 
 \begin{equation}\protect\hypertarget{eq:shannon}{}{H = -\sum_{n} p(n) \log p(n)}\label{eq:shannon}\end{equation}
 
@@ -430,30 +437,32 @@ where \(g_i\) is the mathematical formulation of the constraint \(i\)
 and \(c_i\), its value. Note that \(F\) is just Shannon's entropy to
 which we added terms that each sums to zero (\(g_i = c_i\)). \(F\) is
 maximized by setting to \(0\) its partial derivative with respect to
-\(p(n)\). We will show how this can be done when we derive the joint
-degree distribution analytically from the number of species and the
-number of interactions in food webs.
+\(p(n)\). In this contribution, we show how this can be done by deriving
+the joint degree distribution analytically from the number of species
+and the number of interactions in food webs.
 
 \hypertarget{data-and-code}{%
 \section{Data and code}\label{data-and-code}}
 
-We tested our MaxEnt models (both approaches) against open food-web data
-queried from three different sources and integrated into what we call
-our \emph{complete dataset}. First, all food webs archived on
-\texttt{mangal.io} (Poisot et al. 2016; Banville, Vissault, and Poisot
-2021) were directly queried from the database (\(n = 235\)). Most
-ecological networks archived on Mangal are multilayer networks,
-i.e.~networks that describe different types of interactions. We kept all
-networks whose interactions were mainly of predation and herbivory
-types, and removed the largest network (\(S = 714\)) for computational
-efficiency reasons. Then, to this set we added food webs from two
-different sources: the New-Zealand dataset (\(n = 21\); Pomeranz et al.
-2018) and the Tuesday lake dataset (\(n = 2\); Cohen, Jonsson, and
-Carpenter 2003). Of these two datasets, \(19\) networks had data on
-species' relative abundances that were used in the neutral model
-presented in a following subsection. These networks are part of what we
-call our \emph{abundance dataset}, which is a subset of our complete
-dataset.
+We tested our analytical and heuristic MaxEnt models against open
+food-web data queried from three different sources and integrated into
+what we call our \emph{complete dataset}. These sources include (1)
+terrestrial and aquatic food webs sampled globally and archived on the
+ecological interactions database Mangal; (2) freshwater stream food webs
+from New Zealand; and (3) aquatic food webs from Tuesday Lake (Michigan,
+United States). First, all food webs archived on \texttt{mangal.io}
+(Poisot et al. 2016; Banville, Vissault, and Poisot 2021) were directly
+queried from the database (\(n = 235\)). Most ecological networks
+archived on Mangal are multilayer networks, i.e.~networks that describe
+different types of interactions. We kept all networks whose interactions
+were mainly of predation and herbivory types, and removed the largest
+network (\(S = 714\)) for computational efficiency reasons. Then, to
+this set we added food webs from two different sources: the New-Zealand
+dataset (\(n = 21\); Pomeranz et al. 2018) and the Tuesday lake dataset
+(\(n = 2\); Cohen, Jonsson, and Carpenter 2003). Of these two datasets,
+\(19\) networks had data on species' relative abundances that were used
+in the neutral model (Box 2). These \(19\) networks constitute our
+\emph{abundance dataset}, which is a subset of our complete dataset.
 
 All code and data to reproduce this article are available at the Open
 Science Framework. Data cleaning, simulations and analyses were
@@ -766,10 +775,10 @@ models}\label{box-2---corresponding-null-and-neutral-models}}
 \subsection{Null models (types I and
 II)}\label{null-models-types-i-and-ii}}
 
-Our maximum entropy network models (second approach only) were compared
-with two topological null models. The first is the type I null model of
-Fortuna and Bascompte (2006), in which the probability that a species
-\(i\) predates on another species \(j\) is given by
+Our heuristic MaxEnt models, predicting adjacency matrices, were
+compared with two topological null models. The first is the type I null
+model of Fortuna and Bascompte (2006), in which the probability that a
+species \(i\) predates on another species \(j\) is given by
 
 \begin{equation}\protect\hypertarget{eq:type1null}{}{p(i \rightarrow j) = \frac{L}{S^2}.}\label{eq:type1null}\end{equation}
 
@@ -810,9 +819,9 @@ networks in our abundance dataset (\(n = 19\)), and converted these
 weighted matrices to Boolean networks using an approach analogue to the
 one we used for our null models.
 
-\hypertarget{heuristical-models-networks-of-maximum-entropy}{%
-\section{Heuristical models: Networks of maximum
-entropy}\label{heuristical-models-networks-of-maximum-entropy}}
+\hypertarget{heuristic-models-networks-of-maximum-entropy}{%
+\section{Heuristic models: Networks of maximum
+entropy}\label{heuristic-models-networks-of-maximum-entropy}}
 
 \hypertarget{from-shannons-to-svd-entropy}{%
 \subsection{From Shannon's to SVD
@@ -889,9 +898,9 @@ temperature when lower. The final configuration with the highest SVD
 entropy among the four chains constitute our estimated MaxEnt network.
 Even though we decided to work with point estimates, it is possible to
 have a (non MaxEnt) probability distribution of networks when working
-with the entire chains after burn-in. For each network in our complete
-and abundance datasets, we estimated their configuration with maximum
-entropy using both types of MaxEnt network models.
+with the entire chains (or part of the chains). For each network in our
+complete and abundance datasets, we estimated their configuration with
+maximum entropy using both types of MaxEnt network models.
 
 Our method is in contrast with maximum entropy graph models that predict
 a probability distribution on networks under soft or hard constraints
