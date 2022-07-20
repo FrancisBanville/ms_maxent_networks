@@ -41,7 +41,7 @@ each network.}\label{fig:kl_diverg}
 \caption{(a) Probability density of the predicted mean degree for
 different values of species richness. The number of interactions was
 predicted using the flexible links model fitted to all empirical
-networks in our complete dataset eq.~\ref{eq:BBpost}. (b) Degree
+networks in our complete dataset (eq.~\ref{eq:BBpost}). (b) Degree
 distributions of maximum entropy for a network of \(S=27\) species and
 different numbers of interactions \(L\). The numbers of interactions
 correspond to the lower and upper bounds of the \(67%

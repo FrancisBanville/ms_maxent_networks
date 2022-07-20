@@ -751,15 +751,16 @@ conducted using the Julia library \texttt{Turing} v0.15.12.
 The flexible links model is a generative model, i.e.~it can generate
 plausible values of the predicted variable. We thus simulated \(1000\)
 values of \(L\) for different values of \(S\) using the joint posterior
-distribution of our model parameters eq.~\ref{eq:BBpost}, and calculated
-the mean degree for each simulated values. The resulting distributions
-are shown in the left panel of fig.~\ref{fig:degree_dist_fl} for three
-different values of species richness. In the right panel of
-fig.~\ref{fig:degree_dist_fl}, we show how the probability distribution
-for the mean degree constraints can be used to generate a distribution
-of maximum entropy degree distributions, since each simulated value of
-mean degree generates a different maximum entropy degree distribution
-eq.~\ref{eq:lagrange_dd}.
+distribution of our model parameters (eq.~\ref{eq:BBpost}), and
+calculated the mean degree for each simulated values. The resulting
+distributions are shown in the left panel of
+fig.~\ref{fig:degree_dist_fl} for three different values of species
+richness. In the right panel of fig.~\ref{fig:degree_dist_fl}, we show
+how the probability distribution for the mean degree constraints can be
+used to generate a distribution of maximum entropy degree distributions,
+since each simulated value of mean degree generates a different maximum
+entropy degree distribution (eq.~\ref{eq:lagrange_dd} and
+eq.~\ref{eq:lagrange2_dd}).
 
 \begin{figure}
 \hypertarget{fig:degree_dist_fl}{%
@@ -768,7 +769,7 @@ eq.~\ref{eq:lagrange_dd}.
 \caption{(a) Probability density of the predicted mean degree for
 different values of species richness. The number of interactions was
 predicted using the flexible links model fitted to all empirical
-networks in our complete dataset eq.~\ref{eq:BBpost}. (b) Degree
+networks in our complete dataset (eq.~\ref{eq:BBpost}). (b) Degree
 distributions of maximum entropy for a network of \(S=27\) species and
 different numbers of interactions \(L\). The numbers of interactions
 correspond to the lower and upper bounds of the \(67%
