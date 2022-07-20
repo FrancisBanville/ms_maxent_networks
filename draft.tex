@@ -691,14 +691,15 @@ conducted using the Julia library \texttt{Turing} v0.15.12.
 The flexible links model is a generative model, i.e.~it can generate
 plausible values of the predicted variable. We thus simulated \(1000\)
 values of \(L\) for different values of \(S\) using the joint posterior
-distribution of our model parameters, and calculated the mean degree for
-each simulated values. The resulting distributions are shown in the left
-panel of fig.~\ref{fig:degree_dist_fl} for three different values of
-species richness. In the right panel of fig.~\ref{fig:degree_dist_fl},
-we show how the probability distribution for the mean degree constraints
-can be used to generate a distribution of maximum entropy degree
-distributions, since each simulated value of mean degree generates a
-different maximum entropy degree distribution.
+distribution of our model parameters eq.~\ref{eq:BBpost}, and calculated
+the mean degree for each simulated values. The resulting distributions
+are shown in the left panel of fig.~\ref{fig:degree_dist_fl} for three
+different values of species richness. In the right panel of
+fig.~\ref{fig:degree_dist_fl}, we show how the probability distribution
+for the mean degree constraints can be used to generate a distribution
+of maximum entropy degree distributions, since each simulated value of
+mean degree generates a different maximum entropy degree distribution
+eq.~\ref{eq:lagrange_dd}.
 
 \begin{figure}
 \hypertarget{fig:degree_dist_fl}{%
@@ -707,14 +708,17 @@ different maximum entropy degree distribution.
 \caption{(a) Probability density of the predicted mean degree for
 different values of species richness. The number of interactions was
 predicted using the flexible links model fitted to all empirical
-networks in our complete dataset. (b) Degree distributions of maximum
-entropy for a network of \(27\) species and different numbers of
-interactions. The numbers of interactions correspond to the lower and
-upper bounds of the \(67%
+networks in our complete dataset eq.~\ref{eq:BBpost}. (b) Degree
+distributions of maximum entropy for a network of \(S=27\) species and
+different numbers of interactions \(L\). The numbers of interactions
+correspond to the lower and upper bounds of the \(67%
 \), \(89%
 \), and \(97%
-\) percentile intervals (PI), as well as the median, of the
-counterfactuals of the flexible links model.}\label{fig:degree_dist_fl}
+\) percentile intervals (PI), as well as the median (in blue), of the
+counterfactuals of the flexible links model. Each degree distribution
+was obtained using eq.~\ref{eq:lagrange_dd} after solving numerically
+eq.~\ref{eq:lagrange2_dd} using different values for the mean degree
+constraint \(2L/S\).}\label{fig:degree_dist_fl}
 }
 \end{figure}
 
