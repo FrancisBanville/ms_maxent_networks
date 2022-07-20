@@ -374,32 +374,6 @@ maximized by setting to \(0\) its partial derivative with respect to
 degree distribution analytically from the number of species and the
 number of interactions in food webs.
 
-Shannon's entropy can only be calculated on conventional probability
-distributions such as the joint degree distribution. This is an issue
-when working with ecological networks, which are frequently represented
-as adjacency matrices. For this reason, in this contribution, we also
-use the SVD entropy as a measure of entropy, which is an application of
-Shannon's entropy to the relative non-zero singular values of a
-truncated singular value decomposition (t-SVD; Strydom, Dalla Riva, and
-Poisot 2021) of a food web's Boolean adjacency matrix. We measured SVD
-entropy as follows:
-
-\begin{equation}\protect\hypertarget{eq:svd-entropy}{}{J = -\sum_{i=1}^R s_i \log s_i,}\label{eq:svd-entropy}\end{equation}
-
-where \(s_i\) are the relative singular values of the adjacency matrix
-(\(s_i = \sigma_i / \sum_{i = 1}^R \sigma_i\), where \(\sigma_i\) are
-the singular values). Note that the distribution of relative singular
-values is analogous to a probability distribution, with \(0 < s_i < 1\)
-and \(\sum s_i = 1\). Thus, this measure also satisfies all four
-properties above-mentioned, while being a proper measure of the internal
-complexity of food webs (Strydom, Dalla Riva, and Poisot 2021).
-Following Strydom, Dalla Riva, and Poisot (2021), we standardized this
-measure with the rank \(R\) of the matrix (i.e.~\(J / \ln(R)\)) to
-account for the difference in dimensions between networks (\emph{sensu}
-Pielou's evenness; Pielou 1975). We will show how SVD entropy can be
-used to predict the network of maximum entropy (i.e.~of maximum
-complexity) heuristically given a predetermined set of constraints.
-
 \hypertarget{data-and-code}{%
 \section{Data and code}\label{data-and-code}}
 
@@ -641,8 +615,9 @@ mathematical equations, but with algorithms. Moreover, the applicability
 of this method to empirical systems is limited by the state variables we
 can actually measure and use. In the next section, we propose a more
 flexible method to predict many measures of network structure
-simultaneously, i.e.~by finding networks of maximum entropy
-heuristically.
+simultaneously, i.e.~by finding heuristically the configuration of the
+network having maximum entropy given partial knowledge of its emerging
+structure.
 
 \hypertarget{box-1---working-with-predicted-numbers-of-interactions}{%
 \section{Box 1 - Working with predicted numbers of
@@ -779,24 +754,61 @@ one we used for our null models.
 \section{Heuristical models: Networks of maximum
 entropy}\label{heuristical-models-networks-of-maximum-entropy}}
 
+\hypertarget{from-shannons-to-svd-entropy}{%
+\subsection{From Shannon's to SVD
+entropy}\label{from-shannons-to-svd-entropy}}
+
+The principle of maximum entropy can be applied on the network itself if
+we decompose its adjacency matrix into a non-zero vector of relative
+values. This is a necessary step when working with food webs, which are
+frequently expressed as a matrix \(A = [a_{ij}]\) of Boolean values
+representing the presence (\(a_{ij} = 1\)) or absence (\(a_{ij} = 0\))
+of an interaction between two species \(i\) and \(j\). Knowing one or
+many properties of a food web of interest (e.g., its number of species
+and number of interactions), we can simulate its adjacency matrix
+randomly by using these known ecological information to constrain the
+space of potential networks. The entropy of this hypothetical matrix can
+then be measured after decomposing it into appropriate values.
+Simulating a series of networks until we find the one having the highest
+entropy allows us to search for the most complex food-web configuration
+given the ecological constraints used. This configuration is the least
+biased one considering the information we had. In other words, the most
+we can say about a network's adjacency matrix, without making more
+assumptions than the ones given by our incomplete knowledge of its
+structure, is the one of maximum entropy. Generating the most complex
+network that corresponds to this structure allows us to explore more
+easily other properties of food webs under MaxEnt.
+
+Shannon's entropy can only be calculated on conventional probability
+distributions such as the joint degree distribution. This is an issue
+when working with ecological networks, which are represented as
+adjacency matrices. For this reason, we need to use another measure of
+entropy if we want to predict the network itself. We used the SVD
+entropy as our measure of entropy, which is an application of Shannon's
+entropy to the relative non-zero singular values of a truncated singular
+value decomposition (t-SVD; Strydom, Dalla Riva, and Poisot 2021) of a
+food web's Boolean adjacency matrix. We measured SVD entropy as follows:
+
+\begin{equation}\protect\hypertarget{eq:svd-entropy}{}{J = -\sum_{i=1}^R s_i \log s_i,}\label{eq:svd-entropy}\end{equation}
+
+where \(s_i\) are the relative singular values of the adjacency matrix
+(\(s_i = \sigma_i / \sum_{i = 1}^R \sigma_i\), where \(\sigma_i\) are
+the singular values). Note that the distribution of relative singular
+values is analogous to a probability distribution, with \(0 < s_i < 1\)
+and \(\sum s_i = 1\). Thus, this measure also satisfies all four
+properties of an appropriate entropy measure (see introduction), while
+being a proper measure of the internal complexity of food webs (Strydom,
+Dalla Riva, and Poisot 2021). Following Strydom, Dalla Riva, and Poisot
+(2021), we standardized this measure with the rank \(R\) of the matrix
+(i.e.~\(J / \ln(R)\)) to account for the difference in dimensions
+between networks (\emph{sensu} Pielou's evenness; Pielou 1975). We used
+SVD entropy to predict the network configuration of maximum entropy
+(i.e.~of maximum complexity) heuristically given a predetermined set of
+constraints.
+
 \hypertarget{maxent-network-models-types-i-and-ii}{%
 \subsection{MaxEnt network models (types I and
 II)}\label{maxent-network-models-types-i-and-ii}}
-
-We define networks of maximum entropy as the configuration of the
-adjacency matrix with the highest SVD entropy under a set of
-constraints. As mentioned above, we used the SVD entropy as our measure
-of entropy since it has been shown to be a reliable measure of food-web
-complexity (Strydom, Dalla Riva, and Poisot 2021), in addition to having
-the required properties of a proper measure of information entropy. We
-thus seek to find the network with the highest complexity, or
-randomness, that exactly reproduces specified constraints on its
-structure. Our method is in contrast with maximum entropy graph models
-that predict a probability distribution on networks under soft or hard
-constraints (e.g., Park and Newman 2004; Cimini et al. 2019). We believe
-our approach to be more flexible, easier to compute, while allowing
-direct comparisons of empirical food webs with more complex networks
-with similar structure.
 
 We built two types of MaxEnt network models: one based on connectance
 (type I MaxEnt network model) and the other based on the joint degree
@@ -820,6 +832,13 @@ have a (non MaxEnt) probability distribution of networks when working
 with the entire chains after burn-in. For each network in our complete
 and abundance datasets, we estimated their configuration with maximum
 entropy using both types of MaxEnt network models.
+
+Our method is in contrast with maximum entropy graph models that predict
+a probability distribution on networks under soft or hard constraints
+(e.g., Park and Newman 2004; Cimini et al. 2019). We believe our
+approach to be more flexible, easier to compute, while allowing direct
+comparisons of empirical food webs with more complex networks with
+similar structure.
 
 \hypertarget{structure-of-maxent-networks}{%
 \subsection{Structure of MaxEnt
