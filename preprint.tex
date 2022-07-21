@@ -578,13 +578,21 @@ in and out-degrees). Indeed, our predicted joint degree sequences have
 the same number of species as their empirical counterparts, but they are
 species agnostic; in other words, instead of predicting a value for each
 species directly, we predicted the entire joint degree sequence without
-taking into account species' identity. When we associate predictions and
-empirical data according to their rank in total degrees, we see that
-species predicted to be have a higher generality (number of preys)
-generally have a lower vulnerability (number of preys) than what is
-observed (and conversely). In fig.~S1, we show how these differences
-change when species are instead ordered by their out-degrees (left
-panel) and in-degrees (right panel), respectively.
+taking into account species' identity. The challenge is to associate
+predictions with empirical data. If we associate each node according to
+their rank in total degrees, we see that species predicted to be have a
+higher generality (number of preys) generally have a lower vulnerability
+(number of preys) than what is observed (and conversely). This is
+because the difference in total degree (\(k_{out} + k_{in}\)) is
+minimized when species are ordered by their total degrees in both
+predicted and empirical sets (i.e.~the average sum of relative
+\(k_{out}\) and \(k_{in}\) is close to \(0\) across all species). This
+result shows that the differences between predicted and empirical
+degrees (in and out) are low for most species when ordered by their
+total degrees and that there is no apparent biases towards in or out
+degrees. In fig.~S1, we show how these differences change when species
+are instead ordered by their out-degrees (left panel) and in-degrees
+(right panel), respectively.
 
 \begin{figure}
 \hypertarget{fig:joint_dd}{%
@@ -604,15 +612,26 @@ dataset.}\label{fig:joint_dd}
 }
 \end{figure}
 
-We plotted the Kullback--Leibler divergence between in and out-degree
-distributions to compare the symmetry of empirical and maximum entropy
-joint degree sequences fig.~\ref{fig:kl_diverg}. As we expected, our
-model predicted more similar in-degree and out-degree distributions than
-empirical data. However, this difference decreased with connectance
-right panel of \ref{fig:kl_diverg}. Overall, this suggests that other
-ecological constraints might be needed to account for the asymmetry of
-the joint degree distribution, especially for networks with a lower
-connectance.
+We can describe the shape of the joint degree distribution by comparing
+its marginal distributions with one another. Doing so allows us to
+evaluate how much the shape of the joint degree distribution of maximum
+entropy differs from empirical data. We plotted the Kullback--Leibler
+(KL) divergence between in and out-degree sequences to compare the
+symmetry of empirical and maximum entropy joint degree sequences
+fig.~\ref{fig:kl_diverg}. As we expected, our model predicted more
+similar in-degree and out-degree distributions than empirical data
+(shown by a lower KL divergence). However, this difference decreased
+with connectance right panel of \ref{fig:kl_diverg}. This suggests that
+other ecological constraints might be needed to account for the
+asymmetry of the joint degree distribution, especially for networks with
+a lower connectance. This might be due to the fact that food webs with
+low connectance are typically harder to predict than food webs with high
+connectance. Indeed, in low connectance systems, what makes two species
+interact might be more important for predictions than in high
+connectance systems, in which what prevents species from interacting
+might be more meaningful. This implies that more ecological information
+might be needed in food webs with fewer numbers of interactions because
+more nuances determine interactions compared to non-interactions.
 
 \begin{figure}
 \hypertarget{fig:kl_diverg}{%
@@ -929,11 +948,14 @@ networks much better than the ones based on connectance and the neutral
 model of relative abundances. On average, the type II MaxEnt network
 model was better at predicting nestedness (\(0.62 \pm 0.08\)) than its
 corresponding null model (\(0.73 \pm 0.05\); empirical networks:
-\(0.63 \pm 0.09\)), as well as the proportion of cannibal species.
-However, the type II null model was better at predicting network
-diameter and average maximum similarity between species pairs.
-Predictions were similar between both type II models for the maximum
-trophic level and the proportion of omnivorous species.
+\(0.63 \pm 0.09\)), as well as the proportion of cannibal species. This
+might in part be due because nestedness was calculated using the
+spectral radius of the adjacency matrix, which leverages information on
+the network itself just like the MaxEnt network models. However, the
+type II null model was better at predicting network diameter and average
+maximum similarity between species pairs. Predictions were similar
+between both type II models for the maximum trophic level and the
+proportion of omnivorous species.
 
 \hypertarget{tbl:measures_all}{}
 \begin{longtable}[]{@{}rrrrrrrr@{}}
@@ -1109,8 +1131,8 @@ panel.}\label{fig:measures}
 }
 \end{figure}
 
-\hypertarget{conclusion}{%
-\section{Conclusion}\label{conclusion}}
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
 
 The principle of maximum entropy is a robust mathematical method of
 finding least-biased probability distributions that have some desired
@@ -1135,6 +1157,19 @@ considering our findings that empirical networks are close to maximum
 entropy for a given joint degree sequence, our results suggest that
 food-web topology is configured almost entirely randomly around these
 marginal numbers of predators and preys.
+
+Our results bring to the forefront the role of the joint degree
+distribution in shaping food-web structure. This echoes the work of
+Williams (2011), which shows using MaxEnt how the degree distribution
+can drive the structure of bipartite networks. Fortuna et al. (2010)
+also found that the degree distribution of ecological networks is
+associated with some of their emerging properties such as nestedness and
+modularity. Network ecologists tend to focus on several emerging
+properties of food webs (Delmas et al. 2019), although we show that
+food-web structure is very well predicted by the joint degree
+distribution. In the light of our results, there is a lot more
+ecological information in the difference between properties of empirical
+networks and MaxEnt predictions than in these properties themselves.
 
 \hypertarget{alternative-maxent-models}{%
 \subsection{Alternative MaxEnt models}\label{alternative-maxent-models}}
@@ -1192,6 +1227,9 @@ networks to better understand ecological mechanisms driving food-web
 structure. In that case, our model might need to be slightly adapted to
 give a probability distribution of Boolean networks (in contrast with
 point estimates of maximum entropy networks).
+
+\hypertarget{conclusion}{%
+\subsection{Conclusion}\label{conclusion}}
 
 One of the biggest challenges in using the principle of maximum entropy
 is to identify the set of state variables that best reproduce empirical
