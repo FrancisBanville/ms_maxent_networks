@@ -842,13 +842,6 @@ with the entire chains (or part of the chains). For each network in our
 complete and abundance datasets, we estimated their configuration with
 maximum entropy using both types of MaxEnt network models.
 
-Our method is in contrast with maximum entropy graph models that predict
-a probability distribution on networks under soft or hard constraints
-(e.g., Park and Newman 2004; Cimini et al. 2019). We believe our
-approach to be more flexible, easier to compute, while allowing direct
-comparisons of empirical food webs with more complex networks with
-similar structure.
-
 \hypertarget{structure-of-maxent-networks}{%
 \subsection{Structure of MaxEnt
 networks}\label{structure-of-maxent-networks}}
@@ -1082,6 +1075,48 @@ considering our findings that empirical networks are close to maximum
 entropy for a given joint degree sequence, our results suggest that
 food-web topology is configured almost entirely randomly around these
 marginal numbers of predators and preys.
+
+\hypertarget{alternative-maxent-models}{%
+\subsection{Alternative MaxEnt models}\label{alternative-maxent-models}}
+
+There are different ways to generate food webs using MaxEnt. In this
+contribution, we used a method based on simulated annealing to find the
+network configuration with the highest SVD entropy while fixing some
+aspects of its structure. Another technique, also based on simulated
+annealing, could start by generating a food web randomly with fixed
+numbers of species and interactions and calculating its joint degree
+distribution. Pairs of interactions could be swapped sequentially until
+we minimize the divergence between the calculated joint degree
+distribution and the one of maximum entropy obtained analytically. In
+that case, this is the entropy of the joint degree distribution that
+would be maximized, not the one of the network's topology. To a certain
+extent, this method would thus bridge the gap between the two approaches
+presented in this article (i.e.~analytical and heuristic MaxEnt models).
+More research is needed to compare the quality of different methods
+generating adjacency matrices of food webs using MaxEnt.
+
+Another method generating adjacency matrices are maximum entropy graph
+models, which predict a probability distribution of networks under soft
+or hard constraints (e.g., Park and Newman 2004; Cimini et al. 2019).
+Under hard constraints, every network with a non-zero probability
+exactly satisfies the constraints on its structure. This is in contrast
+with soft constraints, which require that networks satisfy them on
+average (i.e.~many networks with a non-zero probability do not have the
+exact structure set by the constraints). Maximum entropy graph models
+are helpful because they can provide probability distributions for many
+network properties, by measuring the structure of all adjacency matrices
+with a non-zero probability. However, we consider that our approach
+based on simulated annealing is more flexible and more computationally
+efficient. Indeed, many measures of food-web structure are hard to
+translate into mathematical constraints. Moreover, because food webs are
+directed networks with self-loops, it makes the mathematical derivation
+of maximum entropy graph models difficult. We believe that identifying
+heuristically what really constrains the topology of food webs is a
+useful first step before attempting to derive the mathematical
+formulation of a maximum entropy graph model adapted to food webs.
+
+\hypertarget{applications}{%
+\subsection{Applications}\label{applications}}
 
 Our method and results could be used for different purposes. First, they
 could be used as first-order approximations of network structure when
