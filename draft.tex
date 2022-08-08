@@ -222,6 +222,49 @@ aquatic food webs is mainly driven by their joint degree distribution.
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
+\hypertarget{the-constrained-structure-of-ecological-networks}{%
+\subsection{The constrained structure of ecological
+networks}\label{the-constrained-structure-of-ecological-networks}}
+
+A variety of measures of the structure of ecological networks have been
+used to describe the organization of species interactions in a
+biological community (Delmas et al. 2019). These measures provide
+valuable information on the functioning of ecosystems and their
+responses to environmental change (e.g., Pascual and Dunne 2006; Gómez,
+Perfectti, and Jordano 2011). For instance, Bascompte et al. (2003)
+suggest that plant--pollinator and seed-disperser networks have a highly
+nested structure that can promote species persistence. Another example,
+in food webs, shows that a high connectance can promote the robustness
+of the system to species lost (Dunne, Williams, and Martinez 2002).
+However, despite the growing literature on the ecological implications
+of network structure, the association between many of these measures
+impedes our ability to fully understand what drives the structure and
+behavior of ecological networks. In particular, nestedness and
+modularity are strongly associated in ecological networks (Fortuna et
+al. 2010), and network connectance has been shown to be an important
+driver of many other emerging network properties (Timothée Poisot and
+Gravel 2014). In light of these observations, it is difficult to assess
+whether attributed effects of given properties are the artifacts of
+other, perhaps simpler, measures. It might be necessary to factor out
+the effect of other correlated measures before analyzing the structure
+of ecological networks.
+
+One way to tackle this issue is first to recognize that food webs and
+other ecological networks are constrained systems. In other words, the
+space of possible network configurations shrinks as we know more about a
+network structure. Consequently, the range of values that a given
+network property can take depends on the values of other properties.
+Above all, the structure of ecological networks is constrained by the
+number of species, or nodes, present. Food webs with high species
+richness typically have a lower connectance (MacDonald, Banville, and
+Poisot 2020) than smaller networks. This is because the number of
+realized interactions in empirical food webs scales slower than the
+number of possible species pairs (MacDonald, Banville, and Poisot 2020).
+As shown by Timothée Poisot and Gravel (2014), connectance itself can
+constrain different aspects of network structure such as the degree
+distribution. Other measures, such as the maximum trophic level, can
+also constrain the space of feasible networks.
+
 Statistical and mathematical models can help fill many gaps in our
 knowledge about species interactions. Predictive and null models are two
 complementary types of models that have been developed in network
@@ -241,6 +284,10 @@ taking into account species' identity. According to Strydom et al.
 (2021), these topological models could be used to make better
 predictions of pairwise species interactions by constraining the space
 of feasible networks.
+
+\hypertarget{the-principle-of-maximum-entropy-a-primer-for-ecologists}{%
+\subsection{The principle of maximum entropy: A primer for
+ecologists}\label{the-principle-of-maximum-entropy-a-primer-for-ecologists}}
 
 The principle of maximum entropy (MaxEnt) is a statistical and
 topological model that can be used for both of these purposes, i.e.~to
@@ -274,60 +321,6 @@ i.e.~variables that represent the macrostate of the system. Having a
 validated maximum entropy model for the system at hand allows us to make
 rigorous predictions using a minimal amount of data, as well as helping
 us describe the most important factors driving that system.
-
-Despite its extensive use in graph and network theories (e.g., Park and
-Newman 2004; van der Hoorn, Lippner, and Krioukov 2018), MaxEnt has in
-comparison been little used in network ecology. Like other real system
-networks, food webs and other ecological networks are represented
-mathematically as graphs. However, the very nature of food webs
-(directed simple graphs frequently having self-loops) makes the
-mathematical optimization of maximum entropy graph models more
-complicated than with many other types of (non-ecological) networks.
-MaxEnt has nevertheless been used to predict the degree distribution of
-bipartite ecological networks from the number of species and the number
-of interactions (Williams 2011) and to predict interaction strengths
-between species pairs using their relative abundances within an optimal
-transportation theory regularized with information entropy (Stock,
-Poisot, and De Baets 2021). However, to the best of our knowledge,
-MaxEnt has never been used to predict food-web structure directly, even
-though food webs are among the most documented and widespread ecological
-networks.
-
-In this contribution, we used two complementary approaches to predict
-the structure of food webs using the principle of maximum entropy. We
-then compared our predictions against empirical data and null and
-neutral models commonly used in network ecology. The first approach
-consists in deriving constrained probability distributions of given
-network properties directly. We derived the joint degree distribution
-(the joint probability distribution that a species has a given number of
-prey and predators in a food web) of maximum entropy using only the
-number of species \(S\) and the number of interactions \(L\) as state
-variables. Then, we predicted the degree distribution of maximum entropy
-directly from the joint degree distribution since the first is the sum
-of the marginal distributions of the second (a species' degree is the
-sum of its in and out-degrees). Because of the scarcity of empirical
-data on the number of interactions in ecological networks, we present a
-method to predict \(L\) from \(S\) (Box 1), thus allowing the prediction
-of the joint degree distribution from \(S\) solely. In turn, the second
-approach consists in finding, using different constraints, the adjacency
-matrix of maximum entropy from which network properties can be measured.
-To do so, we used a flexible and heuristic approach based on simulated
-annealing (an optimization algorithm) to find networks \emph{close} to
-maximum entropy. As discussed above, our choice of algorithm stands from
-the very nature of food webs (i.e.~simple directed networks allowing
-self-loops) that makes the analytical derivation of a maximum entropy
-graph model difficult. We first built our type I MaxEnt network model
-constrained by the connectance of the network (i.e.~the ratio
-\(L/S^2\)). A comparison of this model against empirical data indicated
-that connectance alone was not sufficient to predict many aspects of
-network structure. For this reason, we built our type II MaxEnt network
-model, which instead uses the whole joint degree sequence as a
-constraint. Overall, we found that this second model was much better at
-predicting food-web structure than the one based on connectance.
-
-\hypertarget{the-principle-of-maximum-entropy-a-primer-for-ecologists}{%
-\subsection{The principle of maximum entropy: A primer for
-ecologists}\label{the-principle-of-maximum-entropy-a-primer-for-ecologists}}
 
 The principle of maximum entropy is a mathematical method of finding
 probability distributions, strongly rooted in statistical mechanics and
@@ -381,6 +374,59 @@ maximized by setting to \(0\) its partial derivative with respect to
 the joint degree distribution analytically from the number of species
 and the number of interactions in food webs.
 
+\hypertarget{objectives}{%
+\subsection{Objectives}\label{objectives}}
+
+Despite its extensive use in graph and network theories (e.g., Park and
+Newman 2004; van der Hoorn, Lippner, and Krioukov 2018), MaxEnt has in
+comparison been little used in network ecology. Like other real system
+networks, food webs and other ecological networks are represented
+mathematically as graphs. However, the very nature of food webs
+(directed simple graphs frequently having self-loops) makes the
+mathematical optimization of maximum entropy graph models more
+complicated than with many other types of (non-ecological) networks.
+MaxEnt has nevertheless been used to predict the degree distribution of
+bipartite ecological networks from the number of species and the number
+of interactions (Williams 2011) and to predict interaction strengths
+between species pairs using their relative abundances within an optimal
+transportation theory regularized with information entropy (Stock,
+Poisot, and De Baets 2021). However, to the best of our knowledge,
+MaxEnt has never been used to predict food-web structure directly, even
+though food webs are among the most documented and widespread ecological
+networks.
+
+In this contribution, we used two complementary approaches to predict
+the structure of food webs using the principle of maximum entropy. We
+then compared our predictions against empirical data and null and
+neutral models commonly used in network ecology. The first approach
+consists in deriving constrained probability distributions of given
+network properties directly. We derived the joint degree distribution
+(the joint probability distribution that a species has a given number of
+prey and predators in a food web) of maximum entropy using only the
+number of species \(S\) and the number of interactions \(L\) as state
+variables. Then, we predicted the degree distribution of maximum entropy
+directly from the joint degree distribution since the first is the sum
+of the marginal distributions of the second (a species' degree is the
+sum of its in and out-degrees). Because of the scarcity of empirical
+data on the number of interactions in ecological networks, we present a
+method to predict \(L\) from \(S\) (Box 1), thus allowing the prediction
+of the joint degree distribution from \(S\) solely. In turn, the second
+approach consists in finding, using different constraints, the adjacency
+matrix of maximum entropy from which network properties can be measured.
+To do so, we used a flexible and heuristic approach based on simulated
+annealing (an optimization algorithm) to find networks \emph{close} to
+maximum entropy. As discussed above, our choice of algorithm stands from
+the very nature of food webs (i.e.~simple directed networks allowing
+self-loops) that makes the analytical derivation of a maximum entropy
+graph model difficult. We first built our type I MaxEnt network model
+constrained by the connectance of the network (i.e.~the ratio
+\(L/S^2\)). A comparison of this model against empirical data indicated
+that connectance alone was not sufficient to predict many aspects of
+network structure. For this reason, we built our type II MaxEnt network
+model, which instead uses the whole joint degree sequence as a
+constraint. Overall, we found that this second model was much better at
+predicting food-web structure than the one based on connectance.
+
 \hypertarget{data-and-code}{%
 \section{Data and code}\label{data-and-code}}
 
@@ -391,18 +437,19 @@ terrestrial and aquatic food webs sampled globally and archived on the
 ecological interactions database Mangal; (2) freshwater stream food webs
 from New Zealand; and (3) aquatic food webs from Tuesday Lake (Michigan,
 United States). First, all food webs archived on \texttt{mangal.io}
-(Poisot et al. 2016; Banville, Vissault, and Poisot 2021) were directly
-queried from the database (\(n = 235\)). Most ecological networks
-archived on Mangal are multilayer networks, i.e.~networks that describe
-different types of interactions. We kept all networks whose interactions
-were mainly of predation and herbivory types, and removed the largest
-network (\(S = 714\)) for computational efficiency reasons. Then, to
-this set we added food webs from two different sources: the New-Zealand
-dataset (\(n = 21\); Pomeranz et al. 2018) and the Tuesday lake dataset
-(\(n = 2\); Cohen, Jonsson, and Carpenter 2003). Of these two datasets,
-\(19\) networks had data on species' relative abundances that were used
-in the neutral model (Box 2). These \(19\) networks constitute our
-\emph{abundance dataset}, which is a subset of our complete dataset.
+(Timothee Poisot et al. 2016; Banville, Vissault, and Poisot 2021) were
+directly queried from the database (\(n = 235\)). Most ecological
+networks archived on Mangal are multilayer networks, i.e.~networks that
+describe different types of interactions. We kept all networks whose
+interactions were mainly of predation and herbivory types, and removed
+the largest network (\(S = 714\)) for computational efficiency reasons.
+Then, to this set we added food webs from two different sources: the
+New-Zealand dataset (\(n = 21\); Pomeranz et al. 2018) and the Tuesday
+lake dataset (\(n = 2\); Cohen, Jonsson, and Carpenter 2003). Of these
+two datasets, \(19\) networks had data on species' relative abundances
+that were used in the neutral model (Box 2). These \(19\) networks
+constitute our \emph{abundance dataset}, which is a subset of our
+complete dataset.
 
 All code and data to reproduce this article are available at the Open
 Science Framework. Data cleaning, simulations and analyses were
@@ -1255,6 +1302,12 @@ Giulio V. Dalla Riva, Marie Josée Fortin, Dominique Gravel, et al. 2019.
 {``Analysing Ecological Networks of Species Interactions.''}
 \emph{Biological Reviews}. \url{https://doi.org/10.1111/brv.12433}.
 
+\leavevmode\hypertarget{ref-Dunne2002NetStrb}{}%
+Dunne, Jennifer A., Richard J. Williams, and Neo D. Martinez. 2002.
+{``Network Structure and Biodiversity Loss in Food Webs: Robustness
+Increases with Connectance.''} \emph{Ecology Letters} 5 (4): 558--67.
+\url{https://doi.org/10.1046/j.1461-0248.2002.00354.x}.
+
 \leavevmode\hypertarget{ref-Dunning2017JumMod}{}%
 Dunning, Iain, Joey Huchette, and Miles Lubin. 2017. {``JuMP: A Modeling
 Language for Mathematical Optimization.''} \emph{SIAM Review} 59 (2):
@@ -1279,6 +1332,12 @@ Classification of Common Probability Distributions Based on Information
 Symmetry and Measurement Scale.''} \emph{Journal of Evolutionary
 Biology} 24 (3): 469--84.
 \url{https://doi.org/10.1111/j.1420-9101.2010.02204.x}.
+
+\leavevmode\hypertarget{ref-Gomez2011FunConb}{}%
+Gómez, José M., Francisco Perfectti, and Pedro Jordano. 2011. {``The
+Functional Consequences of Mutualistic Network Architecture.''}
+\emph{PLOS ONE} 6 (1): e16143.
+\url{https://doi.org/10.1371/journal.pone.0016143}.
 
 \leavevmode\hypertarget{ref-Harremoes2001MaxEnt}{}%
 Harremoës, Peter, and Flemming Topsøe. 2001. {``Maximum Entropy
@@ -1347,6 +1406,12 @@ Park, Juyong, and M. E. J. Newman. 2004. {``Statistical Mechanics of
 Networks.''} \emph{Physical Review E} 70 (6): 066117.
 \url{https://doi.org/10.1103/PhysRevE.70.066117}.
 
+\leavevmode\hypertarget{ref-Pascual2006EcoNeta}{}%
+Pascual, Department of Ecology and Evolutionary Biology Mercedes, and
+Visiting Professor Jennifer A. Dunne. 2006. \emph{Ecological Networks:
+Linking Structure to Dynamics in Food Webs}. Oxford University Press,
+USA.
+
 \leavevmode\hypertarget{ref-Phillips2006MaxEnta}{}%
 Phillips, Steven J., Robert P. Anderson, and Robert E. Schapire. 2006.
 {``Maximum Entropy Modeling of Species Geographic Distributions.''}
@@ -1362,6 +1427,12 @@ Francois Massol, Nicolas Mouquet, Tamara N. Romanuk, Daniel B. Stouffer,
 Spencer A. Wood, and Dominique Gravel. 2016. {``Mangal - Making
 Ecological Network Analysis Simple.''} \emph{Ecography} 39 (4): 384--90.
 \url{https://doi.org/10.1111/ecog.00976}.
+
+\leavevmode\hypertarget{ref-Poisot2014WheEcoa}{}%
+Poisot, Timothée, and Dominique Gravel. 2014. {``When Is an Ecological
+Network Complex? Connectance Drives Degree Distribution and Emerging
+Network Properties.''} \emph{PeerJ} 2: e251.
+\url{https://doi.org/10.7717/peerj.251}.
 
 \leavevmode\hypertarget{ref-Pomeranz2018DatInf}{}%
 Pomeranz, Justin Page, Ross M. Thompson, Timothée Poisot, Jon S.

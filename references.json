@@ -142,18 +142,6 @@
         "volume": "458"
     },
     {
-        "author": [
-            {
-                "family": "Bastolla",
-                "given": "Ugo"
-            }
-        ],
-        "id": "BastollaArcMut",
-        "page": "4",
-        "title": "The architecture of mutualistic networks minimizes competition and increases biodiversity",
-        "type": "article-journal"
-    },
-    {
         "DOI": "10.1080/00107510902823517",
         "author": [
             {
@@ -368,6 +356,37 @@
         "type": "article-journal"
     },
     {
+        "DOI": "10.1046/j.1461-0248.2002.00354.x",
+        "author": [
+            {
+                "family": "Dunne",
+                "given": "Jennifer A."
+            },
+            {
+                "family": "Williams",
+                "given": "Richard J."
+            },
+            {
+                "family": "Martinez",
+                "given": "Neo D."
+            }
+        ],
+        "container-title": "Ecology Letters",
+        "id": "Dunne2002NetStrb",
+        "issue": "4",
+        "issued": {
+            "date-parts": [
+                [
+                    2002
+                ]
+            ]
+        },
+        "page": "558-567",
+        "title": "Network structure and biodiversity loss in food webs: Robustness increases with connectance",
+        "type": "article-journal",
+        "volume": "5"
+    },
+    {
         "DOI": "10.1137/15M1020575",
         "author": [
             {
@@ -504,6 +523,38 @@
         "title": "A simple derivation and classification of common probability distributions based on information symmetry and measurement scale",
         "type": "article-journal",
         "volume": "24"
+    },
+    {
+        "DOI": "10.1371/journal.pone.0016143",
+        "author": [
+            {
+                "family": "G\u00f3mez",
+                "given": "Jos\u00e9 M."
+            },
+            {
+                "family": "Perfectti",
+                "given": "Francisco"
+            },
+            {
+                "family": "Jordano",
+                "given": "Pedro"
+            }
+        ],
+        "container-title": "PLOS ONE",
+        "id": "Gomez2011FunConb",
+        "issue": "1",
+        "issued": {
+            "date-parts": [
+                [
+                    2011
+                ]
+            ]
+        },
+        "page": "e16143",
+        "publisher": "Public Library of Science",
+        "title": "The Functional Consequences of Mutualistic Network Architecture",
+        "type": "article-journal",
+        "volume": "6"
     },
     {
         "DOI": "10.3390/e3030191",
@@ -841,6 +892,29 @@
         "volume": "70"
     },
     {
+        "author": [
+            {
+                "family": "Pascual",
+                "given": "Department of Ecology and Evolutionary Biology Mercedes"
+            },
+            {
+                "family": "Dunne",
+                "given": "Visiting Professor Jennifer A."
+            }
+        ],
+        "id": "Pascual2006EcoNeta",
+        "issued": {
+            "date-parts": [
+                [
+                    2006
+                ]
+            ]
+        },
+        "publisher": "Oxford University Press, USA",
+        "title": "Ecological Networks: Linking Structure to Dynamics in Food Webs",
+        "type": "book"
+    },
+    {
         "DOI": "10.1016/j.ecolmodel.2005.03.026",
         "author": [
             {
@@ -889,6 +963,33 @@
         },
         "title": "Ecological diversity",
         "type": "chapter"
+    },
+    {
+        "DOI": "10.7717/peerj.251",
+        "author": [
+            {
+                "family": "Poisot",
+                "given": "Timoth\u00e9e"
+            },
+            {
+                "family": "Gravel",
+                "given": "Dominique"
+            }
+        ],
+        "container-title": "PeerJ",
+        "id": "Poisot2014WheEcoa",
+        "issued": {
+            "date-parts": [
+                [
+                    2014
+                ]
+            ]
+        },
+        "page": "e251",
+        "publisher": "PeerJ Inc.",
+        "title": "When is an ecological network complex? Connectance drives degree distribution and emerging network properties",
+        "type": "article-journal",
+        "volume": "2"
     },
     {
         "DOI": "10.1111/ecog.00976",
