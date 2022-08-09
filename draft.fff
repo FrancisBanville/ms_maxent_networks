@@ -6,7 +6,7 @@
 relative number of preys (\(k_{out}\)) for each species in (a) empirical
 and (b) maximum entropy joint degree sequences. Empirical networks
 include all food webs archived on Mangal, as well as the New-Zealand and
-Tuesday lake datasets (our complete dataset). The predicted joint degree
+Tuesday Lake datasets (our complete dataset). The predicted joint degree
 sequences were obtained after sampling one realization of the joint
 degree distribution of maximum entropy for each network. (c) Difference
 between predicted and empirical values when species are ordered
@@ -26,7 +26,7 @@ out-degree sequences of empirical and maximum entropy joint degree
 sequences. (b) Difference between the KL divergence of empirical and
 predicted networks as a function of connectance. In both panels,
 empirical networks include all food webs archived on Mangal, as well as
-the New-Zealand and Tuesday lake datasets (our complete dataset). The
+the New-Zealand and Tuesday Lake datasets (our complete dataset). The
 joint degree sequence of simulated networks was obtained after sampling
 one realization of the joint degree distribution of maximum entropy for
 each network.}\label{fig:kl_diverg}
@@ -62,7 +62,7 @@ constraint \(2L/S\).}\label{fig:degree_dist_fl}
 \includegraphics{figures/motifs_distribution.png}
 \caption{Motifs profile of empirical, maximum entropy, and null food
 webs. Empirical networks include all food webs archived on Mangal, as
-well as the New-Zealand and Tuesday lake datasets (our complete
+well as the New-Zealand and Tuesday Lake datasets (our complete
 dataset). Maximum entropy networks were estimated using a simulated
 annealing algorithm to find the network of maximum SVD entropy while
 maintaining the connectance (type I MaxEnt network model) or the joint
@@ -84,7 +84,7 @@ et al. (2007).}\label{fig:motifs}
 \includegraphics{figures/motifs_relations.png}
 \caption{Relationship between motifs proportions of empirical, maximum
 entropy, and null food webs. Empirical networks include all food webs
-archived on Mangal, as well as the New-Zealand and Tuesday lake datasets
+archived on Mangal, as well as the New-Zealand and Tuesday Lake datasets
 (our complete dataset). Maximum entropy networks were estimated using a
 simulated annealing algorithm to find the network of maximum SVD entropy
 while maintaining the connectance (type I MaxEnt network model) or the
@@ -102,7 +102,7 @@ plotted in each panel. Motifs names are from Stouffer et al.
 \includegraphics{figures/measures_emp_maxent.png}
 \caption{Relationship between the structure of empirical and maximum
 entropy food webs. Empirical networks include all food webs archived on
-Mangal, as well as the New-Zealand and Tuesday lake datasets (our
+Mangal, as well as the New-Zealand and Tuesday Lake datasets (our
 complete dataset). Maximum entropy networks were estimated using a
 simulated annealing algorithm to find the network of maximum SVD entropy
 while maintaining the joint degree sequence (type II MaxEnt network

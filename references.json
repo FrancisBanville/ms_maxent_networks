@@ -691,6 +691,93 @@
         "volume": "46"
     },
     {
+        "DOI": "10.1111/j.1365-2656.2008.01460.x",
+        "author": [
+            {
+                "family": "Ings",
+                "given": "Thomas C."
+            },
+            {
+                "family": "Montoya",
+                "given": "Jos\u00e9 M."
+            },
+            {
+                "family": "Bascompte",
+                "given": "Jordi"
+            },
+            {
+                "family": "Bl\u00fcthgen",
+                "given": "Nico"
+            },
+            {
+                "family": "Brown",
+                "given": "Lee"
+            },
+            {
+                "family": "Dormann",
+                "given": "Carsten F."
+            },
+            {
+                "family": "Edwards",
+                "given": "Fran\u00e7ois"
+            },
+            {
+                "family": "Figueroa",
+                "given": "David"
+            },
+            {
+                "family": "Jacob",
+                "given": "Ute"
+            },
+            {
+                "family": "Jones",
+                "given": "J. Iwan"
+            },
+            {
+                "family": "Lauridsen",
+                "given": "Rasmus B."
+            },
+            {
+                "family": "Ledger",
+                "given": "Mark E."
+            },
+            {
+                "family": "Lewis",
+                "given": "Hannah M."
+            },
+            {
+                "family": "Olesen",
+                "given": "Jens M."
+            },
+            {
+                "family": "Van Veen",
+                "given": "F. J. Frank"
+            },
+            {
+                "family": "Warren",
+                "given": "Phil H."
+            },
+            {
+                "family": "Woodward",
+                "given": "Guy"
+            }
+        ],
+        "container-title": "Journal of Animal Ecology",
+        "id": "Ings2009RevEco",
+        "issue": "1",
+        "issued": {
+            "date-parts": [
+                [
+                    2009
+                ]
+            ]
+        },
+        "page": "253-269",
+        "title": "Review: Ecological networks  beyond food webs",
+        "type": "article-journal",
+        "volume": "78"
+    },
+    {
         "DOI": "10.1103/PhysRev.106.620",
         "author": [
             {
@@ -737,6 +824,29 @@
         "title": "Information Theory and Statistical Mechanics. II",
         "type": "article-journal",
         "volume": "108"
+    },
+    {
+        "DOI": "10.1111/1365-2435.12763",
+        "author": [
+            {
+                "family": "Jordano",
+                "given": "Pedro"
+            }
+        ],
+        "container-title": "Functional Ecology",
+        "id": "Jordano2016SamNeta",
+        "issue": "12",
+        "issued": {
+            "date-parts": [
+                [
+                    2016
+                ]
+            ]
+        },
+        "page": "1883-1893",
+        "title": "Sampling networks of ecological interactions",
+        "type": "article-journal",
+        "volume": "30"
     },
     {
         "author": [
@@ -1051,6 +1161,61 @@
         "title": "Mangal - making ecological network analysis simple",
         "type": "article-journal",
         "volume": "39"
+    },
+    {
+        "DOI": "10.1111/jbi.14127",
+        "author": [
+            {
+                "family": "Poisot",
+                "given": "Timoth\u00e9e"
+            },
+            {
+                "family": "Bergeron",
+                "given": "Gabriel"
+            },
+            {
+                "family": "Cazelles",
+                "given": "Kevin"
+            },
+            {
+                "family": "Dallas",
+                "given": "Tad"
+            },
+            {
+                "family": "Gravel",
+                "given": "Dominique"
+            },
+            {
+                "family": "MacDonald",
+                "given": "Andrew"
+            },
+            {
+                "family": "Mercier",
+                "given": "Benjamin"
+            },
+            {
+                "family": "Violet",
+                "given": "Cl\u00e9ment"
+            },
+            {
+                "family": "Vissault",
+                "given": "Steve"
+            }
+        ],
+        "container-title": "Journal of Biogeography",
+        "id": "Poisot2021GloKno",
+        "issue": "7",
+        "issued": {
+            "date-parts": [
+                [
+                    2021
+                ]
+            ]
+        },
+        "page": "1552-1563",
+        "title": "Global knowledge gaps in species interaction networks data",
+        "type": "article-journal",
+        "volume": "48"
     },
     {
         "DOI": "10.5061/DRYAD.K59M37F",
