@@ -352,11 +352,11 @@ helps us evaluate the effect of this ecological process in nature. On
 the other hand, predictive models can help fill many gaps on species
 interactions data. A variety of such models have recently been developed
 using machine learning and other statistical tools, most of which are
-presented in Strydom et al. (2021). Given the constrained nature of
-ecological networks, it is surprising that the principle of maximum
-entropy, a rigorous mathematical method designed for both the analysis
-and prediction of constrained systems, has been barely used in network
-ecology.
+presented in Strydom et al. (2021). However, given the constrained
+nature of ecological networks, it is surprising that the principle of
+maximum entropy, a rigorous mathematical method designed for both the
+analysis and prediction of constrained systems, has been barely used in
+network ecology.
 
 \hypertarget{the-principle-of-maximum-entropy-a-primer-for-ecologists}{%
 \subsection{The principle of maximum entropy: A primer for
@@ -424,7 +424,7 @@ to predict the degree distribution of bipartite networks from the number
 of species and the number of interactions (Williams 2011) and to predict
 interaction strengths between species pairs using their relative
 abundances within an optimal transportation theory regularized with
-information entropy (Stock, Poisot, and De Baets 2021). Thus, to the
+information entropy (Stock, Poisot, and De Baets 2021). However, to the
 best of our knowledge, MaxEnt has never been used to predict food-web
 structure directly, even though food webs are among the most documented
 and widespread ecological networks (Ings et al. 2009).
@@ -446,12 +446,14 @@ distribution that specific network configurations are realized given the
 model and constraints). Overall, the potential of this method in the
 study of food webs is broad. The applicability and performance of MaxEnt
 mostly depend on the ecological information available and on our
-capacity to find the set of state variables that best represent natural
-systems and to translate them into appropriate statistical constraints.
-Having a validated maximum entropy model for the system at hand allows
-us to make least-biased predictions using a minimal amount of data, as
-well as identify the most important ecological processes shaping that
-system.
+capacity to find the right set of state variables that best represent
+natural systems and to translate them into appropriate statistical
+constraints. Having a validated maximum entropy model for the system at
+hand allows us to make least-biased predictions using a minimal amount
+of data, as well as identify the most important ecological processes
+shaping that system. In other words, MaxEnt is a valuable and
+underexploited tool in network ecology that allows us to better
+understand and predict the structure of ecological networks.
 
 \hypertarget{analytical-and-heuristic-approaches}{%
 \subsection{Analytical and heuristic
@@ -509,14 +511,14 @@ ecological interactions database Mangal; (2) freshwater stream food webs
 from New Zealand; and (3) aquatic food webs from Tuesday Lake (Michigan,
 United States). First, all food webs archived on \texttt{mangal.io}
 (Timothee Poisot et al. 2016; Banville, Vissault, and Poisot 2021) were
-directly queried from the database (\(n = 235\)). Most ecological
+directly queried from the database (\(N = 235\)). Most ecological
 networks archived on Mangal are multilayer networks, i.e.~networks that
 describe different types of interactions. We kept all networks whose
 interactions were mainly of predation and herbivory types, and removed
 the largest network (\(S = 714\)) for computational efficiency reasons.
 Then, to this set we added food webs from two different sources: the
-New-Zealand dataset (\(n = 21\); Pomeranz et al. 2018) and the Tuesday
-Lake dataset (\(n = 2\); Cohen, Jonsson, and Carpenter 2003). Our
+New-Zealand dataset (\(N = 21\); Pomeranz et al. 2018) and the Tuesday
+Lake dataset (\(N = 2\); Cohen, Jonsson, and Carpenter 2003). Our
 complete dataset thus contained a total of \(257\) food webs. Of the
 New-Zealand and Tuesday Lake datasets, \(19\) networks had data on
 species' relative abundances that were used in the neutral model (Box
