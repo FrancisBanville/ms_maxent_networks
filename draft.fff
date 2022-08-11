@@ -40,20 +40,22 @@ constant.}\label{fig:kl_diverg}
 \hypertarget{fig:degree_dist_fl}{%
 \centering
 \includegraphics{figures/maxent_degree_dist_fl.png}
-\caption{(a) Probability density of the predicted mean degree for
-different values of species richness. The number of interactions was
-predicted using the flexible links model fitted to all empirical
-networks in our complete dataset (eq.~\ref{eq:BBpost}). (b) Degree
-distributions of maximum entropy for a network of \(S=27\) species and
-different numbers of interactions \(L\). The numbers of interactions
-correspond to the lower and upper bounds of the \(67%
+\caption{(a) Probability density of the mean degree of a food web
+obtained using different values of species richness \(S\). The number of
+interactions \(L\) was simulated \(1000\) times using the flexible links
+model fitted to all empirical networks in our complete dataset
+(eq.~\ref{eq:BBpost}). The mean degrees \(2L/S\) were then obtained from
+these simulated values. (b) Degree distributions of maximum entropy for
+a network of \(S=27\) species and different numbers of interactions. The
+numbers of interactions correspond to the lower and upper bounds of the
+\(67%
 \), \(89%
 \), and \(97%
 \) percentile intervals (PI), as well as the median (in blue), of the
-counterfactuals of the flexible links model. Each degree distribution
-was obtained using eq.~\ref{eq:lagrange_dd} after solving numerically
-eq.~\ref{eq:lagrange2_dd} using different values for the mean degree
-constraint \(2L/S\).}\label{fig:degree_dist_fl}
+counterfactuals of the flexible links model. Each degree distribution of
+maximum entropy was obtained using eq.~\ref{eq:lagrange_dd} after
+solving numerically eq.~\ref{eq:lagrange2_dd} using different values of
+the mean degree constraint.}\label{fig:degree_dist_fl}
 }
 \end{figure}
 \efloatseparator

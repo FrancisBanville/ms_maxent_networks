@@ -766,10 +766,12 @@ its emerging structure.
 \section{Box 1 - Working with predicted numbers of
 interactions}\label{box-1---working-with-predicted-numbers-of-interactions}}
 
-Our models need information on the number of species and the number of
-interactions. However, since the later is rarely estimated empirically,
-ecologists might need to use predictive methods to estimate the total
-number of interactions in a food web.
+Our analytical MaxEnt models require information on the number of
+species and the number of interactions. However, since the later is
+rarely measured empirically, ecologists might need to use predictive
+models to estimate the total number of interactions in a food web before
+using MaxEnt. Here we illustrate how this can be done by combining both
+models sequentially.
 
 We used the flexible links model of MacDonald, Banville, and Poisot
 (2020) to predict the number of interactions from the number of species.
@@ -810,7 +812,7 @@ The flexible links model is a generative model, i.e.~it can generate
 plausible values of the predicted variable. We thus simulated \(1000\)
 values of \(L\) for different values of \(S\) using the joint posterior
 distribution of our model parameters (eq.~\ref{eq:BBpost}), and
-calculated the mean degree for each simulated values. The resulting
+calculated the mean degree for each simulated value. The resulting
 distributions are shown in the left panel of
 fig.~\ref{fig:degree_dist_fl} for three different values of species
 richness. In the right panel of fig.~\ref{fig:degree_dist_fl}, we show
@@ -824,20 +826,22 @@ eq.~\ref{eq:lagrange2_dd}).
 \hypertarget{fig:degree_dist_fl}{%
 \centering
 \includegraphics{figures/maxent_degree_dist_fl.png}
-\caption{(a) Probability density of the predicted mean degree for
-different values of species richness. The number of interactions was
-predicted using the flexible links model fitted to all empirical
-networks in our complete dataset (eq.~\ref{eq:BBpost}). (b) Degree
-distributions of maximum entropy for a network of \(S=27\) species and
-different numbers of interactions \(L\). The numbers of interactions
-correspond to the lower and upper bounds of the \(67%
+\caption{(a) Probability density of the mean degree of a food web
+obtained using different values of species richness \(S\). The number of
+interactions \(L\) was simulated \(1000\) times using the flexible links
+model fitted to all empirical networks in our complete dataset
+(eq.~\ref{eq:BBpost}). The mean degrees \(2L/S\) were then obtained from
+these simulated values. (b) Degree distributions of maximum entropy for
+a network of \(S=27\) species and different numbers of interactions. The
+numbers of interactions correspond to the lower and upper bounds of the
+\(67%
 \), \(89%
 \), and \(97%
 \) percentile intervals (PI), as well as the median (in blue), of the
-counterfactuals of the flexible links model. Each degree distribution
-was obtained using eq.~\ref{eq:lagrange_dd} after solving numerically
-eq.~\ref{eq:lagrange2_dd} using different values for the mean degree
-constraint \(2L/S\).}\label{fig:degree_dist_fl}
+counterfactuals of the flexible links model. Each degree distribution of
+maximum entropy was obtained using eq.~\ref{eq:lagrange_dd} after
+solving numerically eq.~\ref{eq:lagrange2_dd} using different values of
+the mean degree constraint.}\label{fig:degree_dist_fl}
 }
 \end{figure}
 
@@ -849,10 +853,12 @@ models}\label{box-2---corresponding-null-and-neutral-models}}
 \subsection{Null models (types I and
 II)}\label{null-models-types-i-and-ii}}
 
-Our heuristic MaxEnt models, predicting adjacency matrices, were
-compared with two topological null models. The first is the type I null
-model of Fortuna and Bascompte (2006), in which the probability that a
-species \(i\) predates on another species \(j\) is given by
+The predictions of our heuristic maximum entropy models were compared
+against two topological null models. These null models use the same
+ecological information as our heuristic models and thus constitute an
+adequate baseline for comparison. The first is the type I null model of
+Fortuna and Bascompte (2006), in which the probability that a species
+\(i\) predates on another species \(j\) is given by
 
 \begin{equation}\protect\hypertarget{eq:type1null}{}{p(i \rightarrow j) = \frac{L}{S^2}.}\label{eq:type1null}\end{equation}
 
@@ -861,26 +867,27 @@ which the probability of interaction is instead given by
 
 \begin{equation}\protect\hypertarget{eq:type2null}{}{p(i \rightarrow j) = \frac{1}{2} \left(\frac{k_{in}(j)}{S} + \frac{k_{out}(i)}{S}\right),}\label{eq:type2null}\end{equation}
 
-where \(k_{in}\) and \(k_{out}\) are the in and out-degrees,
-respectively. The type I null model is based on connectance, whereas the
-type II null model is based on the joint degree sequence. Therefore, the
-type I and II topological null models correspond with our type I and II
-MaxEnt network models, respectively, since they use similar constraints.
+where \(k_{in}(j)\) and \(k_{out}(i)\) are the in and out-degrees of
+species \(j\) and \(i\), respectively. The type I null model is based on
+connectance, whereas the type II null model is based on the joint degree
+sequence. Therefore, the type I and II topological null models
+correspond to our type I and II heuristic MaxEnt models, respectively,
+since they use similar constraints.
 
-We predicted both types of null networks for all empirical networks in
-our complete dataset (\(n = 257\)). We converted all probabilistic
-networks to Boolean networks by generating \(100\) random Boolean
-networks for each of these probabilistic webs. Then, we counted the
-number of times each interaction was sampled, and kept the \(L\) entries
-that were drawn the most amount of time, with \(L\) given by the number
-of interactions in each food web. This ensured that the resulting null
-networks had the same number of interactions as their empirical
-counterparts.
+We generated probabilistic networks using both types of null models for
+all empirical food webs in our complete dataset. Then, we converted
+these networks to adjacency matrices of Boolean values by generating
+\(100\) random networks for each of these probabilistic webs. Finally,
+we kept the \(L\) entries that were sampled the most amount of times,
+with \(L\) given by the number of interactions in each food web. This
+ensured that the resulting null networks had the same number of
+interactions as their empirical counterparts. Thus, for each null model,
+we ended up with one null adjacency matrix for each empirical network.
 
 \hypertarget{neutral-model}{%
 \subsection{Neutral model}\label{neutral-model}}
 
-We also compared our MaxEnt network models with a neutral model of
+We also compared our heuristic MaxEnt models with a neutral model of
 relative abundances, in which the probabilities of interaction are given
 by
 
@@ -889,9 +896,9 @@ by
 where \(n_i\) and \(n_j\) are the abundances (or biomass) of both
 species, and \(N\) is the total abundance (or biomass) of all species in
 the network. We predicted neutral abundance matrices for all empirical
-networks in our abundance dataset (\(n = 19\)), and converted these
-weighted matrices to Boolean networks using an approach analogue to the
-one we used for our null models.
+food webs in our abundance dataset, and converted these weighted
+networks to adjacency matrices of Boolean values using the same method
+as the one we used for our null models.
 
 \hypertarget{heuristic-maximum-entropy-models}{%
 \section{Heuristic maximum entropy
