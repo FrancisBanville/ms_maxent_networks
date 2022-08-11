@@ -377,7 +377,7 @@ distributions given partial knowledge about a system, these properties
 need to be represented probabilistically. For example, at the species
 level, MaxEnt can be used to predict the distribution of trophic levels
 among species, as well as the distribution of species' vulnerability
-(number of predators) and generality (number of preys). By contrast, at
+(number of predators) and generality (number of prey). By contrast, at
 the interaction level, predictions can be made on the distribution of
 interaction strengths in weighted food webs. At the community level, it
 can generate probability distributions of many measures of their
@@ -499,13 +499,13 @@ distribution.
 The joint degree distribution \(p(k_{in},k_{out})\) of a food web with
 \(S\) species is a joint discrete probability distribution describing
 the probability that a species has \(k_{in}\) predators and \(k_{out}\)
-preys, with \(k_{in}\) and \(k_{out}\) \(\epsilon\) \([0, S]\). Basal
+prey, with \(k_{in}\) and \(k_{out}\) \(\epsilon\) \([0, S]\). Basal
 species (e.g., plants) have a \(k_{out}\) of \(0\), whereas top
 predators have a \(k_{in}\) of \(0\). In contrast, the maximum number of
-preys and predators a species can have is set by the number of species
-in the food web. Here we show how the joint degree distribution of
-maximum entropy can be obtained given knowledge of the number of species
-\(S\) and the number of interactions \(L\).
+prey and predators a species can have is set by the number of species in
+the food web. Here we show how the joint degree distribution of maximum
+entropy can be obtained given knowledge of the number of species \(S\)
+and the number of interactions \(L\).
 
 We want to maximize Shannon's entropy
 
@@ -730,7 +730,7 @@ One aspect of the degree distribution that informs us of its ecological
 realism is the number of isolated species it predicts. As MacDonald,
 Banville, and Poisot (2020) pointed out, the size of food webs should at
 least be of \(S-1\) interactions, since a lower number would yield
-isolated species, i.e.~species without any predators or preys. Because
+isolated species, i.e.~species without any predators or prey. Because
 non-basal species must eat to survive, isolated species could indicate
 that other species are missing or they could simply be removed from the
 food web. In fig.~S2, we show that the degree distribution of maximum
@@ -740,27 +740,12 @@ the \(S-1\) threshold. However, under our purely information-theoretic
 model, the probability that a species is isolated is quite high when the
 total number of interactions is below \(S-1\). Moreover, the expected
 proportion of isolated species rapidly declines by orders of magnitude
-with increasing numbers of species and interactions (fig.~S2). This
-supports the ecological realism of the degree distribution of maximum
-entropy derived above. Nevertheless, ecologists wanting to model a
-system without allowing isolated species could simply change the lower
-limit of \(k\) to \(1\) in eq.~\ref{eq:lagrange2_dd} and solve the
-resulting equation numerically.
-
-Using the analytical approach, we showed how important measures of
-food-web structure, namely the degree distribution and the joint degree
-distribution, could be derived with the principle of maximum entropy
-given minimal knowledge about a biological community. This type of
-models, although useful to make least-biased predictions on many network
-properties, can be hard to apply for other measures. Indeed, there are
-dozens of measures of network structure (Delmas et al. 2019) and many
-are not calculated with mathematical equations, but with algorithms.
-Moreover, the applicability of this method to empirical systems is
-limited by the state variables we can actually measure and use. In the
-next section, we propose a more flexible method to predict many measures
-of network structure simultaneously, i.e.~by finding heuristically the
-network configuration having maximum entropy given partial knowledge of
-its emerging structure.
+with increasing numbers of species and interactions. This supports the
+ecological realism of the degree distribution of maximum entropy derived
+above. Nevertheless, ecologists wanting to model a system without
+allowing isolated species could simply change the lower limit of \(k\)
+to \(1\) in eq.~\ref{eq:lagrange2_dd} and solve the resulting equation
+numerically.
 
 \hypertarget{box-1---working-with-predicted-numbers-of-interactions}{%
 \section{Box 1 - Working with predicted numbers of
@@ -877,12 +862,12 @@ since they use similar constraints.
 We generated probabilistic networks using both types of null models for
 all empirical food webs in our complete dataset. Then, we converted
 these networks to adjacency matrices of Boolean values by generating
-\(100\) random networks for each of these probabilistic webs. Finally,
-we kept the \(L\) entries that were sampled the most amount of times,
-with \(L\) given by the number of interactions in each food web. This
-ensured that the resulting null networks had the same number of
-interactions as their empirical counterparts. Thus, for each null model,
-we ended up with one null adjacency matrix for each empirical network.
+\(100\) random networks for each of these probabilistic webs, and kept
+the \(L\) entries that were sampled the most amount of times, with \(L\)
+given by the number of interactions in each food web. This ensured that
+the resulting null networks had the same number of interactions as their
+empirical counterparts. Thus, for each null model, we ended up with one
+null adjacency matrix for each empirical network.
 
 \hypertarget{neutral-model}{%
 \subsection{Neutral model}\label{neutral-model}}
@@ -895,7 +880,7 @@ by
 
 where \(n_i\) and \(n_j\) are the abundances (or biomass) of both
 species, and \(N\) is the total abundance (or biomass) of all species in
-the network. We predicted neutral abundance matrices for all empirical
+the network. We generated neutral abundance matrices for all empirical
 food webs in our abundance dataset, and converted these weighted
 networks to adjacency matrices of Boolean values using the same method
 as the one we used for our null models.
@@ -903,6 +888,21 @@ as the one we used for our null models.
 \hypertarget{heuristic-maximum-entropy-models}{%
 \section{Heuristic maximum entropy
 models}\label{heuristic-maximum-entropy-models}}
+
+With the analytical approach, we showed how important measures of
+food-web structure (e.g., the degree distribution and the joint degree
+distribution) can be derived with the principle of maximum entropy using
+minimal knowledge about a biological community. This type of models,
+although useful to make least-biased predictions of many network
+properties, can be hard to apply for other measures. Indeed, there are
+dozens of measures of network structure (Delmas et al. 2019) and many
+are not directly calculated with mathematical equations, but are instead
+estimated algorithmically. Moreover, the applicability of this method to
+empirical systems is limited by the state variables we can actually
+measure and use. Here, we propose a more flexible method to predict many
+measures of network structure simultaneously, i.e.~by finding
+heuristically the network configuration having maximum entropy given
+partial knowledge of its emerging structure.
 
 \hypertarget{from-shannons-to-svd-entropy}{%
 \subsection{From Shannon's to SVD
@@ -922,8 +922,8 @@ then be measured after decomposing it into appropriate values.
 Simulating a series of networks until we find the one having the highest
 entropy allows us to search for the most complex food-web configuration
 given the ecological constraints used. This configuration is the least
-biased one considering the information we had. In other words, the most
-we can say about a network's adjacency matrix, without making more
+biased one considering the information available. In other words, the
+most we can say about a network's adjacency matrix, without making more
 assumptions than the ones given by our incomplete knowledge of its
 structure, is the one of maximum entropy. Generating the most complex
 network that corresponds to this structure allows us to explore more
@@ -931,13 +931,13 @@ easily other properties of food webs under MaxEnt.
 
 Shannon's entropy can only be calculated on conventional probability
 distributions such as the joint degree distribution. This is an issue
-when working with ecological networks, which are represented as
-adjacency matrices. For this reason, we need to use another measure of
-entropy if we want to predict the network itself. We used the SVD
-entropy as our measure of entropy, which is an application of Shannon's
-entropy to the relative non-zero singular values of a truncated singular
-value decomposition (t-SVD; Strydom, Dalla Riva, and Poisot 2021) of a
-food web's Boolean adjacency matrix. We measured SVD entropy as follows:
+when working with the adjacency matrix of ecological networks. For this
+reason, we need to use another measure of entropy if we want to predict
+a network's configuration directly using MaxEnt. We used the SVD entropy
+as our measure of entropy, which is an application of Shannon's entropy
+to the relative non-zero singular values of a truncated singular value
+decomposition (t-SVD; Strydom, Dalla Riva, and Poisot 2021) of a food
+web's Boolean adjacency matrix. We measured SVD entropy as follows:
 
 \begin{equation}\protect\hypertarget{eq:svd-entropy}{}{J = -\sum_{i=1}^R s_i \log s_i,}\label{eq:svd-entropy}\end{equation}
 
@@ -945,43 +945,47 @@ where \(s_i\) are the relative singular values of the adjacency matrix
 (\(s_i = \sigma_i / \sum_{i = 1}^R \sigma_i\), where \(\sigma_i\) are
 the singular values). Note that the distribution of relative singular
 values is analogous to a probability distribution, with \(0 < s_i < 1\)
-and \(\sum s_i = 1\). Thus, this measure also satisfies all four
-properties of an appropriate entropy measure (see introduction), while
-being a proper measure of the internal complexity of food webs (Strydom,
-Dalla Riva, and Poisot 2021). Following Strydom, Dalla Riva, and Poisot
-(2021), we standardized this measure with the rank \(R\) of the matrix
+and \(\sum s_i = 1\). This measure also satisfies all four properties of
+an appropriate entropy measure above-mentioned, while being a proper
+measure of the internal complexity of food webs (Strydom, Dalla Riva,
+and Poisot 2021). Following Strydom, Dalla Riva, and Poisot (2021), we
+standardized this measure with the rank \(R\) of the matrix
 (i.e.~\(J / \ln(R)\)) to account for the difference in dimensions
-between networks (\emph{sensu} Pielou's evenness; Pielou 1975). We used
-SVD entropy to predict the network configuration of maximum entropy
-(i.e.~of maximum complexity) heuristically given a predetermined set of
-constraints.
+between networks (\emph{sensu} Pielou's evenness; Pielou 1975).
 
-\hypertarget{maxent-network-models-types-i-and-ii}{%
-\subsection{MaxEnt network models (types I and
-II)}\label{maxent-network-models-types-i-and-ii}}
+\hypertarget{types-i-and-ii-heuristic-maxent-models}{%
+\subsection{Types I and II heuristic MaxEnt
+models}\label{types-i-and-ii-heuristic-maxent-models}}
 
-We built two types of MaxEnt network models: one based on connectance
-(type I MaxEnt network model) and the other based on the joint degree
-sequence (type II MaxEnt network model). They are based on the same
-constraints as the types I and II null models presented above. For both
-models, we used a simulated annealing algorithm with \(4\) chains,
-\(2000\) steps and an initial temperature of \(0.2\). For each chain, we
-first generated one random Boolean matrix with the same order (number of
-species) as empirical webs, while maintaining the total number of
-interactions (type I MaxEnt network model) or rows and columns sums
-(type II MaxEnt network model). These are our initial configurations.
-Then, we swapped interactions sequentially while maintaining the
-original connectance or the joint degree sequence for types I and II
-MaxEnt network model, respectively. Configurations with a higher SVD
-entropy than the previous one in the chain were always accepted, whereas
-they were accepted with a probability conditional to a decreasing
-temperature when lower. The final configuration with the highest SVD
-entropy among the four chains constitute our estimated MaxEnt network.
-Even though we decided to work with point estimates, it is possible to
-have a (non MaxEnt) probability distribution of networks when working
-with the entire chains (or part of the chains). For each network in our
-complete and abundance datasets, we estimated their configuration with
-maximum entropy using both types of MaxEnt network models.
+We used SVD entropy to predict the network configuration of maximum
+entropy (i.e.~of maximum complexity) heuristically given different
+constraints for all food webs in our complete dataset. We built two
+types of heuristic MaxEnt models that differ on the constraint used. The
+type I heuristic MaxEnt model is based on connectance, whereas the type
+II heuristic MaxEnt model is based on the joint degree sequence. These
+models are thus based on the same constraints as the types I (Fortuna
+and Bascompte 2006) and II (Bascompte et al. 2003) null models (Box 2)
+frequently used to generate random networks topologically. This allows
+direct comparison of the performance of null and heuristic MaxEnt models
+in reproducing the emerging structure of empirical food webs.
+
+For each network in our complete dataset, we estimated their
+configuration of maximum entropy given each of these constraints. For
+both types of heuristic MaxEnt models, we used a simulated annealing
+algorithm with \(4\) chains, \(2000\) steps and an initial temperature
+of \(0.2\). For each food web, we first generated one random Boolean
+matrix per chain while fixing the number of species. We also maintained
+the total number of interactions (i.e.~the sum of all elements in the
+matrix) in the type I MaxEnt model and the joint degree sequence
+(i.e.~the rows and columns sums) in the type II MaxEnt model. These were
+our initial configurations. Then, we swapped interactions sequentially
+while maintaining the original connectance or joint degree sequence.
+Configurations with a higher SVD entropy than the previous one in the
+chain were always accepted, whereas they were accepted with a
+probability conditional to a decreasing temperature when lower. The
+final configuration with the highest SVD entropy among the four chains
+constitute the estimated maximum entropy configuration of a food web
+given the constraint used.
 
 \hypertarget{structure-of-maxent-networks}{%
 \subsection{Structure of MaxEnt
@@ -1000,9 +1004,9 @@ the shortest paths between all species pairs; Albert and Barabasi 2002),
 the average maximum similarity between species pairs \emph{MxSim}, the
 proportion of cannibal species \emph{Cannib} (i.e.~the proportion of
 self loops), and the proportion of omnivorous species \emph{Omniv}
-(i.e.~species whose preys are of different trophic levels).
-\emph{MxSim}, \emph{Cannib}, and \emph{Omniv} are more deeply defined in
-Williams and Martinez (2000).
+(i.e.~species whose prey are of different trophic levels). \emph{MxSim},
+\emph{Cannib}, and \emph{Omniv} are more deeply defined in Williams and
+Martinez (2000).
 
 Overall, we found that models based on the joint degree sequence (type
 II null and MaxEnt network models) reproduced the structure of empirical
@@ -1209,7 +1213,7 @@ structure. These networks are the most complex, or random, given the
 constraints used. Likewise, we found that knowledge of species richness
 and of the number of interactions were not sufficient to reproduce many
 aspects of network structure found in nature. However, a model based on
-the entire joint degree sequence, i.e.~on the number of preys and
+the entire joint degree sequence, i.e.~on the number of prey and
 predators for each species, gave more convincing results. Our type II
 MaxEnt network model yielded better or similar predictions than the type
 II null model, also based on the joint degree sequence, for most
@@ -1218,7 +1222,7 @@ joint degree sequence drives many aspects of network structure. Indeed,
 considering our findings that empirical networks are close to maximum
 entropy for a given joint degree sequence, our results suggest that
 food-web topology is configured almost entirely randomly around these
-marginal numbers of predators and preys.
+marginal numbers of predators and prey.
 
 Our results bring to the forefront the role of the joint degree
 distribution in shaping food-web structure. This echoes the work of
@@ -1272,6 +1276,10 @@ heuristically what really constrains the topology of food webs is a
 useful first step before attempting to derive the mathematical
 formulation of a maximum entropy graph model adapted to food webs.
 
+Even though we decided to work with point estimates, it is possible to
+have a (non MaxEnt) probability distribution of networks when working
+with the entire chains (or part of the chains).
+
 \hypertarget{applications}{%
 \subsection{Applications}\label{applications}}
 
@@ -1295,7 +1303,7 @@ point estimates of maximum entropy networks).
 
 One of the biggest challenges in using the principle of maximum entropy
 is to identify the set of state variables that best reproduce empirical
-data. We found that the numbers of preys and predators for each species
+data. We found that the numbers of prey and predators for each species
 are important state variables for the prediction of maximum entropy
 networks. However, our predictions overestimated some measures of
 network structure, especially the maximum trophic level and network
