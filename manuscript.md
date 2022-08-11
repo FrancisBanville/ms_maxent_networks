@@ -151,7 +151,7 @@ The flexible links model is a generative model, i.e. it can generate plausible v
 
 ## Null models (types I and II)
 
-Our heuristic MaxEnt models, predicting adjacency matrices, were compared with two topological null models. The first is the type I null model of @Fortuna2006HabLos, in which the probability that a species $i$ predates on another species $j$ is given by
+The predictions of our heuristic maximum entropy models were compared against two topological null models. These null models use the same ecological information as our heuristic models and thus constitute an adequate baseline for comparison. The first is the type I null model of @Fortuna2006HabLos, in which the probability that a species $i$ predates on another species $j$ is given by
 
 $$p(i \rightarrow j) = \frac{L}{S^2}.$${#eq:type1null}
 
@@ -159,17 +159,17 @@ The second is the type II null model of @Bascompte2003NesAssa, in which the prob
 
 $$p(i \rightarrow j) = \frac{1}{2} \left(\frac{k_{in}(j)}{S} + \frac{k_{out}(i)}{S}\right),$${#eq:type2null}
 
-where $k_{in}$ and $k_{out}$ are the in and out-degrees, respectively. The type I null model is based on connectance, whereas the type II null model is based on the joint degree sequence. Therefore, the type I and II topological null models correspond with our type I and II MaxEnt network models, respectively, since they use similar constraints. 
+where $k_{in}(j)$ and $k_{out}(i)$ are the in and out-degrees of species $j$ and $i$, respectively. The type I null model is based on connectance, whereas the type II null model is based on the joint degree sequence. Therefore, the type I and II topological null models correspond to our type I and II heuristic MaxEnt models, respectively, since they use similar constraints. 
 
-We predicted both types of null networks for all empirical networks in our complete dataset ($n = 257$). We converted all probabilistic networks to Boolean networks by generating $100$ random Boolean networks for each of these probabilistic webs. Then, we counted the number of times each interaction was sampled, and kept the $L$ entries that were drawn the most amount of time, with $L$ given by the number of interactions in each food web. This ensured that the resulting null networks had the same number of interactions as their empirical counterparts.
+We generated probabilistic networks using both types of null models for all empirical food webs in our complete dataset. Then, we converted these networks to adjacency matrices of Boolean values by generating $100$ random networks for each of these probabilistic webs. Finally, we kept the $L$ entries that were sampled the most amount of times, with $L$ given by the number of interactions in each food web. This ensured that the resulting null networks had the same number of interactions as their empirical counterparts. Thus, for each null model, we ended up with one null adjacency matrix for each empirical network. 
 
 ## Neutral model
 
-We also compared our MaxEnt network models with a neutral model of relative abundances, in which the probabilities of interaction are given by
+We also compared our heuristic MaxEnt models with a neutral model of relative abundances, in which the probabilities of interaction are given by
 
 $$p(i \rightarrow j) \propto \frac{n_i}{N} \times \frac{n_j}{N},$${#eq:neutralmodel}
 
-where $n_i$ and $n_j$ are the abundances (or biomass) of both species, and $N$ is the total abundance (or biomass) of all species in the network. We predicted neutral abundance matrices for all empirical networks in our abundance dataset ($n = 19$), and converted these weighted matrices to Boolean networks using an approach analogue to the one we used for our null models. 
+where $n_i$ and $n_j$ are the abundances (or biomass) of both species, and $N$ is the total abundance (or biomass) of all species in the network. We predicted neutral abundance matrices for all empirical food webs in our abundance dataset, and converted these weighted networks to adjacency matrices of Boolean values using the same method as the one we used for our null models. 
 
 
 # Heuristic maximum entropy models 
