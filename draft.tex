@@ -287,7 +287,7 @@ hand, null models help us identify potential ecological mechanisms that
 drive species interactions and constrain ecological networks. Null
 models generate a distribution for a target measure using a set of rules
 that exclude the mechanism of interest (Fortuna and Bascompte 2006;
-Delmas et al. 2019). The difference between the model and empirical data
+Delmas et al. 2019). The deviation between the model and empirical data
 helps us evaluate the effect of this ecological process in nature. On
 the other hand, predictive models can help fill many gaps on species
 interactions data. A variety of such models have recently been developed
@@ -456,14 +456,14 @@ networks archived on Mangal are multilayer networks, i.e.~networks that
 describe different types of interactions. We kept all networks whose
 interactions were mainly of predation and herbivory types, and removed
 the largest network (\(S = 714\)) for computational efficiency reasons.
-Then, to this set we added food webs from two different sources: the
-New-Zealand dataset (\(N = 21\); Pomeranz et al. 2018) and the Tuesday
-Lake dataset (\(N = 2\); Cohen, Jonsson, and Carpenter 2003). Our
-complete dataset thus contained a total of \(257\) food webs. Of the
-New-Zealand and Tuesday Lake datasets, \(19\) networks had data on
-species' relative abundances that were used in the neutral model (Box
-2). These \(19\) food webs constitute our \emph{abundance dataset},
-which is a subset of our complete dataset.
+Then, to this set we added food webs from two different sources: the New
+Zealand dataset (\(N = 21\); Pomeranz et al. 2018) and the Tuesday Lake
+dataset (\(N = 2\); Cohen, Jonsson, and Carpenter 2003). Our complete
+dataset thus contained a total of \(257\) food webs. Of the New Zealand
+and Tuesday Lake datasets, \(19\) networks had data on species' relative
+abundances that were used in the neutral model (Box 2). These \(19\)
+food webs constitute our \emph{abundance dataset}, which is a subset of
+our complete dataset.
 
 All code and data to reproduce this article are available at the Open
 Science Framework. Data cleaning, simulations and analyses were
@@ -473,18 +473,39 @@ conducted in Julia v1.6.1.
 \section{Analytical maximum entropy
 models}\label{analytical-maximum-entropy-models}}
 
+Our analytical approach is the most common way to use and develop
+maximum entropy models. As shown above, starting from a defined set of
+constraints, a mathematical expression for the target distribution is
+derived using the method of Lagrange multipliers. The derived
+distribution of maximum entropy is unique and least biased given the
+constraints used. Although we refer to this approach as analytic,
+finding the values of the Lagrange multipliers usually requires the use
+of numerical methods. Here we use MaxEnt to derive two species level
+properties in food webs: the joint degree distribution and the degree
+distribution. The degree distribution has driven the attention of
+ecologists because of its role in determining the assembly of ecological
+networks (Vázquez 2005), shaping their emerging structure (Fortuna et
+al. 2010), and understanding interaction mechanisms (Williams 2011). As
+noted above, although the degree distribution of maximum entropy has
+already been derived in bipartite networks (Williams 2011), we show in
+much greater details its mathematical derivation in food webs. But
+first, we derive the joint degree distribution, a related property that
+holds significantly more ecological information than the degree
+distribution.
+
 \hypertarget{joint-degree-distribution}{%
 \subsection{Joint degree distribution}\label{joint-degree-distribution}}
 
-The joint degree distribution \(p(k_{in},k_{out})\) is a joint discrete
-probability distribution describing the probability that a species has
-\(k_{in}\) predators and \(k_{out}\) preys, with \(k_{in}\) and
-\(k_{out}\) \(\epsilon\) \([0, S]\). Basal species (e.g., plants) have a
-\(k_{out}\) of \(0\), whereas top predators have a \(k_{in}\) of \(0\).
-In contrast, the maximum number of preys and predators a species can
-have is set by the number of species \(S\) in the food web. Here we show
-how the joint degree distribution of maximum entropy can be obtained
-given knowledge of \(S\) and \(L\).
+The joint degree distribution \(p(k_{in},k_{out})\) of a food web with
+\(S\) species is a joint discrete probability distribution describing
+the probability that a species has \(k_{in}\) predators and \(k_{out}\)
+preys, with \(k_{in}\) and \(k_{out}\) \(\epsilon\) \([0, S]\). Basal
+species (e.g., plants) have a \(k_{out}\) of \(0\), whereas top
+predators have a \(k_{in}\) of \(0\). In contrast, the maximum number of
+preys and predators a species can have is set by the number of species
+in the food web. Here we show how the joint degree distribution of
+maximum entropy can be obtained given knowledge of the number of species
+\(S\) and the number of interactions \(L\).
 
 We want to maximize Shannon's entropy
 
@@ -503,12 +524,13 @@ other two (\(g_2\) and \(g_3\)) fix the average of the marginal
 distributions of \(k_{in}\) and \(k_{out}\) to the linkage density
 \(L/S\). It is important to notice that
 \(\langle k_{in} \rangle = \langle k_{out} \rangle\) because every edge
-is associated to a predator and a prey. Therefore, without any further
-constraints, we expect the joint degree distribution of maximum entropy
-to be a symmetric probability distribution with regards to \(k_{in}\)
-and \(k_{out}\). However, this does not mean that the joint degree
-\emph{sequence} will be symmetric, since the joint degree sequence is
-essentially a random realization of its probabilistic counterpart.
+is associated to a predator and a prey. Therefore, without using any
+further constraints, we would expect the joint degree distribution of
+maximum entropy to be a symmetric probability distribution with regards
+to \(k_{in}\) and \(k_{out}\). However, this does not mean that the
+joint degree \emph{sequence} will be symmetric, since the joint degree
+sequence is essentially a random realization of its probabilistic
+counterpart.
 
 The joint probability distribution of maximum entropy given these
 constraints is found using the method of Lagrange multipliers. To do so,
@@ -518,11 +540,11 @@ we seek to maximize the following expression:
 
 where \(\lambda_1\), \(\lambda_2\), and \(\lambda_3\) are the Lagrange
 multipliers. The probability distribution that maximizes entropy is
-obtained by finding these values. As pointed out in the introduction,
-\(F\) is just Shannon's entropy to which we added terms that each sums
-to zero (our constraints). \(F\) is maximized by setting to 0 its
-partial derivative with respect to \(p(k_{in},k_{out})\). Because the
-derivative of a constant is zero, this gives us:
+obtained by finding these values. As pointed out above, \(F\) is just
+Shannon's entropy to which we added terms that each sums to zero (our
+constraints). \(F\) is maximized by setting to 0 its partial derivative
+with respect to \(p(k_{in},k_{out})\). Because the derivative of a
+constant is zero, this gives us:
 
 \begin{equation}\protect\hypertarget{eq:lagrange_jdd}{}{\frac{\partial H}{\partial p(k_{in},k_{out})} = \lambda_1 \frac{\partial g_1}{\partial p(k_{in},k_{out})} + \lambda_2 \frac{\partial g_2}{\partial p(k_{in},k_{out})}+ \lambda_3 \frac{\partial g_3}{\partial p(k_{in},k_{out})}.}\label{eq:lagrange_jdd}\end{equation}
 
@@ -560,93 +582,118 @@ values of \(\lambda_2\) and \(\lambda_3\) can be substituted in
 eq.~\ref{eq:lagrange3_jdd} to have a more workable expression for the
 joint degree distribution.
 
-We predicted the joint degree distribution of maximum entropy for each
-food web in our complete dataset, i.e.~using their numbers of species
-and numbers of interactions as state variables. We then sampled one
-realization of the degree sequence for each network using the
-probabilities given by the joint degree distribution. In
-fig.~\ref{fig:joint_dd} (left panels), we show the relationship between
-\(k_{out}\) and \(k_{in}\) standardized by the number of species in
-their networks, for empirical and maximum entropy joint degree
-distributions. We see that our model predicts higher values of
-generality and vulnerability compared to empirical food webs
-(i.e.~relative values of \(k_{out}\) and \(k_{in}\) closer to \(1\)).
-However, plotting the difference between predicted and empirical values
-for each species gives a different perspective. The right panel of
-fig.~\ref{fig:joint_dd} presents these differences when species are
-ordered by their total degree in their network (i.e.~by the sum of their
-in and out-degrees). Indeed, our predicted joint degree sequences have
-the same number of species as their empirical counterparts, but they are
-species agnostic; in other words, instead of predicting a value for each
-species directly, we predicted the entire joint degree sequence without
-taking into account species' identity. The challenge is to associate
-predictions with empirical data. If we associate each node according to
-their rank in total degrees, we see that species predicted to be have a
-higher generality (number of preys) generally have a lower vulnerability
-(number of preys) than what is observed (and conversely). This is
-because the difference in total degree (\(k_{out} + k_{in}\)) is
-minimized when species are ordered by their total degrees in both
-predicted and empirical sets (i.e.~the average sum of relative
+We assessed the empirical support of this expression using all food webs
+in our complete dataset. First, we predicted the joint degree
+distribution of maximum entropy for each of these food webs, i.e.~using
+their number of species and number of interactions as state variables.
+Then, we sampled one realization of the joint degree sequence for each
+network using the probabilities given by the joint degree distribution
+of maximum entropy, while fixing the total number of interactions. This
+gave us a random realization of the number of prey and predators for
+each species in each network. We standardized the predicted \(k_{out}\)
+and \(k_{in}\) of each species by the total number of species in their
+network to generate relative values, which can be compared across
+networks. In fig.~\ref{fig:joint_dd} (left panels), we show the
+relationship between these relative \(k_{out}\) and \(k_{in}\) obtained
+from the joint degree distributions of maximum entropy (bottom panel)
+and this relationship using empirical values (top panel). We observe
+that our model predicts higher values of generality and vulnerability
+compared to empirical food webs (i.e.~relative values of \(k_{out}\) and
+\(k_{in}\) both closer to \(1\)) for many species. In other words, our
+model predicts that species that have many predators also have more prey
+than what is observed empirically (and conversely). This is not
+surprising, given that our model did not include biological factors
+preventing generalist predators from having many prey. Nevertheless,
+with the exception of these generalist species, MaxEnt adequately
+predicts that most species have low generality and vulnerability values.
+
+Examining the difference between predicted and empirical values for each
+species gives a slightly different perspective (right panel of
+fig.~\ref{fig:joint_dd}). To do so, we must first associate each of our
+predictions to a specific species in a network in order to make that
+comparison. Indeed, our predicted joint degree sequences have the same
+number of species (elements) as their empirical counterparts, but they
+are species agnostic. In other words, instead of predicting a value for
+each species directly, we predicted the entire joint degree sequence
+without taking into account species' identity. The challenge is thus to
+adequately associate predictions with empirical data. In
+fig.~\ref{fig:joint_dd}, we present these differences when species are
+ordered by their total degree in their respective networks (i.e.~by the
+sum of their in and out-degrees). This means that the species with the
+highest total degree in its network will be associated with the highest
+prediction, and so forth. Doing so, we see that species predicted to
+have a higher number of predators than what is observed generally have a
+lower number of prey than what is observed (and conversely). This is
+because the difference in total degree (\(k_{out} + k_{in}\)) between
+predictions and empirical data is minimized when species are ranked by
+their total degree (i.e.~the average deviation of the sum of relative
 \(k_{out}\) and \(k_{in}\) is close to \(0\) across all species). This
-result shows that the differences between predicted and empirical
-degrees (in and out) are low for most species when ordered by their
-total degrees and that there is no apparent biases towards in or out
-degrees. In fig.~S1, we show how these differences change when species
-are instead ordered by their out-degrees (left panel) and in-degrees
-(right panel), respectively.
+result thus shows that the difference between predicted and empirical
+total degrees is low for most species when ordered by their total
+degrees. There are no apparent biases towards in or out degrees. In
+fig.~S1, we show how these differences change when species are instead
+ordered by their out-degrees (left panel) and in-degrees (right panel),
+respectively.
 
 \begin{figure}
 \hypertarget{fig:joint_dd}{%
 \centering
 \includegraphics{figures/joint_degree_dist.png}
-\caption{Relative number of predators (\(k_{in}\)) as a function of the
-relative number of preys (\(k_{out}\)) for each species in (a) empirical
-and (b) maximum entropy joint degree sequences. Empirical networks
-include all food webs archived on Mangal, as well as the New-Zealand and
-Tuesday Lake datasets (our complete dataset). The predicted joint degree
-sequences were obtained after sampling one realization of the joint
-degree distribution of maximum entropy for each network. (c) Difference
-between predicted and empirical values when species are ordered
-according to their total degrees. In all panels, each dot corresponds to
-a single species in one of the network of our complete
-dataset.}\label{fig:joint_dd}
+\caption{Relative number of predators (\(k_{in}\)) as a function of
+their relative number of prey (\(k_{out}\)) for each species in (a)
+empirical and (b) joint degree sequences obtained from the analytical
+MaxEnt model. Empirical networks include most food webs archived on
+Mangal, as well as the New Zealand and Tuesday Lake datasets (our
+complete dataset). The predicted joint degree sequences were obtained
+after sampling one realization of the joint degree distribution of
+maximum entropy for each network, while keeping the total number of
+interactions constant. (c) Difference between predicted and empirical
+values when species are ordered according to their total degrees. In
+each panel, each dot corresponds to a single species in one of the
+networks.}\label{fig:joint_dd}
 }
 \end{figure}
 
-We can describe the shape of the joint degree distribution by comparing
-its marginal distributions with one another. Doing so allows us to
-evaluate how much the shape of the joint degree distribution of maximum
-entropy differs from empirical data. We plotted the Kullback--Leibler
-(KL) divergence between in and out-degree sequences to compare the
-symmetry of empirical and maximum entropy joint degree sequences
-fig.~\ref{fig:kl_diverg}. As we expected, our model predicted more
-similar in-degree and out-degree distributions than empirical data
-(shown by a lower KL divergence). However, this difference decreased
-with connectance right panel of \ref{fig:kl_diverg}. This suggests that
-other ecological constraints might be needed to account for the
-asymmetry of the joint degree distribution, especially for networks with
-a lower connectance. This might be due to the fact that food webs with
-low connectance are typically harder to predict than food webs with high
-connectance. Indeed, in low connectance systems, what makes two species
-interact might be more important for predictions than in high
-connectance systems, in which what prevents species from interacting
-might be more meaningful. This implies that more ecological information
-might be needed in food webs with fewer numbers of interactions because
-more nuances determine interactions compared to non-interactions.
+Another way to evaluate the empirical support of the predicted joint
+degree sequences is to compare their shape with the ones of empirical
+food webs. We can describe the shape of a joint degree sequence by
+comparing its marginal distributions with one another. To do so, we
+calculated the Kullback--Leibler (KL) divergence between the in and
+out-degree sequences sampled from the joint degree distribution of
+maximum entropy. Similarly, we calculated the divergence between the in
+and out-degree sequences obtained empirically. This allows us to compare
+the symmetry of empirical and predicted joint degree sequences (left
+panel of fig.~\ref{fig:kl_diverg}). As we expected, our model predicts
+more similar in-degree and out-degree sequences than empirical data
+(shown by lower KL divergence values). However, this difference
+decreases with connectance (right panel of fig.~\ref{fig:kl_diverg}).
+This might be due to the fact that food webs with a low connectance are
+harder to predict than food webs with a high connectance. Indeed, in low
+connectance systems, what makes two species interact might be more
+important for prediction than in high connectance systems, in which what
+prevents species from interacting might be more meaningful. This implies
+that more ecological information might be needed in food webs with a low
+connectance because more ecological processes determine interactions
+compared to non-interactions. Therefore, other ecological constraints
+might be needed to account for the asymmetry of the joint degree
+distribution, especially for networks with a lower connectance. However,
+our MaxEnt model was able to capture quite well the shape of the joint
+degree sequence for networks having a high connectance.
 
 \begin{figure}
 \hypertarget{fig:kl_diverg}{%
 \centering
 \includegraphics{figures/kl_divergence.png}
 \caption{(a) Probability density of KL divergence between in and
-out-degree sequences of empirical and maximum entropy joint degree
-sequences. (b) Difference between the KL divergence of empirical and
-predicted networks as a function of connectance. In both panels,
-empirical networks include all food webs archived on Mangal, as well as
-the New-Zealand and Tuesday Lake datasets (our complete dataset). The
-joint degree sequence of simulated networks was obtained after sampling
-one realization of the joint degree distribution of maximum entropy for
-each network.}\label{fig:kl_diverg}
+out-degree sequences of empirical and predicted joint degree sequences.
+(b) Difference between the KL divergence of empirical and predicted
+joint degree sequences as a function of connectance. In both panels,
+empirical networks include most food webs archived on Mangal, as well as
+the New Zealand and Tuesday Lake datasets (our complete dataset). The
+predicted joint degree sequences were obtained after sampling one
+realization of the joint degree distribution of maximum entropy for each
+network, while keeping the total number of interactions
+constant.}\label{fig:kl_diverg}
 }
 \end{figure}
 
@@ -963,7 +1010,7 @@ proportion of omnivorous species.
 \caption{\label{tbl:measures_all}Standardized mean differences of
 predicted network measures with empirical data for all networks
 (\(n = 257\)). Positive (negative) values indicate that the measure is
-overestimated (underestimated) on average. Empirical networks are all
+overestimated (underestimated) on average. Empirical networks are most
 food webs archived on Mangal, as well as the New Zealand and Tuesday
 Lake food webs (our complete dataset). Null 1: Type I null model based
 on connectance. MaxEnt 1: Type I MaxEnt network model based on
@@ -1059,8 +1106,8 @@ ecological networks.
 \centering
 \includegraphics{figures/motifs_distribution.png}
 \caption{Motifs profile of empirical, maximum entropy, and null food
-webs. Empirical networks include all food webs archived on Mangal, as
-well as the New-Zealand and Tuesday Lake datasets (our complete
+webs. Empirical networks include most food webs archived on Mangal, as
+well as the New Zealand and Tuesday Lake datasets (our complete
 dataset). Maximum entropy networks were estimated using a simulated
 annealing algorithm to find the network of maximum SVD entropy while
 maintaining the connectance (type I MaxEnt network model) or the joint
@@ -1080,8 +1127,8 @@ et al. (2007).}\label{fig:motifs}
 \centering
 \includegraphics{figures/motifs_relations.png}
 \caption{Relationship between motifs proportions of empirical, maximum
-entropy, and null food webs. Empirical networks include all food webs
-archived on Mangal, as well as the New-Zealand and Tuesday Lake datasets
+entropy, and null food webs. Empirical networks include most food webs
+archived on Mangal, as well as the New Zealand and Tuesday Lake datasets
 (our complete dataset). Maximum entropy networks were estimated using a
 simulated annealing algorithm to find the network of maximum SVD entropy
 while maintaining the connectance (type I MaxEnt network model) or the
@@ -1119,8 +1166,8 @@ in type II MaxEnt networks.
 \centering
 \includegraphics{figures/measures_emp_maxent.png}
 \caption{Relationship between the structure of empirical and maximum
-entropy food webs. Empirical networks include all food webs archived on
-Mangal, as well as the New-Zealand and Tuesday Lake datasets (our
+entropy food webs. Empirical networks include most food webs archived on
+Mangal, as well as the New Zealand and Tuesday Lake datasets (our
 complete dataset). Maximum entropy networks were estimated using a
 simulated annealing algorithm to find the network of maximum SVD entropy
 while maintaining the joint degree sequence (type II MaxEnt network
@@ -1515,6 +1562,12 @@ Strydom, Tanya, Giulio V. Dalla Riva, and Timothee Poisot. 2021. {``SVD
 Entropy Reveals the High Complexity of Ecological Networks.''}
 \emph{Frontiers in Ecology and Evolution} 9: 623141.
 \url{https://doi.org/10.3389/fevo.2021.623141}.
+
+\leavevmode\hypertarget{ref-Vazquez2005DegDisa}{}%
+Vázquez, Diego P. 2005. {``Degree Distribution in Plantanimal
+Mutualistic Networks: Forbidden Links or Random Interactions?''}
+\emph{Oikos} 108 (2): 421--26.
+\url{https://doi.org/10.1111/j.0030-1299.2005.13619.x}.
 
 \leavevmode\hypertarget{ref-Williams2011BioMet}{}%
 Williams, Richard J. 2011. {``Biology, Methodology or Chance? The Degree

@@ -1543,6 +1543,29 @@
         "volume": "173"
     },
     {
+        "DOI": "10.1111/j.0030-1299.2005.13619.x",
+        "author": [
+            {
+                "family": "V\u00e1zquez",
+                "given": "Diego P."
+            }
+        ],
+        "container-title": "Oikos",
+        "id": "Vazquez2005DegDisa",
+        "issue": "2",
+        "issued": {
+            "date-parts": [
+                [
+                    2005
+                ]
+            ]
+        },
+        "page": "421-426",
+        "title": "Degree distribution in plantanimal mutualistic networks: Forbidden links or random interactions?",
+        "type": "article-journal",
+        "volume": "108"
+    },
+    {
         "DOI": "10.1038/35004572",
         "author": [
             {
