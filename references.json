@@ -60,6 +60,49 @@
         "volume": "6"
     },
     {
+        "DOI": "10.1111/1365-2435.12666",
+        "author": [
+            {
+                "family": "Bartomeus",
+                "given": "Ignasi"
+            },
+            {
+                "family": "Gravel",
+                "given": "Dominique"
+            },
+            {
+                "family": "Tylianakis",
+                "given": "Jason M."
+            },
+            {
+                "family": "Aizen",
+                "given": "Marcelo A."
+            },
+            {
+                "family": "Dickie",
+                "given": "Ian A."
+            },
+            {
+                "family": "Bernard-Verdier",
+                "given": "Maud"
+            }
+        ],
+        "container-title": "Functional Ecology",
+        "id": "Bartomeus2016ComFra",
+        "issue": "12",
+        "issued": {
+            "date-parts": [
+                [
+                    2016
+                ]
+            ]
+        },
+        "page": "1894-1903",
+        "title": "A common framework for identifying linkage rules across different types of interactions",
+        "type": "article-journal",
+        "volume": "30"
+    },
+    {
         "DOI": "10.1073/pnas.1633576100",
         "author": [
             {
@@ -164,6 +207,50 @@
         "title": "Generalised information and entropy measures in physics",
         "type": "article-journal",
         "volume": "50"
+    },
+    {
+        "DOI": "10.1086/675363",
+        "author": [
+            {
+                "family": "Canard",
+                "given": "E. F."
+            },
+            {
+                "family": "Mouquet",
+                "given": "N."
+            },
+            {
+                "family": "Mouillot",
+                "given": "D."
+            },
+            {
+                "family": "Stanko",
+                "given": "M."
+            },
+            {
+                "family": "Miklisova",
+                "given": "D."
+            },
+            {
+                "family": "Gravel",
+                "given": "D."
+            }
+        ],
+        "container-title": "The American Naturalist",
+        "id": "Canard2014EmpEva",
+        "issue": "4",
+        "issued": {
+            "date-parts": [
+                [
+                    2014
+                ]
+            ]
+        },
+        "page": "468-479",
+        "publisher": "The University of Chicago Press",
+        "title": "Empirical Evaluation of Neutral Interactions in Host-Parasite Networks.",
+        "type": "article-journal",
+        "volume": "183"
     },
     {
         "DOI": "10.1038/s42254-018-0002-6",
@@ -929,6 +1016,27 @@
         "volume": "426"
     },
     {
+        "DOI": "10.1515/9781400840687",
+        "author": [
+            {
+                "family": "McCann",
+                "given": "Kevin S."
+            }
+        ],
+        "container-title": "Food Webs (MPB-50)",
+        "id": "McCann2011FooWeb",
+        "issued": {
+            "date-parts": [
+                [
+                    2011
+                ]
+            ]
+        },
+        "publisher": "Princeton University Press",
+        "title": "Food Webs (MPB-50)",
+        "type": "book"
+    },
+    {
         "DOI": "10.1126/science.298.5594.824",
         "author": [
             {
@@ -1102,6 +1210,37 @@
         "volume": "2"
     },
     {
+        "DOI": "10.1111/oik.01719",
+        "author": [
+            {
+                "family": "Poisot",
+                "given": "Timoth\u00e9e"
+            },
+            {
+                "family": "Stouffer",
+                "given": "Daniel B."
+            },
+            {
+                "family": "Gravel",
+                "given": "Dominique"
+            }
+        ],
+        "container-title": "Oikos",
+        "id": "Poisot2015SpeWhya",
+        "issue": "3",
+        "issued": {
+            "date-parts": [
+                [
+                    2015
+                ]
+            ]
+        },
+        "page": "243-251",
+        "title": "Beyond species: Why ecological interaction networks vary through space and time",
+        "type": "article-journal",
+        "volume": "124"
+    },
+    {
         "DOI": "10.1111/ecog.00976",
         "author": [
             {
@@ -1253,6 +1392,41 @@
         "publisher": "Dryad",
         "title": "Data from: Inferring predator-prey interactions in food webs",
         "type": ""
+    },
+    {
+        "DOI": "10.1111/2041-210X.13125",
+        "author": [
+            {
+                "family": "Pomeranz",
+                "given": "Justin P. F."
+            },
+            {
+                "family": "Thompson",
+                "given": "Ross M."
+            },
+            {
+                "family": "Poisot",
+                "given": "Timoth\u00e9e"
+            },
+            {
+                "family": "Harding",
+                "given": "Jon S."
+            }
+        ],
+        "container-title": "Methods in Ecology and Evolution",
+        "id": "Pomeranz2019InfPrea",
+        "issue": "3",
+        "issued": {
+            "date-parts": [
+                [
+                    2019
+                ]
+            ]
+        },
+        "page": "356-367",
+        "title": "Inferring predatorprey interactions in food webs",
+        "type": "article-journal",
+        "volume": "10"
     },
     {
         "DOI": "10.1002/j.1538-7305.1948.tb01338.x",
@@ -1594,6 +1768,34 @@
         "title": "Simple rules yield complex food webs",
         "type": "article-journal",
         "volume": "404"
+    },
+    {
+        "DOI": "10.1086/381964",
+        "author": [
+            {
+                "family": "Williams",
+                "given": "Richard J."
+            },
+            {
+                "family": "Martinez",
+                "given": "Neo D."
+            }
+        ],
+        "container-title": "The American Naturalist",
+        "id": "Williams2004LimTro",
+        "issue": "3",
+        "issued": {
+            "date-parts": [
+                [
+                    2004
+                ]
+            ]
+        },
+        "page": "458-468",
+        "publisher": "The University of Chicago Press",
+        "title": "Limits to Trophic Levels and Omnivory in Complex Food Webs: Theory and Data.",
+        "type": "article-journal",
+        "volume": "163"
     },
     {
         "DOI": "10.1371/journal.pone.0017645",

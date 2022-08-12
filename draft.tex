@@ -457,13 +457,13 @@ describe different types of interactions. We kept all networks whose
 interactions were mainly of predation and herbivory types, and removed
 the largest network (\(S = 714\)) for computational efficiency reasons.
 Then, to this set we added food webs from two different sources: the New
-Zealand dataset (\(N = 21\); Pomeranz et al. 2018) and the Tuesday Lake
-dataset (\(N = 2\); Cohen, Jonsson, and Carpenter 2003). Our complete
-dataset thus contained a total of \(257\) food webs. Of the New Zealand
-and Tuesday Lake datasets, \(19\) networks had data on species' relative
-abundances that were used in the neutral model (Box 2). These \(19\)
-food webs constitute our \emph{abundance dataset}, which is a subset of
-our complete dataset.
+Zealand dataset (\(N = 21\); J. P. Pomeranz et al. 2018) and the Tuesday
+Lake dataset (\(N = 2\); Cohen, Jonsson, and Carpenter 2003). Our
+complete dataset thus contained a total of \(257\) food webs. Of the New
+Zealand and Tuesday Lake datasets, \(19\) networks had data on species'
+relative abundances that were used in the neutral model (Box 2). These
+\(19\) food webs constitute our \emph{abundance dataset}, which is a
+subset of our complete dataset.
 
 All code and data to reproduce this article are available at the Open
 Science Framework. Data cleaning, simulations and analyses were
@@ -987,59 +987,94 @@ final configuration with the highest SVD entropy among the four chains
 constitute the estimated maximum entropy configuration of a food web
 given the constraint used.
 
-\hypertarget{structure-of-maxent-networks}{%
-\subsection{Structure of MaxEnt
-networks}\label{structure-of-maxent-networks}}
+\hypertarget{structure-of-maxent-food-webs}{%
+\subsection{Structure of MaxEnt food
+webs}\label{structure-of-maxent-food-webs}}
 
-We compared different measures of the structure of empirical food webs
-with the ones of null, neutral, and MaxEnt networks
-tbl.~\ref{tbl:measures_all}, and \ref{tbl:measures_abund}. For instance,
-we measured the nestedness \(\rho\) according to Staniczenko, Kopp, and
-Allesina (2013), i.e.~using the spectral radius of the adjacency matrix.
-Nestedness indicates how much the diet of specialist species is a subset
-of the one of generalists, and is strongly associated with network
-modularity (Fortuna et al. 2010). We also measured the maximum trophic
-level \emph{maxtl}, network diameter \emph{diam} (i.e.~the longest of
-the shortest paths between all species pairs; Albert and Barabasi 2002),
-the average maximum similarity between species pairs \emph{MxSim}, the
-proportion of cannibal species \emph{Cannib} (i.e.~the proportion of
-self loops), and the proportion of omnivorous species \emph{Omniv}
-(i.e.~species whose prey are of different trophic levels). \emph{MxSim},
-\emph{Cannib}, and \emph{Omniv} are more deeply defined in Williams and
-Martinez (2000).
+We measured various properties of these configurations of maximum
+entropy to evaluate how well they reproduce the structure of sampled
+food webs. Specifically, we evaluated their nestedness \(\rho\), their
+maximum trophic level \(maxtl\), their network diameter \(diam\), their
+average maximum similarity between species pairs \(MxSim\) (Williams and
+Martinez 2000), their proportion of cannibal species \(Cannib\), their
+proportion of omnivorous species \(Omniv\), their SVD entropy, and their
+motifs profile. Nestedness indicates how much the diet of specialist
+species is a subset of the one of generalists (Delmas et al. 2019) and
+was measured using the spectral radius of the adjacency matrix
+(Staniczenko, Kopp, and Allesina 2013). In turn, the network diameter
+represents the longest of the shortest paths between all species pair
+(Albert and Barabasi 2002). Further, cannibal species are species that
+can eat members of their own species (i.e.~species having self loops),
+whereas omnivorous species can prey on different trophic levels
+(Williams and Martinez 2000). Finally, a motifs profile represents the
+proportion of three-species motifs (subnetworks), which can be
+considered as simple building blocks of ecological networks (Milo et al.
+2002; Stouffer et al. 2007). All of these properties are relatively easy
+to measure and were chosen based on their ecological importance and
+prevalent use in network ecology (McCann 2011; Delmas et al. 2019).
 
-Overall, we found that models based on the joint degree sequence (type
-II null and MaxEnt network models) reproduced the structure of empirical
-networks much better than the ones based on connectance and the neutral
-model of relative abundances. On average, the type II MaxEnt network
-model was better at predicting nestedness (\(0.62 \pm 0.08\)) than its
-corresponding null model (\(0.73 \pm 0.05\); empirical networks:
-\(0.63 \pm 0.09\)), as well as the proportion of cannibal species. This
-might in part be due because nestedness was calculated using the
-spectral radius of the adjacency matrix, which leverages information on
-the network itself just like the MaxEnt network models. However, the
-type II null model was better at predicting network diameter and average
-maximum similarity between species pairs. Predictions were similar
-between both type II models for the maximum trophic level and the
-proportion of omnivorous species.
+We compared the performance of both heuristic MaxEnt models in
+predicting these measures to the one of the null
+(tbl.~\ref{tbl:measures_all}) and neutral models
+(tbl.~\ref{tbl:measures_abund}). Overall, we found that the models based
+on the joint degree sequence (i.e.~the type II null and heuristic MaxEnt
+models) reproduced the structure of empirical food webs much better than
+the ones based on connectance (i.e.~the type I null and heuristic MaxEnt
+models). This suggests that the predictive power of connectance might be
+more limited than what was previously suggested (Timothée Poisot and
+Gravel 2014). On the other hand, the neutral model of relative
+abundances was surprisingly good at predicting the maximum trophic level
+and the network diameter. However, with the exception of the network
+diameter, the type II heuristic MaxEnt model was better at predicting
+network structure than the neutral model for all measures considered.
+This might be because, although neutral processes are important, they
+act in concert with niche processes in determining species interactions
+Canard et al. (2014). The joint degree sequence encodes information on
+both neutral and niche processes because the number of prey and
+predators a species has is determined by its relative abundance and
+biological traits. Therefore, these results show that having information
+on the number of prey and predators for each species substantially
+improves the prediction of food-web structure, both compared to models
+solely based on connectance and the ones solely based on species
+relative abundances.
+
+Next, the predictions of the type II heuristic MaxEnt model can be
+compared to its null model counterpart. On average, the type II
+heuristic MaxEnt model was better at predicting nestedness
+(\(0.62 \pm 0.08\)) than its corresponding null model
+(\(0.73 \pm 0.05\); empirical networks: \(0.63 \pm 0.09\)) for all
+networks in our complete dataset (tbl.~\ref{tbl:measures_all}). This
+might in part be due to the fact that nestedness was calculated using
+the spectral radius of the adjacency matrix, which directly leverages
+information on the network itself just like the heuristic MaxEnt models.
+The proportion of self-loops (cannibal species) was also better
+predicted by the type II heuristic MaxEnt model in comparison to the
+type II null model. However, the type II null model was better at
+predicting network diameter and average maximum similarity between
+species pairs, and predictions of the maximum trophic level and the
+proportion of omnivorous species were similar between both types of
+models. This suggests that, although the joint degree sequence is an
+important driver of food-web structure, other ecological constraints
+might need to be added to our MaxEnt model to account for some emerging
+food-web properties, especially the ones regarding food-chain lengths.
 
 \hypertarget{tbl:measures_all}{}
 \begin{longtable}[]{@{}rrrrrrrr@{}}
-\caption{\label{tbl:measures_all}Standardized mean differences of
-predicted network measures with empirical data for all networks
-(\(n = 257\)). Positive (negative) values indicate that the measure is
-overestimated (underestimated) on average. Empirical networks are most
-food webs archived on Mangal, as well as the New Zealand and Tuesday
-Lake food webs (our complete dataset). Null 1: Type I null model based
-on connectance. MaxEnt 1: Type I MaxEnt network model based on
+\caption{\label{tbl:measures_all}Standardized mean difference between
+predicted network measures and empirical data for all food webs in our
+complete dataset (\(N = 257\)). Positive (negative) values indicate that
+the measure is overestimated (underestimated) on average. Empirical
+networks include most food webs archived on Mangal, as well as the New
+Zealand and Tuesday Lake food webs. Null 1: Type I null model based on
+connectance. MaxEnt 1: Type I heuristic MaxEnt model based on
 connectance. Null 2: Type II null model based on the joint degree
-sequence. MaxEnt 2: Type II MaxEnt network model based on the joint
+sequence. MaxEnt 2: Type II heuristic MaxEnt model based on the joint
 degree sequence. \(\rho\): nestedness measured by the spectral radius of
-the adjacency matrix. \emph{maxtl}: maximum trophic level. \emph{diam}:
-network diameter. \emph{MxSim}: average maximum similarity between
-species pairs. \emph{Cannib}: proportion of cannibal species (self
-loops). \emph{Omniv}: proportion of omnivorous species. \emph{entropy}:
-SVD entropy.}\tabularnewline
+the adjacency matrix. \(maxtl\): maximum trophic level. \(diam\):
+network diameter. \(MxSim\): average maximum similarity between species
+pairs. \(Cannib\): proportion of cannibal species (self loops).
+\(Omniv\): proportion of omnivorous species. \emph{entropy}: SVD
+entropy.}\tabularnewline
 \toprule
 model & rho & maxtl & diam & MxSim & Cannib & Omniv &
 entropy\tabularnewline
@@ -1063,20 +1098,20 @@ MaxEnt 2 & -0.015 & 0.178 & 0.565 & -0.282 & 0.698 & 0.589 &
 
 \hypertarget{tbl:measures_abund}{}
 \begin{longtable}[]{@{}rrrrrrrr@{}}
-\caption{\label{tbl:measures_abund}Standardized mean differences of
-predicted network measures with empirical data for networks having
-abundance data (\(n = 19\)). Positive (negative) values indicate that
+\caption{\label{tbl:measures_abund}Standardized mean difference between
+predicted network measures and empirical data for all food webs in our
+abundance dataset (\(N = 19\)). Positive (negative) values indicate that
 the measure is overestimated (underestimated) on average. Empirical
-networks are all New Zealand and Tuesday Lake food webs with abundance
-data (our abundance dataset). Null 1: Type I null model based on
-connectance. MaxEnt 1: Type I MaxEnt network model based on connectance.
-Null 2: Type II null model based on the joint degree sequence. MaxEnt 2:
-Type II MaxEnt network model based on the joint degree sequence.
-\(\rho\): nestedness measured by the spectral radius of the adjacency
-matrix. \emph{maxtl}: maximum trophic level. \emph{diam}: network
-diameter. \emph{MxSim}: average maximum similarity between species
-pairs. \emph{Cannib}: proportion of cannibal species (self loops).
-\emph{Omniv}: proportion of omnivorous species. \emph{entropy}: SVD
+networks include the New Zealand and Tuesday Lake food webs having
+abundance data. Neutral: Neutral model of relative abundances. Null 1:
+Type I null model based on connectance. MaxEnt 1: Type I heuristic
+MaxEnt model based on connectance. Null 2: Type II null model based on
+the joint degree sequence. MaxEnt 2: Type II heuristic MaxEnt model
+based on the joint degree sequence. \(\rho\): nestedness measured by the
+spectral radius of the adjacency matrix. \(maxtl\): maximum trophic
+level. \(diam\): network diameter. \(MxSim\): average maximum similarity
+between species pairs. \(Cannib\): proportion of cannibal species (self
+loops). \(Omniv\): proportion of omnivorous species. \emph{entropy}: SVD
 entropy.}\tabularnewline
 \toprule
 model & rho & maxtl & diam & MxSim & Cannib & Omniv &
@@ -1101,23 +1136,62 @@ MaxEnt 2 & -0.010 & 0.054 & 0.243 & -0.062 & -0.038 & 0.083 &
 \bottomrule
 \end{longtable}
 
+Finally, in fig.~\ref{fig:measures} we also show how well empirical
+measures are predicted using the type II MaxEnt network model. In
+accordance with our previous results, we found that nestedness was very
+well predicted by our model. However, the type II MaxEnt network model
+overestimated the maximum trophic level and network diameter, especially
+for networks with high empirical values. In fig.~S3, we show that the
+pairwise relationships between these four measures and species richness
+in empirical food webs are similar (in magnitude and sign) to the ones
+in type II MaxEnt networks.
+
+\begin{figure}
+\hypertarget{fig:measures}{%
+\centering
+\includegraphics{figures/measures_emp_maxent.png}
+\caption{Relationship between the structure of empirical and maximum
+entropy food webs. Empirical networks include most food webs archived on
+Mangal, as well as the New Zealand and Tuesday Lake datasets (our
+complete dataset). Maximum entropy networks were estimated using a
+simulated annealing algorithm to find the network of maximum SVD entropy
+while maintaining the joint degree sequence (type II MaxEnt network
+model). (a) Nestedness (estimated using the spectral radius of the
+adjacency matrix), (b) the maximum trophic level, (c) the network
+diameter, and (d) the SVD entropy were measured on these empirical and
+maximum entropy food webs. The identity line is plotted in each
+panel.}\label{fig:measures}
+}
+\end{figure}
+
+Moreover, we found that empirical networks are close to their maximum
+entropy considering a fixed joint degree sequence (fig.~S4). Empirical
+networks had an SVD entropy of \(0.89 \pm 0.04\), compared to type II
+MaxEnt networks which had values of \(0.94 \pm 0.03\). The relationship
+between the SVD entropy of empirical food webs and their maximum entropy
+configuration is plotted in the last panel of fig.~\ref{fig:measures}.
+We also found no relationship between the difference in SVD entropy
+between empirical and type II MaxEnt networks and species richness, the
+number of interactions, or connectance (fig.~S5). Similarly, we found no
+correlation between the difference in SVD entropy and the Jaccard
+distance of empirical and type II MaxEnt networks.
+
 The picture slightly changes when we consider another important property
 of ecological networks, i.e.~their motifs profile. We measured the
 proportion of three-species motifs, which can be considered as simple
 building blocks of ecological networks (Milo et al. 2002; Stouffer et
 al. 2007). Motifs are the backbone of complex ecological networks from
 which network structure is built upon and play a crucial role in
-community dynamics and assembly (Bastolla et al. 2009; Stouffer and
-Bascompte 2011). In fig.~\ref{fig:motifs}, we show that the motifs
-profile of networks generated using the type II MaxEnt network model was
-very close to the one of empirical data, and that they made better
-predictions than the type II null model. This is also shown in
-fig.~\ref{fig:motifs_rel}, where we see that relationships between
-motifs pairs of empirical food webs are very similar to the ones of the
-type II MaxEnt networks. Overall, these results suggest that the type II
-MaxEnt network model can reproduce many aspects of network structure.
-This highlights the importance of the joint degree sequence in shaping
-ecological networks.
+community dynamics and assembly (Stouffer and Bascompte 2011). In
+fig.~\ref{fig:motifs}, we show that the motifs profile of networks
+generated using the type II MaxEnt network model was very close to the
+one of empirical data, and that they made better predictions than the
+type II null model. This is also shown in fig.~\ref{fig:motifs_rel},
+where we see that relationships between motifs pairs of empirical food
+webs are very similar to the ones of the type II MaxEnt networks.
+Overall, these results suggest that the type II MaxEnt network model can
+reproduce many aspects of network structure. This highlights the
+importance of the joint degree sequence in shaping ecological networks.
 
 \begin{figure}
 \hypertarget{fig:motifs}{%
@@ -1154,46 +1228,6 @@ joint degree sequence (type II MaxEnt network model). The predictions of
 the types I and II null models are also plotted. Regression lines are
 plotted in each panel. Motifs names are from Stouffer et al.
 (2007).}\label{fig:motifs_rel}
-}
-\end{figure}
-
-Moreover, we found that empirical networks are close to their maximum
-entropy considering a fixed joint degree sequence (fig.~S3). Empirical
-networks had an SVD entropy of \(0.89 \pm 0.04\), compared to type II
-MaxEnt networks which had values of \(0.94 \pm 0.03\). The relationship
-between the SVD entropy of empirical food webs and their maximum entropy
-configuration is plotted in the last panel of fig.~\ref{fig:measures}.
-We also found no relationship between the difference in SVD entropy
-between empirical and type II MaxEnt networks and species richness, the
-number of interactions, or connectance (fig.~S4). Similarly, we found no
-correlation between the difference in SVD entropy and the Jaccard
-distance of empirical and type II MaxEnt networks.
-
-Finally, in fig.~\ref{fig:measures} we also show how well empirical
-measures are predicted using the type II MaxEnt network model. In
-accordance with our previous results, we found that nestedness was very
-well predicted by our model. However, the type II MaxEnt network model
-overestimated the maximum trophic level and network diameter, especially
-for networks with high empirical values. In fig.~S5, we show that the
-pairwise relationships between these four measures and species richness
-in empirical food webs are similar (in magnitude and sign) to the ones
-in type II MaxEnt networks.
-
-\begin{figure}
-\hypertarget{fig:measures}{%
-\centering
-\includegraphics{figures/measures_emp_maxent.png}
-\caption{Relationship between the structure of empirical and maximum
-entropy food webs. Empirical networks include most food webs archived on
-Mangal, as well as the New Zealand and Tuesday Lake datasets (our
-complete dataset). Maximum entropy networks were estimated using a
-simulated annealing algorithm to find the network of maximum SVD entropy
-while maintaining the joint degree sequence (type II MaxEnt network
-model). (a) Nestedness (estimated using the spectral radius of the
-adjacency matrix), (b) the maximum trophic level, (c) the network
-diameter, and (d) the SVD entropy were measured on these empirical and
-maximum entropy food webs. The identity line is plotted in each
-panel.}\label{fig:measures}
 }
 \end{figure}
 
@@ -1340,6 +1374,13 @@ Banville, Francis, Steve Vissault, and Timothée Poisot. 2021.
 Analyzing Ecological Networks in Julia.''} \emph{Journal of Open Source
 Software} 6 (61): 2721. \url{https://doi.org/10.21105/joss.02721}.
 
+\leavevmode\hypertarget{ref-Bartomeus2016ComFra}{}%
+Bartomeus, Ignasi, Dominique Gravel, Jason M. Tylianakis, Marcelo A.
+Aizen, Ian A. Dickie, and Maud Bernard-Verdier. 2016. {``A Common
+Framework for Identifying Linkage Rules Across Different Types of
+Interactions.''} \emph{Functional Ecology} 30 (12): 1894--1903.
+\url{https://doi.org/10.1111/1365-2435.12666}.
+
 \leavevmode\hypertarget{ref-Bascompte2003NesAssa}{}%
 Bascompte, J., P. Jordano, C. J. Melian, and J. M. Olesen. 2003. {``The
 Nested Assembly of Plant-Animal Mutualistic Networks.''}
@@ -1347,17 +1388,16 @@ Nested Assembly of Plant-Animal Mutualistic Networks.''}
 States of America} 100 (16): 9383--87.
 \url{https://doi.org/10.1073/pnas.1633576100}.
 
-\leavevmode\hypertarget{ref-Bastolla2009ArcMut}{}%
-Bastolla, Ugo, Miguel A. Fortuna, Alberto Pascual-Garcia, Antonio
-Ferrera, Bartolo Luque, and Jordi Bascompte. 2009. {``The Architecture
-of Mutualistic Networks Minimizes Competition and Increases
-Biodiversity.''} \emph{Nature} 458 (7241): 1018--U91.
-\url{https://doi.org/10.1038/nature07950}.
-
 \leavevmode\hypertarget{ref-Beck2009GenInf}{}%
 Beck, Christian. 2009. {``Generalised Information and Entropy Measures
 in Physics.''} \emph{Contemporary Physics} 50 (4): 495--510.
 \url{https://doi.org/10.1080/00107510902823517}.
+
+\leavevmode\hypertarget{ref-Canard2014EmpEva}{}%
+Canard, E. F., N. Mouquet, D. Mouillot, M. Stanko, D. Miklisova, and D.
+Gravel. 2014. {``Empirical Evaluation of Neutral Interactions in
+Host-Parasite Networks.''} \emph{The American Naturalist} 183 (4):
+468--79. \url{https://doi.org/10.1086/675363}.
 
 \leavevmode\hypertarget{ref-Cimini2019StaPhy}{}%
 Cimini, Giulio, Tiziano Squartini, Fabio Saracco, Diego Garlaschelli,
@@ -1490,6 +1530,11 @@ Production Principle in Physics, Chemistry and Biology.''} \emph{Physics
 Reports-Review Section of Physics Letters} 426 (1): 1--45.
 \url{https://doi.org/10.1016/j.physrep.2005.12.001}.
 
+\leavevmode\hypertarget{ref-McCann2011FooWeb}{}%
+McCann, Kevin S. 2011. \emph{Food Webs (MPB-50)}. \emph{Food Webs
+(MPB-50)}. Princeton University Press.
+\url{https://doi.org/10.1515/9781400840687}.
+
 \leavevmode\hypertarget{ref-Milo2002NetMot}{}%
 Milo, R., S. Shen-Orr, S. Itzkovitz, N. Kashtan, D. Chklovskii, and U.
 Alon. 2002. {``Network Motifs: Simple Building Blocks of Complex
@@ -1535,6 +1580,18 @@ Poisot, Timothée, and Dominique Gravel. 2014. {``When Is an Ecological
 Network Complex? Connectance Drives Degree Distribution and Emerging
 Network Properties.''} \emph{PeerJ} 2: e251.
 \url{https://doi.org/10.7717/peerj.251}.
+
+\leavevmode\hypertarget{ref-Poisot2015SpeWhya}{}%
+Poisot, Timothée, Daniel B. Stouffer, and Dominique Gravel. 2015.
+{``Beyond Species: Why Ecological Interaction Networks Vary Through
+Space and Time.''} \emph{Oikos} 124 (3): 243--51.
+\url{https://doi.org/10.1111/oik.01719}.
+
+\leavevmode\hypertarget{ref-Pomeranz2019InfPrea}{}%
+Pomeranz, Justin P. F., Ross M. Thompson, Timothée Poisot, and Jon S.
+Harding. 2019. {``Inferring Predatorprey Interactions in Food Webs.''}
+\emph{Methods in Ecology and Evolution} 10 (3): 356--67.
+\url{https://doi.org/10.1111/2041-210X.13125}.
 
 \leavevmode\hypertarget{ref-Pomeranz2018DatInf}{}%
 Pomeranz, Justin Page, Ross M. Thompson, Timothée Poisot, Jon S.
