@@ -443,6 +443,52 @@
         "type": "article-journal"
     },
     {
+        "DOI": "10.1146/annurev-ecolsys-102209-144636",
+        "author": [
+            {
+                "family": "Dickinson",
+                "given": "Janis L."
+            },
+            {
+                "family": "Zuckerberg",
+                "given": "Benjamin"
+            },
+            {
+                "family": "Bonter",
+                "given": "David N."
+            }
+        ],
+        "container-title": "Annual Review of Ecology, Evolution, and Systematics, Vol 41",
+        "editor": [
+            {
+                "family": "Futuyma",
+                "given": "D. J."
+            },
+            {
+                "family": "Shafer",
+                "given": "H. B."
+            },
+            {
+                "family": "Simberloff",
+                "given": "D."
+            }
+        ],
+        "id": "Dickinson2010CitSci",
+        "issued": {
+            "date-parts": [
+                [
+                    2010
+                ]
+            ]
+        },
+        "page": "149-172",
+        "publisher": "Annual Reviews",
+        "publisher-place": "Palo Alto",
+        "title": "Citizen Science as an Ecological Research Tool: Challenges and Benefits",
+        "type": "chapter",
+        "volume": "41"
+    },
+    {
         "DOI": "10.1046/j.1461-0248.2002.00354.x",
         "author": [
             {

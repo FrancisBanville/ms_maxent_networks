@@ -1262,119 +1262,160 @@ food webs is mainly driven by their joint degree sequence, although
 higher-level properties might be needed to ensure that food-chain
 lengths fall within realistic values.
 
-\hypertarget{discussion}{%
-\section{Discussion}\label{discussion}}
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
 
 The principle of maximum entropy is a robust mathematical method of
-finding least-biased probability distributions that have some desired
-properties given by prior knowledge on a system. We first used MaxEnt to
-predict the joint degree distribution and the degree distribution of
-maximum entropy given known numbers of species and of interactions. We
-found that the resulting joint degree distributions were more symmetric
-than the ones of empirical food webs, which suggests that other
-constraints might be needed to improve those predictions. We also used
-MaxEnt to predict networks of maximum entropy with a specified
-structure. These networks are the most complex, or random, given the
-constraints used. Likewise, we found that knowledge of species richness
-and of the number of interactions were not sufficient to reproduce many
-aspects of network structure found in nature. However, a model based on
-the entire joint degree sequence, i.e.~on the number of prey and
-predators for each species, gave more convincing results. Our type II
-MaxEnt network model yielded better or similar predictions than the type
-II null model, also based on the joint degree sequence, for most
-measures considered including the motifs profile. This suggests that the
-joint degree sequence drives many aspects of network structure. Indeed,
-considering our findings that empirical networks are close to maximum
-entropy for a given joint degree sequence, our results suggest that
-food-web topology is configured almost entirely randomly around these
-marginal numbers of predators and prey.
+finding least-biased probability distributions that have some specified
+properties given by prior knowledge about a system. We first applied
+this conventional MaxEnt approach on food webs to predict species level
+properties, namely the joint degree distribution and the degree
+distribution of maximum entropy given known numbers of species and
+interactions. We found that the joint degree distributions of maximum
+entropy had a similar shape to the ones of empirical food webs in
+high-connectance systems. However, these MaxEnt distributions were more
+symmetric than the ones of empirical food webs when connectance was low,
+which suggests that other constraints might be needed to improve these
+predictions in low-connectance systems. Then, we used a slightly
+different approach that aimed at finding heuristically the network
+configuration with the highest SVD entropy, i.e.~whose vector of
+relative singular values has maximum entropy. This network of maximum
+entropy is the most complex, or random, given the specified structure.
+We found that the heuristic maximum entropy model based on connectance
+did not predict the structure of sampled food webs very well. However,
+the heuristic maximum entropy model based on the entire joint degree
+sequence, i.e.~on the number of prey and predators for each species,
+gave more convincing results. Indeed, this model reproduced food-web
+structure surprisingly well, including the highly informative motifs
+profile. Nevertheless, it was not able to predict realistic food-chain
+lengths.
 
 Our results bring to the forefront the role of the joint degree
 distribution in shaping food-web structure. This echoes the work of
-Williams (2011), which shows using MaxEnt how the degree distribution
-can drive the structure of bipartite networks. Fortuna et al. (2010)
-also found that the degree distribution of ecological networks is
-associated with some of their emerging properties such as nestedness and
-modularity. Network ecologists tend to focus on several emerging
-properties of food webs (Delmas et al. 2019), although we show that
-food-web structure is very well predicted by the joint degree
-distribution. In the light of our results, there is a lot more
-ecological information in the difference between properties of empirical
-networks and MaxEnt predictions than in these properties themselves.
+Fortuna et al. (2010), who found that the degree distribution of
+ecological networks drive their emerging structure such as their
+nestedness and modularity. Network ecologists tend to focus on several
+measures of food webs when studying the ecological consequences of their
+structure (McCann 2011; Delmas et al. 2019). In fact, following Williams
+(2011), we believe there is a lot more ecological information in the
+deviation between these properties in empirical systems and in their
+maximum entropy configuration given a fixed joint degree sequence.
 
 \hypertarget{alternative-maxent-models}{%
 \subsection{Alternative MaxEnt models}\label{alternative-maxent-models}}
 
-There are different ways to generate food webs using MaxEnt. In this
-contribution, we used a method based on simulated annealing to find the
-network configuration with the highest SVD entropy while fixing some
-aspects of its structure. Another technique, also based on simulated
-annealing, could start by generating a food web randomly with fixed
-numbers of species and interactions and calculating its joint degree
-distribution. Pairs of interactions could be swapped sequentially until
-we minimize the divergence between the calculated joint degree
-distribution and the one of maximum entropy obtained analytically. In
-that case, this is the entropy of the joint degree distribution that
-would be maximized, not the one of the network's topology. To a certain
-extent, this method would thus bridge the gap between the two approaches
-presented in this article (i.e.~analytical and heuristic MaxEnt models).
-More research is needed to compare the quality of different methods
-generating adjacency matrices of food webs using MaxEnt.
+In this contribution, we used a method based on simulated annealing to
+find the network configuration with the highest SVD entropy while fixing
+some aspects of its structure. However, there are different ways to
+generate adjacency matrices using MaxEnt. Another technique, also based
+on simulated annealing, could begin by generating a food web randomly
+with fixed numbers of species and interactions and calculating its joint
+degree distribution. Pairs of interactions could then be swapped
+sequentially until we minimize the divergence between the calculated
+joint degree distribution and the one of maximum entropy obtained
+analytically. In that case, this is the entropy of the joint degree
+distribution that would be maximized, not the one of the network's
+topology. To a certain extent, this method would thus bridge the gap
+between the analytical and heuristic approaches presented in this
+article. More research is needed to compare the quality of different
+methods generating adjacency matrices of food webs using MaxEnt.
 
-Another method generating adjacency matrices are maximum entropy graph
-models, which predict a probability distribution of networks under soft
-or hard constraints (e.g., Park and Newman 2004; Cimini et al. 2019).
-Under hard constraints, every network with a non-zero probability
-exactly satisfies the constraints on its structure. This is in contrast
-with soft constraints, which require that networks satisfy them on
-average (i.e.~many networks with a non-zero probability do not have the
-exact structure set by the constraints). Maximum entropy graph models
-are helpful because they can provide probability distributions for many
-network properties, by measuring the structure of all adjacency matrices
-with a non-zero probability. However, we consider that our approach
-based on simulated annealing is more flexible and more computationally
-efficient. Indeed, many measures of food-web structure are hard to
-translate into mathematical constraints. Moreover, because food webs are
-directed networks with self-loops, it makes the mathematical derivation
+Maximum entropy graph models are another type of methods that predict a
+distribution of adjacency matrices under soft or hard constraints (e.g.,
+Park and Newman 2004; Cimini et al. 2019). Under hard constraints, every
+network with a non-zero probability exactly satisfies the constraints on
+its structure. This is in contrast with soft constraints, which require
+that networks satisfy them on average (i.e.~many networks with a
+non-zero probability do not have the exact structure set by the
+constraints). Maximum entropy graph models are helpful because they can
+provide probability distributions for many network properties by
+measuring the structure of all adjacency matrices with a non-zero
+probability. However, we consider that our approach based on simulated
+annealing is more flexible and more computationally efficient. Indeed,
+many measures of food-web structure are hard to translate into
+mathematical constraints. Moreover, because food webs are directed
+networks that can have self-loops, it makes the mathematical derivation
 of maximum entropy graph models difficult. We believe that identifying
 heuristically what really constrains the topology of food webs is a
 useful first step before attempting to derive the mathematical
-formulation of a maximum entropy graph model adapted to food webs.
-
-Even though we decided to work with point estimates, it is possible to
-have a (non MaxEnt) probability distribution of networks when working
-with the entire chains (or part of the chains).
+formulation of a maximum entropy graph model for food webs.
 
 \hypertarget{applications}{%
 \subsection{Applications}\label{applications}}
 
-Our method and results could be used for different purposes. First, they
-could be used as first-order approximations of network structure when
-only state variables are known. This could prove useful when predicting
-network structure at large spatial scales, where few ecological
-information is known at that scale. Second, they could be used as
-informative priors in Bayesian analyses of the structure of ecological
-networks (e.g., Cirtwill et al. 2019). Third, they could be used to make
-better predictions of pairwise species interactions by constraining the
-space of feasible networks, as discussed in Strydom et al. (2021).
-Finally, they could be used as alternative null models of ecological
-networks to better understand ecological mechanisms driving food-web
-structure. In that case, our model might need to be slightly adapted to
-give a probability distribution of Boolean networks (in contrast with
-point estimates of maximum entropy networks).
+Our analytical and heuristic models can be applied for different
+purposes. First, they could be used to generate first-order
+approximations of a network's properties when state variables are known
+empirically. For example, knowing the number of species in an ecological
+community, we can predict its number of interactions using the flexible
+links model and then predict its joint degree distribution with minimal
+biases using the principle of maximum entropy. This could prove
+particularly useful when predicting network structure at large spatial
+scales, subdividing the study area into smaller communities (e.g., grid
+cells). Indeed, because species richness and other ecological data are
+increasingly abundant (e.g., Dickinson, Zuckerberg, and Bonter 2010),
+validated MaxEnt models can be used to respond to a wider range of
+macroecological questions regarding food webs.
 
-\hypertarget{conclusion}{%
-\subsection{Conclusion}\label{conclusion}}
+Second, our analytical model can be used to generate informative priors
+in Bayesian analyses of the structure of ecological networks (e.g.,
+Cirtwill et al. 2019). Indeed, the probability distribution of maximum
+entropy derived using MaxEnt can be used as a prior that can be
+constantly updated with novel data. For instance, if we know the number
+of species and the number of interactions, we can get the degree
+distribution of maximum entropy, as shown in this contribution. The
+degree distribution represents the probability that a species can
+interact (as a predator or a prey) with a number of other species. Data
+on species interactions can be used to update the prior degree
+distribution to generate a more accurate posterior distribution, thus
+improving our description and understanding of the system.
+
+Third, our analytical and heuristic models can be used to make better
+predictions of pairwise species interactions by constraining the space
+of feasible networks, as discussed in Strydom et al. (2021). In other
+words, we can use the network configuration and/or specific measures of
+food-web structure derived using MaxEnt to ensure that our predictions
+of interspecific interactions form feasible networks. This means that
+the probability that two species interact can be conditional on the
+network structure and on the probability of interactions of all other
+species pairs. For that purpose, MaxEnt can be used to predict network
+structure when other data is lacking.
+
+Finally, our analytical and heuristic models can be used as alternative
+null models of ecological networks to better understand and identify the
+ecological processes driving food-web structure. Indeed, these
+mechanisms can be better described when analyzing the deviation of
+empirical data from MaxEnt predictions. A strong deviation would
+indicate that ecological mechanisms not encodes in the statistical
+constraints is at play for the system at hand. If deviations are
+systematic, the maximum entropy model might need to be revised to
+include appropriate ecological constraints. This revision process helps
+us reflect on and identify what really constrains food-web structure.
+
+The principle of maximum entropy can thus be applied for both the
+prediction and understanding of natural systems. Therefore, the model
+interpretation depends on how we use it. It can be used as a baseline
+distribution to identify the ecological constraints organizing natural
+systems. It can also be used as predictions of ecological systems. This
+distinction between understanding and predicting is essential when using
+and interpreting MaxEnt models.
+
+\hypertarget{final-remarks}{%
+\subsection{Final remarks}\label{final-remarks}}
 
 One of the biggest challenges in using the principle of maximum entropy
 is to identify the set of state variables that best reproduce empirical
-data. We found that the numbers of prey and predators for each species
-are important state variables for the prediction of maximum entropy
-networks. However, our predictions overestimated some measures of
-network structure, especially the maximum trophic level and network
-diameter. Therefore, we should continue playing the ecological detective
-to find these other topological constraints that would improve the
-predictions of our MaxEnt network models.
+data. We found that the number of species and the number of interactions
+are important state variables for the prediction of the joint degree
+distribution. Similarly, we found that the numbers of prey and predators
+for each species in a food web are important state variables for the
+prediction of the network configuration. However, our predictions
+overestimated the symmetry of the joint degree distribution for our
+analytical model and the maximum trophic level and network diameter for
+our heuristic model. We should thus continue to play the ecological
+detective to find these other topological constraints that would improve
+the predictions of MaxEnt models and help us understand better what
+really drives food-web structure.
 
 \hypertarget{acknowledgments}{%
 \section{Acknowledgments}\label{acknowledgments}}
@@ -1455,6 +1496,14 @@ Delmas, Eva, Mathilde Besson, Marie Hélène Brice, Laura A. Burkle,
 Giulio V. Dalla Riva, Marie Josée Fortin, Dominique Gravel, et al. 2019.
 {``Analysing Ecological Networks of Species Interactions.''}
 \emph{Biological Reviews}. \url{https://doi.org/10.1111/brv.12433}.
+
+\leavevmode\hypertarget{ref-Dickinson2010CitSci}{}%
+Dickinson, Janis L., Benjamin Zuckerberg, and David N. Bonter. 2010.
+{``Citizen Science as an Ecological Research Tool: Challenges and
+Benefits.''} In \emph{Annual Review of Ecology, Evolution, and
+Systematics, Vol 41}, edited by D. J. Futuyma, H. B. Shafer, and D.
+Simberloff, 41:149--72. Palo Alto: Annual Reviews.
+\url{https://doi.org/10.1146/annurev-ecolsys-102209-144636}.
 
 \leavevmode\hypertarget{ref-Dunne2002NetStrb}{}%
 Dunne, Jennifer A., Richard J. Williams, and Neo D. Martinez. 2002.
