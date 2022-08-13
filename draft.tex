@@ -242,10 +242,10 @@ impedes our ability to fully understand what drives the structure and
 behavior of ecological networks. In particular, nestedness and
 modularity are strongly associated in ecological networks (Fortuna et
 al. 2010), and network connectance has been shown to be an important
-driver of many other emerging network properties (Timothée Poisot and
-Gravel 2014). In light of these observations, it is difficult to assess
-whether attributed effects of given properties are the artifacts of
-other, perhaps simpler, measures.
+driver of many other emerging network properties (Poisot and Gravel
+2014). In light of these observations, it is difficult to assess whether
+attributed effects of given properties are the artifacts of other,
+perhaps simpler, measures.
 
 One way to tackle this issue is first to recognize that food webs and
 other ecological networks are constrained systems. In other words, the
@@ -258,11 +258,11 @@ typically have a lower connectance (MacDonald, Banville, and Poisot
 2020) than smaller networks. This is because the number of realized
 interactions in empirical food webs scales slower than the number of
 possible species pairs (MacDonald, Banville, and Poisot 2020). As shown
-by Timothée Poisot and Gravel (2014), connectance itself can constrain
-different aspects of network structure such as the degree distribution
-(i.e.~the probability distribution of the number of interspecific
-interactions realized by a species). Other measures, such as the maximum
-trophic level, can also constrain the space of feasible networks.
+by Poisot and Gravel (2014), connectance itself can constrain different
+aspects of network structure such as the degree distribution (i.e.~the
+probability distribution of the number of interspecific interactions
+realized by a species). Other measures, such as the maximum trophic
+level, can also constrain the space of feasible networks.
 
 Prior knowledge on the structure of ecological networks is thus
 especially useful in the current context of data scarcity about species
@@ -276,7 +276,7 @@ network can also be used to predict others of its properties by
 constraining their range of possible values. This is important given
 that many aspects of network structure cannot be measured empirically
 without data on pairwise species interactions, a prevailing situation
-worldwide (Timothée Poisot et al. 2021).
+worldwide (Poisot et al. 2021).
 
 Understanding the ecological constraints that shape species interactions
 networks and predicting their emerging structure are thus two
@@ -450,20 +450,20 @@ terrestrial and aquatic food webs sampled globally and archived on the
 ecological interactions database Mangal; (2) freshwater stream food webs
 from New Zealand; and (3) aquatic food webs from Tuesday Lake (Michigan,
 United States). First, all food webs archived on \texttt{mangal.io}
-(Timothee Poisot et al. 2016; Banville, Vissault, and Poisot 2021) were
-directly queried from the database (\(N = 235\)). Most ecological
-networks archived on Mangal are multilayer networks, i.e.~networks that
-describe different types of interactions. We kept all networks whose
-interactions were mainly of predation and herbivory types, and removed
-the largest network (\(S = 714\)) for computational efficiency reasons.
-Then, to this set we added food webs from two different sources: the New
-Zealand dataset (\(N = 21\); J. P. Pomeranz et al. 2018) and the Tuesday
-Lake dataset (\(N = 2\); Cohen, Jonsson, and Carpenter 2003). Our
-complete dataset thus contained a total of \(257\) food webs. Of the New
-Zealand and Tuesday Lake datasets, \(19\) networks had data on species'
-relative abundances that were used in the neutral model (Box 2). These
-\(19\) food webs constitute our \emph{abundance dataset}, which is a
-subset of our complete dataset.
+(Poisot et al. 2016; Banville, Vissault, and Poisot 2021) were directly
+queried from the database (\(N = 235\)). Most ecological networks
+archived on Mangal are multilayer networks, i.e.~networks that describe
+different types of interactions. We kept all networks whose interactions
+were mainly of predation and herbivory types, and removed the largest
+network (\(S = 714\)) for computational efficiency reasons. Then, to
+this set we added food webs from two different sources: the New Zealand
+dataset (\(N = 21\); J. P. Pomeranz et al. 2018) and the Tuesday Lake
+dataset (\(N = 2\); Cohen, Jonsson, and Carpenter 2003). Our complete
+dataset thus contained a total of \(257\) food webs. Of the New Zealand
+and Tuesday Lake datasets, \(19\) networks had data on species' relative
+abundances that were used in the neutral model (Box 2). These \(19\)
+food webs constitute our \emph{abundance dataset}, which is a subset of
+our complete dataset.
 
 All code and data to reproduce this article are available at the Open
 Science Framework. Data cleaning, simulations and analyses were
@@ -1021,21 +1021,21 @@ on the joint degree sequence (i.e.~the type II null and heuristic MaxEnt
 models) reproduced the structure of empirical food webs much better than
 the ones based on connectance (i.e.~the type I null and heuristic MaxEnt
 models). This suggests that the predictive power of connectance might be
-more limited than what was previously suggested (Timothée Poisot and
-Gravel 2014). On the other hand, the neutral model of relative
-abundances was surprisingly good at predicting the maximum trophic level
-and the network diameter. However, with the exception of the network
-diameter, the type II heuristic MaxEnt model was better at predicting
-network structure than the neutral model for most measures considered.
-This might be because, although neutral processes are important, they
-act in concert with niche processes in determining species interactions
-Canard et al. (2014). The joint degree sequence encodes information on
-both neutral and niche processes because the number of prey and
-predators a species has is determined by its relative abundance and
-biological traits. These results thus show that having information on
-the number of prey and predators for each species substantially improves
-the prediction of food-web structure, both compared to models solely
-based on connectance and to the ones solely based on species relative
+more limited than what was previously suggested (Poisot and Gravel
+2014). On the other hand, the neutral model of relative abundances was
+surprisingly good at predicting the maximum trophic level and the
+network diameter. However, with the exception of the network diameter,
+the type II heuristic MaxEnt model was better at predicting network
+structure than the neutral model for most measures considered. This
+might be because, although neutral processes are important, they act in
+concert with niche processes in determining species interactions Canard
+et al. (2014). The joint degree sequence encodes information on both
+neutral and niche processes because the number of prey and predators a
+species has is determined by its relative abundance and biological
+traits. These results thus show that having information on the number of
+prey and predators for each species substantially improves the
+prediction of food-web structure, both compared to models solely based
+on connectance and to the ones solely based on species relative
 abundances.
 
 Next, the predictions of the type II heuristic MaxEnt model can be
@@ -1642,7 +1642,7 @@ Phillips, Steven J., Robert P. Anderson, and Robert E. Schapire. 2006.
 Pielou, Evelyn C. 1975. {``Ecological Diversity.''} In. 574.524018 P5.
 
 \leavevmode\hypertarget{ref-Poisot2016ManMakb}{}%
-Poisot, Timothee, Benjamin Baiser, Jennifer A. Dunne, Sonia Kefi,
+Poisot, Timothée, Benjamin Baiser, Jennifer A. Dunne, Sonia Kefi,
 Francois Massol, Nicolas Mouquet, Tamara N. Romanuk, Daniel B. Stouffer,
 Spencer A. Wood, and Dominique Gravel. 2016. {``Mangal - Making
 Ecological Network Analysis Simple.''} \emph{Ecography} 39 (4): 384--90.
