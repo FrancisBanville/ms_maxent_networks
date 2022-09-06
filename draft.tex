@@ -440,35 +440,6 @@ the constraint used. Our type I MaxEnt model uses the connectance of the
 network (i.e.~the ratio \(L/S^2\)) as a constraint, whereas our type II
 MaxEnt model uses the whole joint degree sequence as a constraint.
 
-\hypertarget{data-and-code}{%
-\section{Data and code}\label{data-and-code}}
-
-We tested our analytical and heuristic MaxEnt models against open
-food-web data queried from three different sources and integrated into
-what we call our \emph{complete dataset}. These sources include (1)
-terrestrial and aquatic food webs sampled globally and archived on the
-ecological interactions database Mangal; (2) freshwater stream food webs
-from New Zealand; and (3) aquatic food webs from Tuesday Lake (Michigan,
-United States). First, all food webs archived on \texttt{mangal.io}
-(Poisot et al. 2016; Banville, Vissault, and Poisot 2021) were directly
-queried from the database (\(N = 235\)). Most ecological networks
-archived on Mangal are multilayer networks, i.e.~networks that describe
-different types of interactions. We kept all networks whose interactions
-were mainly of predation and herbivory types, and removed the largest
-network (\(S = 714\)) for computational efficiency reasons. Then, to
-this set we added food webs from two different sources: the New Zealand
-dataset (\(N = 21\); J. P. Pomeranz et al. 2018) and the Tuesday Lake
-dataset (\(N = 2\); Cohen, Jonsson, and Carpenter 2003). Our complete
-dataset thus contained a total of \(257\) food webs. Of the New Zealand
-and Tuesday Lake datasets, \(19\) networks had data on species' relative
-abundances that were used in the neutral model (Box 2). These \(19\)
-food webs constitute our \emph{abundance dataset}, which is a subset of
-our complete dataset.
-
-All code and data to reproduce this article are available at the Open
-Science Framework. Data cleaning, simulations and analyses were
-conducted in Julia v1.6.1.
-
 \hypertarget{analytical-maximum-entropy-models}{%
 \section{Analytical maximum entropy
 models}\label{analytical-maximum-entropy-models}}
@@ -492,6 +463,26 @@ much greater details its mathematical derivation in food webs. But
 first, we derive the joint degree distribution, a related property that
 holds significantly more ecological information than the degree
 distribution.
+
+We tested our analytical MaxEnt model against open food-web data queried
+from three different sources and integrated into what we call our
+\emph{complete dataset}. These sources include (1) terrestrial and
+aquatic food webs sampled globally and archived on the ecological
+interactions database Mangal; (2) freshwater stream food webs from New
+Zealand; and (3) aquatic food webs from Tuesday Lake (Michigan, United
+States). First, all food webs archived on \texttt{mangal.io} (Poisot et
+al. 2016; Banville, Vissault, and Poisot 2021) were directly queried
+from the database (\(N = 235\)). Most ecological networks archived on
+Mangal are multilayer networks, i.e.~networks that describe different
+types of interactions. We kept all networks whose interactions were
+mainly of predation and herbivory types, and removed the largest network
+(\(S = 714\)) for computational efficiency reasons. Then, to this set we
+added food webs from two different sources: the New Zealand dataset
+(\(N = 21\); J. P. Pomeranz et al. 2018) and the Tuesday Lake dataset
+(\(N = 2\); Cohen, Jonsson, and Carpenter 2003). Our complete dataset
+thus contained a total of \(257\) food webs. All code and data to
+reproduce this article are available at the Open Science Framework. Data
+cleaning, simulations and analyses were conducted in Julia v1.6.1.
 
 \hypertarget{joint-degree-distribution}{%
 \subsection{Joint degree distribution}\label{joint-degree-distribution}}
@@ -1014,29 +1005,39 @@ to measure and were chosen based on their ecological importance and
 prevalent use in network ecology (McCann 2011; Delmas et al. 2019).
 
 We compared the performance of both heuristic MaxEnt models in
-predicting these measures to the one of the null
-(tbl.~\ref{tbl:measures_all}) and neutral models
-(tbl.~\ref{tbl:measures_abund}). Overall, we found that the models based
-on the joint degree sequence (i.e.~the type II null and heuristic MaxEnt
-models) reproduced the structure of empirical food webs much better than
-the ones based on connectance (i.e.~the type I null and heuristic MaxEnt
-models). This suggests that the predictive power of connectance might be
-more limited than what was previously suggested (Poisot and Gravel
-2014). On the other hand, the neutral model of relative abundances was
-surprisingly good at predicting the maximum trophic level and the
-network diameter. However, with the exception of the network diameter,
-the type II heuristic MaxEnt model was better at predicting network
-structure than the neutral model for most measures considered. This
-might be because, although neutral processes are important, they act in
-concert with niche processes in determining species interactions Canard
-et al. (2014). The joint degree sequence encodes information on both
-neutral and niche processes because the number of prey and predators a
-species has is determined by its relative abundance and biological
-traits. These results thus show that having information on the number of
-prey and predators for each species substantially improves the
-prediction of food-web structure, both compared to models solely based
-on connectance and to the ones solely based on species relative
-abundances.
+predicting these measures to the one of the null and neutral models (Box
+2). We conducted these comparisons using two different datasets: (1) our
+complete dataset including most food webs archived on Mangal, as well as
+all food webs in the New Zealand and Tuesday Lake datasets, and (2) our
+\emph{abundance dataset}, a subset of the complete dataset comprising
+all food webs having data on their species' relative abundances
+(\(N=19\)). Indeed, of the New Zealand and Tuesday Lake datasets, \(19\)
+networks had data on species' relative abundances that were used in the
+neutral model to better assess the performance of our heuristic models.
+We compared our models' predictions using these two datasets separately
+to minimize biases and to better represent food webs with abundance data
+(tbl.~\ref{tbl:measures_all} and tbl.~\ref{tbl:measures_abund}).
+
+Overall, we found that the models based on the joint degree sequence
+(i.e.~the type II null and heuristic MaxEnt models) reproduced the
+structure of empirical food webs much better than the ones based on
+connectance (i.e.~the type I null and heuristic MaxEnt models). This
+suggests that the predictive power of connectance might be more limited
+than what was previously suggested (Poisot and Gravel 2014). On the
+other hand, the neutral model of relative abundances was surprisingly
+good at predicting the maximum trophic level and the network diameter.
+However, with the exception of the network diameter, the type II
+heuristic MaxEnt model was better at predicting network structure than
+the neutral model for most measures considered. This might be because,
+although neutral processes are important, they act in concert with niche
+processes in determining species interactions Canard et al. (2014). The
+joint degree sequence encodes information on both neutral and niche
+processes because the number of prey and predators a species has is
+determined by its relative abundance and biological traits. These
+results thus show that having information on the number of prey and
+predators for each species substantially improves the prediction of
+food-web structure, both compared to models solely based on connectance
+and to the ones solely based on species relative abundances.
 
 Next, the predictions of the type II heuristic MaxEnt model can be
 compared to its null model counterpart. On average, the type II
