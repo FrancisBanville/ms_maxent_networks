@@ -5,6 +5,11 @@
 # food webs archived on mangal.io (generated from 01_import_mangal_metadata.jl) 
 mangal_foodwebs = DataFrame(CSV.File(joinpath("data", "raw", "mangal", "mangal_foodwebs.csv")))
 N_mangal = network.(mangal_foodwebs.id)
+
+# remove food webs with missing values of interaction strength
+N_mangal = N_mangal[[!ismissing(Mangal.get_all_interactions(N_mangal[i])[1].strength) for i in 1:length(N_mangal)]]
+
+# convert to unipartite networks
 N_mangal = convert.(UnipartiteNetwork, N_mangal)
 N_mangal = UnipartiteNetwork.(N_mangal[i].edges for i in 1:length(N_mangal))
 
@@ -12,14 +17,14 @@ N_mangal = UnipartiteNetwork.(N_mangal[i].edges for i in 1:length(N_mangal))
 NZ_foodwebs = DataFrame.(CSV.File.(glob("*.csv", 
                                         joinpath("data", "raw", "new_zealand", "adjacency_matrices")),
                                         drop=[1])) # the first column is row names
-N_NZ = convert.(Matrix{Bool}, NZ_foodwebs)
+N_NZ = Matrix{Bool}.(NZ_foodwebs)
 N_NZ = UnipartiteNetwork.(N_NZ, names.(NZ_foodwebs))
 
 # Tuesday lake food webs
 tuesday_foodwebs = DataFrame.(CSV.File.(glob("*.csv", 
                                         joinpath("data", "raw", "tuesday_lake", "adjacency_matrices")),
                                         header=false)) # no column names here
-N_tuesday = convert.(Matrix{Bool}, tuesday_foodwebs)
+N_tuesday = Matrix{Bool}.(tuesday_foodwebs)
 N_tuesday = UnipartiteNetwork.(N_tuesday)
 
 # simplify all food webs
@@ -50,7 +55,7 @@ abundance_data_NZ(fw_name::String)
     fw_name: name of the food web (file name)
 Returns the density (no/m2) of all species in the simplified food web with abundance data
 """
-function abundance_data_NZ(fw_name::String)
+function abundance_data_NZ(fw_name)
   # filter abundance data for this food web and get species names
   abund_fw = abund_NZ[abund_NZ[!, :food_web] .== fw_name, :]
   abund_taxa = abund_fw[!, :taxa]
@@ -58,7 +63,7 @@ function abundance_data_NZ(fw_name::String)
   N_df = DataFrame.(CSV.File.(joinpath("data", "raw", "new_zealand", "adjacency_matrices", "$fw_name.csv"),
                     drop=[1])) # the first column is row names
   # convert to UnipartiteNetwork and make sure species have abundance data
-  N = convert(Matrix{Bool}, N_df)
+  N = Matrix{Bool}(N_df)
   N = UnipartiteNetwork(N, names(N_df))
   taxa_N = species(N)
   N.edges = N.edges[in(abund_taxa).(taxa_N), in(abund_taxa).(taxa_N)]
