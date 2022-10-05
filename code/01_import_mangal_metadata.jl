@@ -17,10 +17,10 @@ mangal_networks = DataFrame(fill(0, (number_of_networks, 5)),
                  [:id, :S, :L, :P, :H])
 
 global cursor = 1
-@progress "Paging networks" for page in 1:number_of_pages
+@showprogress "Paging networks" for page in 1:number_of_pages
     global cursor
     networks_in_page = Mangal.networks("count" => count_per_page, "page" => page-1)
-    @progress "Counting items" for current_network in networks_in_page
+    @showprogress "Counting items" for current_network in networks_in_page
         S = count(MangalNode, current_network)
         L = count(MangalInteraction, current_network)
         P = count(MangalInteraction, current_network, "type" => "predation")

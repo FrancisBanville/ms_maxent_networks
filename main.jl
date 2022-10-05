@@ -55,6 +55,3 @@ include(joinpath("code", "02_clean_data.jl"))
 include(joinpath("code", "03_predict_networks.jl"))
 include(joinpath("code", "04_compute_measures.jl"))
 include(joinpath("code", "05_make_figures.jl"))
-
-
-Pkg.add(Pkg.PackageSpec(;name="EcologicalNetworks", version="0.5.2"))
