@@ -1,7 +1,3 @@
----
-bibliography: [references.bib]
----
-
 # Introduction 
 
 ## The constrained structure of ecological networks 
