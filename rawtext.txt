@@ -737,8 +737,8 @@ Indeed, of the New Zealand and Tuesday Lake datasets, $19$ networks had
 data on species' relative abundances that were used in the neutral model
 to better assess the performance of our heuristic models. We compared
 our models' predictions using these two datasets separately to minimize
-biases and to better represent food webs with abundance data
-(tbl. **¿tbl:measures_all?** and tbl. **¿tbl:measures_abund?**).
+biases and to better represent food webs with abundance data (tbl. 1 and
+tbl. 2).
 
 Overall, we found that the models based on the joint degree sequence
 (i.e. the type II null and heuristic MaxEnt models) reproduced the
@@ -767,57 +767,80 @@ compared to its null model counterpart. On average, the type II
 heuristic MaxEnt model was better at predicting nestedness
 ($0.62 \pm 0.08$) than its corresponding null model ($0.73 \pm 0.05$;
 empirical networks: $0.63 \pm 0.09$) for networks in our complete
-dataset (tbl. **¿tbl:measures_all?**). This might in part be due to the
-fact that nestedness was calculated using the spectral radius of the
-adjacency matrix, which directly leverages information on the network
-itself just like the heuristic MaxEnt model. The proportion of
-self-loops (cannibal species) was also better predicted by the type II
-heuristic MaxEnt model in comparison to the type II null model. However,
-the type II null model was better at predicting network diameter and
-average maximum similarity between species pairs, and predictions of the
-maximum trophic level and the proportion of omnivorous species were
-similar between both types of models. We believe that this is because
-increasing the complexity of a food web might increase its average and
-maximum food-chain lengths. In comparison, the null model was more
-stochastic and does not necessarily produce more complex food webs with
-longer food-chain lengths.
+dataset (tbl. 1). This might in part be due to the fact that nestedness
+was calculated using the spectral radius of the adjacency matrix, which
+directly leverages information on the network itself just like the
+heuristic MaxEnt model. The proportion of self-loops (cannibal species)
+was also better predicted by the type II heuristic MaxEnt model in
+comparison to the type II null model. However, the type II null model
+was better at predicting network diameter and average maximum similarity
+between species pairs, and predictions of the maximum trophic level and
+the proportion of omnivorous species were similar between both types of
+models. We believe that this is because increasing the complexity of a
+food web might increase its average and maximum food-chain lengths. In
+comparison, the null model was more stochastic and does not necessarily
+produce more complex food webs with longer food-chain lengths.
 
-: Standardized mean difference between predicted network measures and
-empirical data for all food webs in our complete dataset ($N = 257$).
-Positive (negative) values indicate that the measure is overestimated
-(underestimated) on average. Empirical networks include most food webs
-archived on Mangal, as well as the New Zealand and Tuesday Lake food
-webs. Null 1: Type I null model based on connectance. MaxEnt 1: Type I
-heuristic MaxEnt model based on connectance. Null 2: Type II null model
-based on the joint degree sequence. MaxEnt 2: Type II heuristic MaxEnt
-model based on the joint degree sequence. $\rho$: nestedness measured by
-the spectral radius of the adjacency matrix. $maxtl$: maximum trophic
-level. $diam$: network diameter. $MxSim$: average maximum similarity
-between species pairs. $Cannib$: proportion of cannibal species (self
-loops). $Omniv$: proportion of omnivorous species. *entropy*: SVD
-entropy. {#tbl:measures_all}
+::: {#tbl:measures_all}
+  -------------------------------------------------------------------------
+        model      rho    maxtl    diam    MxSim   Cannib   Omniv   entropy
+  ----------- -------- -------- ------- -------- -------- ------- ---------
+       null 1   -0.167    0.980   1.428   -0.502    2.007   1.493     0.056
 
-```{=tex}
-\input{tables/measures_all.md}
-```
-: Standardized mean difference between predicted network measures and
-empirical data for all food webs in our abundance dataset ($N = 19$).
-Positive (negative) values indicate that the measure is overestimated
-(underestimated) on average. Empirical networks include the New Zealand
-and Tuesday Lake food webs having abundance data. Neutral: Neutral model
-of relative abundances. Null 1: Type I null model based on connectance.
-MaxEnt 1: Type I heuristic MaxEnt model based on connectance. Null 2:
-Type II null model based on the joint degree sequence. MaxEnt 2: Type II
-heuristic MaxEnt model based on the joint degree sequence. $\rho$:
-nestedness measured by the spectral radius of the adjacency matrix.
-$maxtl$: maximum trophic level. $diam$: network diameter. $MxSim$:
-average maximum similarity between species pairs. $Cannib$: proportion
-of cannibal species (self loops). $Omniv$: proportion of omnivorous
-species. *entropy*: SVD entropy. {#tbl:measures_abund}
+     MaxEnt 1   -0.226    0.831   1.274   -0.524    1.982   1.863     0.106
 
-```{=tex}
-\input{tables/measures_abund.md}
-```
+       null 2    0.160   -0.125   0.016    0.007    1.078   0.559    -0.023
+
+     MaxEnt 2   -0.015    0.178   0.565   -0.282    0.698   0.589     0.058
+  -------------------------------------------------------------------------
+
+  : Table 1: Standardized mean difference between predicted network
+  measures and empirical data for all food webs in our complete dataset
+  ($N = 257$). Positive (negative) values indicate that the measure is
+  overestimated (underestimated) on average. Empirical networks include
+  most food webs archived on Mangal, as well as the New Zealand and
+  Tuesday Lake food webs. Null 1: Type I null model based on
+  connectance. MaxEnt 1: Type I heuristic MaxEnt model based on
+  connectance. Null 2: Type II null model based on the joint degree
+  sequence. MaxEnt 2: Type II heuristic MaxEnt model based on the joint
+  degree sequence. $\rho$: nestedness measured by the spectral radius of
+  the adjacency matrix. $maxtl$: maximum trophic level. $diam$: network
+  diameter. $MxSim$: average maximum similarity between species pairs.
+  $Cannib$: proportion of cannibal species (self loops). $Omniv$:
+  proportion of omnivorous species. *entropy*: SVD entropy.
+:::
+
+::: {#tbl:measures_abund}
+  --------------------------------------------------------------------------
+        model      rho    maxtl     diam    MxSim   Cannib   Omniv   entropy
+  ----------- -------- -------- -------- -------- -------- ------- ---------
+      neutral    0.367   -0.090    0.027    0.266    6.870   0.576    -0.083
+
+       null 1   -0.134    0.950    1.919   -0.369    2.077   0.614     0.068
+
+     MaxEnt 1   -0.229    1.020    1.946   -0.355    2.215   0.801     0.121
+
+       null 2    0.128   -0.115   -0.135    0.157    1.444   0.029    -0.021
+
+     MaxEnt 2   -0.010    0.054    0.243   -0.062   -0.038   0.083     0.038
+  --------------------------------------------------------------------------
+
+  : Table 2: Standardized mean difference between predicted network
+  measures and empirical data for all food webs in our abundance dataset
+  ($N = 19$). Positive (negative) values indicate that the measure is
+  overestimated (underestimated) on average. Empirical networks include
+  the New Zealand and Tuesday Lake food webs having abundance data.
+  Neutral: Neutral model of relative abundances. Null 1: Type I null
+  model based on connectance. MaxEnt 1: Type I heuristic MaxEnt model
+  based on connectance. Null 2: Type II null model based on the joint
+  degree sequence. MaxEnt 2: Type II heuristic MaxEnt model based on the
+  joint degree sequence. $\rho$: nestedness measured by the spectral
+  radius of the adjacency matrix. $maxtl$: maximum trophic level.
+  $diam$: network diameter. $MxSim$: average maximum similarity between
+  species pairs. $Cannib$: proportion of cannibal species (self loops).
+  $Omniv$: proportion of omnivorous species. *entropy*: SVD entropy.
+:::
+
 Despite this increase in maximum trophic level and network diameter in
 MaxEnt food webs, we found that empirical food webs are close to their
 maximum entropy given a fixed joint degree sequence (fig. S3). Empirical
@@ -837,18 +860,18 @@ regardless of their number of species and their number of interactions.
 
 A direct comparison of the structure of maximum entropy food webs,
 constrained by the joint degree sequence, with empirical data also
-supports the results depicted in tbl. **¿tbl:measures_all?**. Indeed, in
-fig. 4 we show how well empirical measures are predicted by the type II
-heuristic MaxEnt model. In accordance with our previous results, we
-found that nestedness was very well predicted by our model. However, the
-model overestimated the maximum trophic level and network diameter,
-especially when the sampled food web had intermediate values of these
-measures. In fig. S5, we show that the pairwise relationships between
-the four measures in fig. 4 and species richness in empirical food webs
-are similar (in magnitude and sign) to the ones found in food webs
-generated using the type II heuristic MaxEnt model. This indicates that
-the number of species in the network does not seem to impact the ability
-of the model to reproduce food-web structure.
+supports the results depicted in tbl. 1. Indeed, in fig. 4 we show how
+well empirical measures are predicted by the type II heuristic MaxEnt
+model. In accordance with our previous results, we found that nestedness
+was very well predicted by our model. However, the model overestimated
+the maximum trophic level and network diameter, especially when the
+sampled food web had intermediate values of these measures. In fig. S5,
+we show that the pairwise relationships between the four measures in
+fig. 4 and species richness in empirical food webs are similar (in
+magnitude and sign) to the ones found in food webs generated using the
+type II heuristic MaxEnt model. This indicates that the number of
+species in the network does not seem to impact the ability of the model
+to reproduce food-web structure.
 
 ![Figure 4: Relationship between the structure of empirical and maximum
 entropy food webs. Empirical networks include most food webs archived on
@@ -910,18 +933,18 @@ names are from
 
 One of the challenges in implementing and validating a maximum entropy
 model is to discover where its predictions break down. The results
-depicted in tbl. **¿tbl:measures_all?** and fig. 4 show that our type II
-heuristic MaxEnt model can capture many high-level properties of food
-webs, but does a poor job of capturing others. This suggests that,
-although the joint degree sequence is an important driver of food-web
-structure, other ecological constraints might be needed to account for
-some emerging food-web properties, especially the ones regarding
-food-chain lengths. Nevertheless, fig. 5 and fig. 6 show that the model
-can reproduce surprisingly well the motifs profile, one of the most
-ecologically informative properties of food webs. This suggests that the
-emerging structure of food webs is mainly driven by their joint degree
-sequence, although higher-level properties might be needed to ensure
-that food-chain lengths fall within realistic values.
+depicted in tbl. 1 and fig. 4 show that our type II heuristic MaxEnt
+model can capture many high-level properties of food webs, but does a
+poor job of capturing others. This suggests that, although the joint
+degree sequence is an important driver of food-web structure, other
+ecological constraints might be needed to account for some emerging
+food-web properties, especially the ones regarding food-chain lengths.
+Nevertheless, fig. 5 and fig. 6 show that the model can reproduce
+surprisingly well the motifs profile, one of the most ecologically
+informative properties of food webs. This suggests that the emerging
+structure of food webs is mainly driven by their joint degree sequence,
+although higher-level properties might be needed to ensure that
+food-chain lengths fall within realistic values.
 
 # Conclusion
 

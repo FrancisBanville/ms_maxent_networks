@@ -1411,9 +1411,7 @@ biases</div>
             better assess the performance of our heuristic models. We
             compared our models’ predictions using these two datasets
             separately to minimize biases and to better represent food
-            webs with abundance data
-            (tbl. <strong>¿tbl:measures_all?</strong> and
-            tbl. <strong>¿tbl:measures_abund?</strong>).</p>
+            webs with abundance data (tbl. 1 and tbl. 2).</p>
             <p>Overall, we found that the models based on the joint
             degree sequence (i.e. the type II null and heuristic MaxEnt
             models) reproduced the structure of empirical food webs much
@@ -1450,10 +1448,9 @@ biases</div>
             corresponding null model (<span
             class="math inline">0.73 ± 0.05</span>; empirical networks:
             <span class="math inline">0.63 ± 0.09</span>) for networks
-            in our complete dataset
-            (tbl. <strong>¿tbl:measures_all?</strong>). This might in
-            part be due to the fact that nestedness was calculated using
-            the spectral radius of the adjacency matrix, which directly
+            in our complete dataset (tbl. 1). This might in part be due
+            to the fact that nestedness was calculated using the
+            spectral radius of the adjacency matrix, which directly
             leverages information on the network itself just like the
             heuristic MaxEnt model. The proportion of self-loops
             (cannibal species) was also better predicted by the type II
@@ -1468,9 +1465,11 @@ biases</div>
             comparison, the null model was more stochastic and does not
             necessarily produce more complex food webs with longer
             food-chain lengths.</p>
-            <p>: Standardized mean difference between predicted network
-            measures and empirical data for all food webs in our
-            complete dataset (<span
+            <div id="tbl:measures_all">
+            <table style="width:100%;">
+            <caption>Table 1: Standardized mean difference between
+            predicted network measures and empirical data for all food
+            webs in our complete dataset (<span
             class="math inline"><em>N</em> = 257</span>). Positive
             (negative) values indicate that the measure is overestimated
             (underestimated) on average. Empirical networks include most
@@ -1492,10 +1491,78 @@ biases</div>
             proportion of cannibal species (self loops). <span
             class="math inline"><em>O</em><em>m</em><em>n</em><em>i</em><em>v</em></span>:
             proportion of omnivorous species. <em>entropy</em>: SVD
-            entropy. {#tbl:measures_all}</p>
-            <p>: Standardized mean difference between predicted network
-            measures and empirical data for all food webs in our
-            abundance dataset (<span
+            entropy.</caption>
+            <colgroup>
+            <col style="width: 15%" />
+            <col style="width: 12%" />
+            <col style="width: 12%" />
+            <col style="width: 10%" />
+            <col style="width: 12%" />
+            <col style="width: 12%" />
+            <col style="width: 10%" />
+            <col style="width: 14%" />
+            </colgroup>
+            <thead>
+            <tr class="header">
+            <th style="text-align: right;">model</th>
+            <th style="text-align: right;">rho</th>
+            <th style="text-align: right;">maxtl</th>
+            <th style="text-align: right;">diam</th>
+            <th style="text-align: right;">MxSim</th>
+            <th style="text-align: right;">Cannib</th>
+            <th style="text-align: right;">Omniv</th>
+            <th style="text-align: right;">entropy</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="odd">
+            <td style="text-align: right;">null 1</td>
+            <td style="text-align: right;">-0.167</td>
+            <td style="text-align: right;">0.980</td>
+            <td style="text-align: right;">1.428</td>
+            <td style="text-align: right;">-0.502</td>
+            <td style="text-align: right;">2.007</td>
+            <td style="text-align: right;">1.493</td>
+            <td style="text-align: right;">0.056</td>
+            </tr>
+            <tr class="even">
+            <td style="text-align: right;">MaxEnt 1</td>
+            <td style="text-align: right;">-0.226</td>
+            <td style="text-align: right;">0.831</td>
+            <td style="text-align: right;">1.274</td>
+            <td style="text-align: right;">-0.524</td>
+            <td style="text-align: right;">1.982</td>
+            <td style="text-align: right;">1.863</td>
+            <td style="text-align: right;">0.106</td>
+            </tr>
+            <tr class="odd">
+            <td style="text-align: right;">null 2</td>
+            <td style="text-align: right;">0.160</td>
+            <td style="text-align: right;">-0.125</td>
+            <td style="text-align: right;">0.016</td>
+            <td style="text-align: right;">0.007</td>
+            <td style="text-align: right;">1.078</td>
+            <td style="text-align: right;">0.559</td>
+            <td style="text-align: right;">-0.023</td>
+            </tr>
+            <tr class="even">
+            <td style="text-align: right;">MaxEnt 2</td>
+            <td style="text-align: right;">-0.015</td>
+            <td style="text-align: right;">0.178</td>
+            <td style="text-align: right;">0.565</td>
+            <td style="text-align: right;">-0.282</td>
+            <td style="text-align: right;">0.698</td>
+            <td style="text-align: right;">0.589</td>
+            <td style="text-align: right;">0.058</td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+            <div id="tbl:measures_abund">
+            <table>
+            <caption>Table 2: Standardized mean difference between
+            predicted network measures and empirical data for all food
+            webs in our abundance dataset (<span
             class="math inline"><em>N</em> = 19</span>). Positive
             (negative) values indicate that the measure is overestimated
             (underestimated) on average. Empirical networks include the
@@ -1518,7 +1585,83 @@ biases</div>
             proportion of cannibal species (self loops). <span
             class="math inline"><em>O</em><em>m</em><em>n</em><em>i</em><em>v</em></span>:
             proportion of omnivorous species. <em>entropy</em>: SVD
-            entropy. {#tbl:measures_abund}</p>
+            entropy.</caption>
+            <colgroup>
+            <col style="width: 15%" />
+            <col style="width: 12%" />
+            <col style="width: 12%" />
+            <col style="width: 12%" />
+            <col style="width: 12%" />
+            <col style="width: 12%" />
+            <col style="width: 10%" />
+            <col style="width: 13%" />
+            </colgroup>
+            <thead>
+            <tr class="header">
+            <th style="text-align: right;">model</th>
+            <th style="text-align: right;">rho</th>
+            <th style="text-align: right;">maxtl</th>
+            <th style="text-align: right;">diam</th>
+            <th style="text-align: right;">MxSim</th>
+            <th style="text-align: right;">Cannib</th>
+            <th style="text-align: right;">Omniv</th>
+            <th style="text-align: right;">entropy</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="odd">
+            <td style="text-align: right;">neutral</td>
+            <td style="text-align: right;">0.367</td>
+            <td style="text-align: right;">-0.090</td>
+            <td style="text-align: right;">0.027</td>
+            <td style="text-align: right;">0.266</td>
+            <td style="text-align: right;">6.870</td>
+            <td style="text-align: right;">0.576</td>
+            <td style="text-align: right;">-0.083</td>
+            </tr>
+            <tr class="even">
+            <td style="text-align: right;">null 1</td>
+            <td style="text-align: right;">-0.134</td>
+            <td style="text-align: right;">0.950</td>
+            <td style="text-align: right;">1.919</td>
+            <td style="text-align: right;">-0.369</td>
+            <td style="text-align: right;">2.077</td>
+            <td style="text-align: right;">0.614</td>
+            <td style="text-align: right;">0.068</td>
+            </tr>
+            <tr class="odd">
+            <td style="text-align: right;">MaxEnt 1</td>
+            <td style="text-align: right;">-0.229</td>
+            <td style="text-align: right;">1.020</td>
+            <td style="text-align: right;">1.946</td>
+            <td style="text-align: right;">-0.355</td>
+            <td style="text-align: right;">2.215</td>
+            <td style="text-align: right;">0.801</td>
+            <td style="text-align: right;">0.121</td>
+            </tr>
+            <tr class="even">
+            <td style="text-align: right;">null 2</td>
+            <td style="text-align: right;">0.128</td>
+            <td style="text-align: right;">-0.115</td>
+            <td style="text-align: right;">-0.135</td>
+            <td style="text-align: right;">0.157</td>
+            <td style="text-align: right;">1.444</td>
+            <td style="text-align: right;">0.029</td>
+            <td style="text-align: right;">-0.021</td>
+            </tr>
+            <tr class="odd">
+            <td style="text-align: right;">MaxEnt 2</td>
+            <td style="text-align: right;">-0.010</td>
+            <td style="text-align: right;">0.054</td>
+            <td style="text-align: right;">0.243</td>
+            <td style="text-align: right;">-0.062</td>
+            <td style="text-align: right;">-0.038</td>
+            <td style="text-align: right;">0.083</td>
+            <td style="text-align: right;">0.038</td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
             <p>Despite this increase in maximum trophic level and
             network diameter in MaxEnt food webs, we found that
             empirical food webs are close to their maximum entropy given
@@ -1542,22 +1685,21 @@ biases</div>
             and their number of interactions.</p>
             <p>A direct comparison of the structure of maximum entropy
             food webs, constrained by the joint degree sequence, with
-            empirical data also supports the results depicted in
-            tbl. <strong>¿tbl:measures_all?</strong>. Indeed, in fig. 4
-            we show how well empirical measures are predicted by the
-            type II heuristic MaxEnt model. In accordance with our
-            previous results, we found that nestedness was very well
-            predicted by our model. However, the model overestimated the
-            maximum trophic level and network diameter, especially when
-            the sampled food web had intermediate values of these
-            measures. In fig. S5, we show that the pairwise
-            relationships between the four measures in fig. 4 and
-            species richness in empirical food webs are similar (in
-            magnitude and sign) to the ones found in food webs generated
-            using the type II heuristic MaxEnt model. This indicates
-            that the number of species in the network does not seem to
-            impact the ability of the model to reproduce food-web
-            structure.</p>
+            empirical data also supports the results depicted in tbl. 1.
+            Indeed, in fig. 4 we show how well empirical measures are
+            predicted by the type II heuristic MaxEnt model. In
+            accordance with our previous results, we found that
+            nestedness was very well predicted by our model. However,
+            the model overestimated the maximum trophic level and
+            network diameter, especially when the sampled food web had
+            intermediate values of these measures. In fig. S5, we show
+            that the pairwise relationships between the four measures in
+            fig. 4 and species richness in empirical food webs are
+            similar (in magnitude and sign) to the ones found in food
+            webs generated using the type II heuristic MaxEnt model.
+            This indicates that the number of species in the network
+            does not seem to impact the ability of the model to
+            reproduce food-web structure.</p>
             <figure>
             <img src="figures/measures_emp_maxent.png" id="fig:measures"
             alt="Figure 4: Relationship between the structure of empirical and maximum entropy food webs. Empirical networks include most food webs archived on Mangal, as well as the New Zealand and Tuesday Lake food webs (our complete dataset). Maximum entropy networks were obtained using the type II heuristic MaxEnt model based on the joint degree sequence. (a) Nestedness (estimated using the spectral radius of the adjacency matrix), (b) the maximum trophic level, (c) the network diameter, and (d) the SVD entropy were measured on these empirical and maximum entropy food webs. The identity line is plotted in each panel." />
@@ -1642,8 +1784,7 @@ biases</div>
             </figure>
             <p>One of the challenges in implementing and validating a
             maximum entropy model is to discover where its predictions
-            break down. The results depicted in
-            tbl. <strong>¿tbl:measures_all?</strong> and fig. 4 show
+            break down. The results depicted in tbl. 1 and fig. 4 show
             that our type II heuristic MaxEnt model can capture many
             high-level properties of food webs, but does a poor job of
             capturing others. This suggests that, although the joint
