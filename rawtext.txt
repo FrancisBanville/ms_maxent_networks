@@ -248,11 +248,11 @@ interactions. We kept all networks whose interactions were mainly of
 predation and herbivory types, and removed the largest network
 ($S = 714$) for computational efficiency reasons. Then, to this set we
 added food webs from two different sources: the New Zealand dataset
-\[$N = 21$; @Pomeranz2018DatInf\] and the Tuesday Lake dataset
-\[$N = 2$; @Cohen2003EcoComa\]. Our complete dataset thus contained a
-total of $257$ food webs. All code and data to reproduce this article
-are available at the Open Science Framework (OSF.IO/KT4GS). Data
-cleaning, simulations and analyses were conducted in Julia v1.8.0.
+($N = 21$; @Pomeranz2018DatInf) and the Tuesday Lake dataset ($N = 2$;
+@Cohen2003EcoComa). Our complete dataset thus contained a total of $257$
+food webs. All code and data to reproduce this article are available at
+the Open Science Framework (OSF.IO/KT4GS). Data cleaning, simulations
+and analyses were conducted in Julia v1.8.0.
 
 ## Joint degree distribution
 
@@ -652,7 +652,7 @@ reason, we need to use another measure of entropy if we want to predict
 a network's configuration directly using MaxEnt. We used the SVD entropy
 as our measure of entropy, which is an application of Shannon's entropy
 to the relative non-zero singular values of a truncated singular value
-decomposition \[t-SVD; @Strydom2021SvdEnt\] of a food web's Boolean
+decomposition (t-SVD; @Strydom2021SvdEnt) of a food web's Boolean
 adjacency matrix. We measured SVD entropy as follows:
 
 [$$J = -\sum_{i=1}^R s_i \log s_i,\qquad{(21)}$$]{#eq:svd-entropy}
@@ -666,8 +666,8 @@ appropriate entropy measure above-mentioned, while being a proper
 measure of the internal complexity of food webs [@Strydom2021SvdEnt].
 Following @Strydom2021SvdEnt, we standardized this measure with the rank
 $R$ of the matrix (i.e. $J / \ln(R)$) to account for the difference in
-dimensions between networks \[*sensu* Pielou's evenness;
-@Pielou1975EcoDiv\].
+dimensions between networks (*sensu* Pielou's evenness;
+@Pielou1975EcoDiv).
 
 ## Types I and II heuristic MaxEnt models
 
