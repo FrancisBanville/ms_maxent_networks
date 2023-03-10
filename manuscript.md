@@ -2,6 +2,10 @@
 bibliography: [references.bib]
 ---
 
+### Author Summary
+
+Predator and prey species form complex networks of energy flow that drive the functioning and dynamics of all ecosystems. However, sampling and documenting these feeding relationships is particularly challenging, especially at large spatial and temporal scales. Fortunately, many properties of food webs can be studied without knowing every trophic interaction by using suitable computational methods. This is notably the case of their emerging structure, which is driven by just a few ecological and biological variables despite the large number of mechanisms shaping ecological networks. In this contribution, we present a novel framework to identify these variables by applying the principle of maximum entropy to the study of food webs. We show that the number of prey and predators for each species in a food web is a fundamental property that shape many aspects of the network, while also being predictable by our model and available data. Our approach, which can be applied to a wide range of biological and ecological networks, can be used to make better predictions of food webs across space, in addition to contributing to our understanding of the ecological processes shaping predatory interactions at the community level. 
+
 # Introduction 
 
 ## The constrained structure of ecological networks 
