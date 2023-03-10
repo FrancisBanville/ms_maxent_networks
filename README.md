@@ -195,12 +195,22 @@ Next, the predictions of the type II heuristic MaxEnt model can be compared to i
 
 : Standardized mean difference between predicted network measures and empirical data for all food webs in our complete dataset ($N = 257$). Positive (negative) values indicate that the measure is overestimated (underestimated) on average. Empirical networks include most food webs archived on Mangal, as well as the New Zealand and Tuesday Lake food webs. Null 1: Type I null model based on connectance. MaxEnt 1: Type I heuristic MaxEnt model based on connectance. Null 2: Type II null model based on the joint degree sequence. MaxEnt 2: Type II heuristic MaxEnt model based on the joint degree sequence. $\rho$: nestedness measured by the spectral radius of the adjacency matrix. $maxtl$: maximum trophic level. $diam$: network diameter. $MxSim$: average maximum similarity between species pairs. $Cannib$: proportion of cannibal species (self loops). $Omniv$: proportion of omnivorous species. *entropy*: SVD entropy. {#tbl:measures_all}
 
-\input{tables/measures_all.md}
-
+|    model |    rho |  maxtl |  diam |  MxSim | Cannib | Omniv | entropy |
+| --------:| ------:| ------:| -----:| ------:| ------:| -----:| -------:|
+|   null 1 | -0.167 |  0.980 | 1.428 | -0.502 |  2.007 | 1.493 |   0.056 |
+| MaxEnt 1 | -0.226 |  0.831 | 1.274 | -0.524 |  1.982 | 1.863 |   0.106 |
+|   null 2 |  0.160 | -0.125 | 0.016 |  0.007 |  1.078 | 0.559 |  -0.023 |
+| MaxEnt 2 | -0.015 |  0.178 | 0.565 | -0.282 |  0.698 | 0.589 |   0.058 |
 
 : Standardized mean difference between predicted network measures and empirical data for all food webs in our abundance dataset ($N = 19$). Positive (negative) values indicate that the measure is overestimated (underestimated) on average. Empirical networks include the New Zealand and Tuesday Lake food webs having abundance data. Neutral: Neutral model of relative abundances. Null 1: Type I null model based on connectance. MaxEnt 1: Type I heuristic MaxEnt model based on connectance. Null 2: Type II null model based on the joint degree sequence. MaxEnt 2: Type II heuristic MaxEnt model based on the joint degree sequence. $\rho$: nestedness measured by the spectral radius of the adjacency matrix. $maxtl$: maximum trophic level. $diam$: network diameter. $MxSim$: average maximum similarity between species pairs. $Cannib$: proportion of cannibal species (self loops). $Omniv$: proportion of omnivorous species. *entropy*: SVD entropy. {#tbl:measures_abund}
 
-\input{tables/measures_abund.md}
+|    model |    rho |  maxtl |   diam |  MxSim | Cannib | Omniv | entropy |
+| --------:| ------:| ------:| ------:| ------:| ------:| -----:| -------:|
+|  neutral |  0.367 | -0.090 |  0.027 |  0.266 |  6.870 | 0.576 |  -0.083 |
+|   null 1 | -0.134 |  0.950 |  1.919 | -0.369 |  2.077 | 0.614 |   0.068 |
+| MaxEnt 1 | -0.229 |  1.020 |  1.946 | -0.355 |  2.215 | 0.801 |   0.121 |
+|   null 2 |  0.128 | -0.115 | -0.135 |  0.157 |  1.444 | 0.029 |  -0.021 |
+| MaxEnt 2 | -0.010 |  0.054 |  0.243 | -0.062 | -0.038 | 0.083 |   0.038 |
 
 Despite this increase in maximum trophic level and network diameter in MaxEnt food webs, we found that empirical food webs are close to their maximum entropy given a fixed joint degree sequence (fig. S3). Empirical food webs in the complete dataset had an SVD entropy of $0.89 \pm 0.04$, compared to an SVD entropy of $0.94 \pm 0.03$ for networks generated using the type II heuristic MaxEnt model. The relationship between the SVD entropy of empirical food webs and their maximum entropy is plotted in the last panel of @fig:measures. As expected, the SVD entropy of maximum entropy food webs was higher than that of empirical food webs for almost all networks, confirming that our method indeed generated more complex networks. Moreover, we found no to a weak relationship between the increase in SVD entropy and the number of species, the number of interactions, and connectance (fig. S4). This suggests that the slight increase in entropy between empirical food webs and their maximum entropy configuration was sufficient to modify some of their properties, regardless of their number of species and their number of interactions. 
 
