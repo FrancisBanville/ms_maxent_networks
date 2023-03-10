@@ -7,103 +7,50 @@ on:
   pull_request:
 
 jobs:
-  generate:
+  build:
     name: Build the sources
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.10.9]
-        pandoc-version: [2.11.0.4]
-        crossref-version: [0.3.8.3a]
+        julia-version: [1.8]
+        typesetter-version: [0.0.17]
     steps:
       - uses: actions/checkout@v2
-      - name: Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+      - name: Julia ${{ matrix.julia-version }}
+        uses: julia-actions/setup-julia@v1
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Download and install pandoc
+          version: ${{ matrix.julia-version }}
+          arch: 'x64'      
+      - name: Get the typesetter
         run: |
-          wget https://github.com/jgm/pandoc/releases/download/${{ matrix.pandoc-version }}/pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
-          sudo dpkg -i pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
-          rm pandoc-${{ matrix.pandoc-version }}-1-amd64.deb
-      - name: Get the crossref filter
-        run: |
-          wget https://github.com/lierdakil/pandoc-crossref/releases/download/v${{ matrix.crossref-version }}/pandoc-crossref-Linux.tar.xz
-          tar -xf pandoc-crossref-Linux.tar.xz
-      - name: Convert the bib file to json
-        run: |
-          export LANG=en_US.UTF-8
-          pandoc references.bib -t csljson -o references.json
-      - name: Cleanup the bibliography
-        run: python .assets/scripts/bibliography.py
-      - name: Cleanup the affiliations
-        run: python .assets/scripts/affiliations.py
-      - name: Prepare the output
-        run: |
-          mkdir -p dist
-          cp -r figures dist/
-          cp references.json dist/
-          cp .assets/logo.png dist/
-          cp author_template.tsv dist/
-      - name: Input the first table from the files
-        run: |
-          TABLE=measures_all.md
-          perl -0777 -i -pe "s/\\\input{tables\\/$TABLE}/`cat tables\\/$TABLE`/g" manuscript.md
-      - name: Input the second table from the files
-        run: |
-          TABLE=measures_abund.md
-          perl -0777 -i -pe "s/\\\input{tables\\/$TABLE}/`cat tables\\/$TABLE`/g" manuscript.md
-      - name: Build the website
-        run: pandoc manuscript.md -o dist/index.html -F pandoc-crossref --citeproc --bibliography=references.json --metadata-file=metadata.json --metadata-file=affiliations.json --template=.assets/templates/index.html
-      - name: Build the tex files
-        run: |
-          pandoc manuscript.md -s -o dist/draft.tex -F pandoc-crossref --citeproc --bibliography=references.json --metadata-file=metadata.json --metadata-file=affiliations.json --template=.assets/templates/draft.tex
-          pandoc manuscript.md -s -o dist/preprint.tex -F pandoc-crossref --citeproc --bibliography=references.json --metadata-file=metadata.json --metadata-file=affiliations.json --template=.assets/templates/preprint.tex
-      - name: Build supplementary materials 
-        run: |
-         pandoc suppmat.md -s -o dist/suppmat.tex 
+          wget https://github.com/PoisotLab/manuscript-typesetter/archive/refs/tags/v${{ matrix.typesetter-version }}.tar.gz
+          tar -xvf v${{ matrix.typesetter-version }}.tar.gz
+          mv manuscript-typesetter-${{ matrix.typesetter-version }} .typesetter
+      - name: Julia packages
+        uses: julia-actions/julia-buildpkg@v1
+        with:
+          project: .typesetter
+      - name: Run the full project
+        run: julia --project=.typesetter .typesetter/scripts/00_build.jl
+      - name: "Word count in the build folder"
+        id: word-count
+        if: github.event_name == 'pull_request'
+        run: echo "::set-output name=count::Current word count (main text; no references) is approx. $(wc -w dist/rawtext.txt | cut -d' ' -f1)"
+      - name: "Comment on wordcount"
+        uses: thollander/actions-comment-pull-request@v1
+        if: github.event_name == 'pull_request'
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: ${{ steps.word-count.outputs.count }}
       - name: Save artifacts
         if: always()
         uses: actions/upload-artifact@master
         with:
-          name: "manuscript"
-          path: dist
-  build:
-    name: Build the PDFs
-    needs: generate
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    strategy:
-      matrix:
-        pdf-version: [preprint, draft, suppmat]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Download dist folder
-        uses: actions/download-artifact@v2
-        with:
-          name: "manuscript"
-          path: dist
-      - name: Build the preprint pdf file
-        uses: xu-cheng/latex-action@master
-        with:
-          working_directory: dist
-          root_file: ${{ matrix.pdf-version }}.tex
-          args: "-f -interaction=nonstopmode -pdf"
-      - name: Cleanup after PDF build
-        uses: xu-cheng/latex-action@master
-        with:
-          working_directory: dist
-          root_file: ${{ matrix.pdf-version }}.tex
-          args: "-c"
-      - name: Save artifacts
-        if: always()
-        uses: actions/upload-artifact@master
-        with:
-          name: "manuscript"
+          name: "dist"
           path: dist
   deploy:
     name: Deploy to gh-pages
-    needs: [generate, build]
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
@@ -111,10 +58,10 @@ jobs:
       - name: Download dist folder
         uses: actions/download-artifact@v2
         with:
-          name: "manuscript"
+          name: "dist"
           path: dist
       - name: "Deploy!"
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          branch: gh-pages # The branch the action should deploy to
-          folder: dist # The folder the action should deploy
+          branch: gh-pages # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.
