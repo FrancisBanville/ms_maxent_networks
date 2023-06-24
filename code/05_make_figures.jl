@@ -30,7 +30,6 @@ measures_maxentjds_all = measures[measures.network .== "N_maxentjds_all",:]
 measures_nullco_all = measures[measures.network .== "N_nullco_all",:]
 measures_nulljds_all = measures[measures.network .== "N_nulljds_all",:]
 
-
 measures_abund = measures[measures.network .== "N_abund",:]
 measures_maxentco_abund = measures[measures.network .== "N_maxentco_abund",:]
 measures_maxentjds_abund = measures[measures.network .== "N_maxentjds_abund",:]
