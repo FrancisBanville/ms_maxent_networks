@@ -178,7 +178,7 @@ plot(plotA, plotB,
     titleloc=:right, 
     titlefont=fonts)
 
-savefig(joinpath("figures","maxent_degree_dist_fl.png"))
+savefig(joinpath("figures","maxent_degree_dist_fl.svg"))
 
 
 ### Heatmap of disconnected species ###
