@@ -72,7 +72,7 @@ plotA = density(kavg015,
                 framestyle=:box, 
                 grid=false,
                 minorgrid=false,
-                dpi=5000, 
+                dpi=1000, 
                 size=(800,500), 
                 margin=5Plots.mm, 
                 guidefont=fonts, 
@@ -122,7 +122,7 @@ plotB = plot(0:S500,
             framestyle=:box, 
             grid=false,
             minorgrid=false,
-            dpi=5000, 
+            dpi=1000, 
             size=(800,500), 
             margin=5Plots.mm, 
             guidefont=fonts, 
@@ -174,11 +174,12 @@ yaxis!(ylabel="p(k)",
       ylims=(0,0.23))
 
 plot(plotA, plotB,
+    dpi=1000,  
     title = ["(a)" "(b)"],
     titleloc=:right, 
     titlefont=fonts)
 
-savefig(joinpath("figures","maxent_degree_dist_fl.svg"))
+savefig(joinpath("figures","maxent_degree_dist_fl.png"))
 
 
 ### Heatmap of disconnected species ###
