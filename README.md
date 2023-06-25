@@ -126,7 +126,7 @@ $$L_{FL} \sim \mathrm{BB}(S^2 - (S - 1), \mu e^\phi, (1 - \mu) e^\phi),$${#eq:BB
 
 where $\mu$ is the average probability across food webs that a flexible link is realized, and $\phi$ is the concentration parameter around $\mu$.
 
-We fitted the flexible links model on all food webs in our complete dataset, and estimated the parameters of @eq:BB using a Hamiltonian Monte Carlo sampler with static trajectory ($1$ chain and $3000$ iterations):
+We fitted the flexible links model on all food webs in our complete dataset and estimated the parameters of @eq:BB using a Hamiltonian Monte Carlo sampler with static trajectory ($4$ chains and $3000$ iterations):
 
 $$ [\mu, \phi| \textbf{L}, \textbf{S}] \propto \prod_{i = 1}^{m} \mathrm{BB}(L_i - (S_i - 1) | S_i^2 - (S_i - 1)), \mu e^{\phi}, (1 - \mu) e^\phi) \times \mathrm{B}(\mu| 3 , 7 ) \times \mathcal{N}(\phi | 3, 0.5), $${#eq:BBpost}
 
