@@ -409,6 +409,63 @@ plot(plotA, plotB, plotC, pcol,
 savefig(joinpath("figures","joint_degree_dist.png"))
 
 
+# stratify the relationship between the difference of kin and kout by the number of species
+
+# absolute difference of kin and kout and number of species
+kout_diff_strata = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kout")
+kin_diff_strata = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kin")
+S_strata = k_emp_df.S
+
+function plot_strata(Smin::Int64, Smax::Int64)
+      kout_diff_lim = kout_diff_strata[S_strata .>= Smin .&& S_strata .< Smax]
+      kin_diff_lim = kin_diff_strata[S_strata .>= Smin .&& S_strata .< Smax]
+
+      scatter(kout_diff_lim, 
+            kin_diff_lim, 
+            alpha=0.3, 
+            markersize=5, 
+            label="",
+            framestyle=:box, 
+            grid=false,
+            minorgrid=false,
+            dpi=1000, 
+            size=(500,500), 
+            aspect_ratio=:equal,
+            margin=5Plots.mm, 
+            guidefont=fonts, 
+            xtickfont=fonts, 
+            ytickfont=fonts,
+            foreground_color_legend=nothing, 
+            background_color_legend=:white,
+            legendfont=fonts,
+            legendfontpointsize=7,
+            legendfontfamily="Arial")
+      xaxis!("\\Delta Kout")
+      yaxis!("\\Delta Kin")
+end
+
+plotA = plot_strata(5, 15)
+plotB = plot_strata(15, 25)
+plotC = plot_strata(25, 35)
+plotD = plot_strata(35, 45)
+plotE = plot_strata(45, 55)
+plotF = plot_strata(55, 65)
+plotG = plot_strata(65, 75)
+plotH = plot_strata(75, 85)
+plotI = plot_strata(85, 95)
+
+plot(plotA, plotB, plotC, 
+      plotD, plotE, plotF, 
+      plotG, plotH, plotI,
+      dpi=1000,
+      size=(800,800),
+      title = ["[5, 15[ species" "[15, 25[ species" "[25, 35[ species" "[35, 45[ species" "[45, 55[ species" "[55, 65[ species" "[65, 75[ species" "[75, 85[ species" "[85, 95[ species"],
+      titleloc=:right, 
+      titlefont=fonts,
+      margin=2Plots.mm)
+
+savefig(joinpath("figures","kin_kout_difference_strata.png"))
+
 
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by out degree)
 plotA = histogram2d(kout_diff_sortedby_kout,
