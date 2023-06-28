@@ -261,19 +261,23 @@ k_emp_df = DataFrame(k_tot = k_emp,
                         kin = kin_emp,
                         kout_rel = kout_emp ./ S_id,
                         kin_rel = kin_emp ./ S_id,
+                        S = S_id,
                         N_id = N_id)
 k_maxent_df = DataFrame(k_tot = k_maxent,
                         kout = kout_maxent,
                         kin = kin_maxent,
                         kout_rel = kout_maxent ./ S_id,
                         kin_rel = kin_maxent ./ S_id,
+                        S = S_id,
                         N_id = N_id)
 
 # plot the association between in and out degrees for empirical and simulated data
-plotA = scatter(k_emp_df.kout_rel, 
+
+plotA = histogram2d(k_emp_df.kout_rel, 
                 k_emp_df.kin_rel, 
-                alpha=0.2, 
-                markersize=5, 
+                c=:turbo,
+                legend=:none,
+                clims=(0,2050),
                 label="",
                 framestyle=:box, 
                 grid=false,
@@ -281,22 +285,20 @@ plotA = scatter(k_emp_df.kout_rel,
                 dpi=1000, 
                 size=(800,500), 
                 aspect_ratio=:equal,
-                margin=5Plots.mm, 
                 guidefont=fonts, 
                 xtickfont=fonts, 
                 ytickfont=fonts,
+                margin=2Plots.mm, 
                 foreground_color_legend=nothing, 
-                background_color_legend=:white,
-                legendfont=fonts,
-                legendfontpointsize=7,
-                legendfontfamily="Arial")
+                background_color_legend=:white)
 xaxis!(xlim=(0, 1), "relative Kout")
 yaxis!(ylim=(0, 1), "relative Kin")
                 
-plotB = scatter(k_maxent_df.kout_rel, 
+plotB = histogram2d(k_maxent_df.kout_rel, 
                 k_maxent_df.kin_rel, 
-                alpha=0.2, 
-                markersize=5, 
+                c=:turbo,
+                legend=:none,
+                clims=(0,2050),
                 label="",
                 framestyle=:box, 
                 grid=false,
@@ -304,15 +306,12 @@ plotB = scatter(k_maxent_df.kout_rel,
                 dpi=1000, 
                 size=(800,500), 
                 aspect_ratio=:equal,
-                margin=5Plots.mm, 
                 guidefont=fonts, 
                 xtickfont=fonts, 
                 ytickfont=fonts,
+                margin=2Plots.mm, 
                 foreground_color_legend=nothing, 
-                background_color_legend=:white,
-                legendfont=fonts,
-                legendfontpointsize=7,
-                legendfontfamily="Arial")
+                background_color_legend=:white)
 xaxis!(xlim=(0, 1), "relative Kout")
 yaxis!(ylim=(0, 1), "relative Kin")
 
@@ -350,28 +349,25 @@ kin_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kin_rel")
 kout_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kout_rel")
 kin_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kin_rel")
 
+
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by total degree)
-plotC = scatter(kout_diff_sortedby_ktot,
+plotC = histogram2d(kout_diff_sortedby_ktot,
             kin_diff_sortedby_ktot,
-            markersize=5,
-            alpha=0.2,
+            c=:turbo,
+            clims=(0,2050),
+            legend=:none,
             aspect_ratio=:equal,
             framestyle=:box, 
             grid=false,
             minorgrid=false,
             dpi=1000, 
-            size=(800,500), 
-            margin=5Plots.mm, 
+            size=(1000,500), 
             guidefont=fonts, 
             xtickfont=fonts, 
             ytickfont=fonts,
+            margin=2Plots.mm, 
             foreground_color_legend=nothing, 
-            background_color_legend=:white, 
-            legendfont=fonts,
-            legendfontpointsize=7,
-            legendfontfamily="Arial",
-            legend=:topleft,
-            label="")
+            background_color_legend=:white)
 xaxis!(xlim=(-1, 1), "\\Delta relative Kout")
 yaxis!(ylim=(-1, 1), "\\Delta relative Kin")
             
@@ -386,22 +382,41 @@ plot!([0],
       color=:black, 
       lab="")
 
-l = @layout [[a ; b] c]
+# plot color bar
+pcol = heatmap((0:1:2050).*ones(2051,1), 
+            xticks=:none, 
+            legend=:none,
+            ymirror = true,
+            c=:turbo,
+            clims=(0,2050),
+            dpi=1000, 
+            size=(1000,500), 
+            guidefont=font("Arial",5), 
+            ytickfont=font("Arial",5))
+yaxis!("frequency")
 
-plot(plotA, plotB, plotC,
+l = @layout [a  b  c  d{0.02w}]
+
+plot(plotA, plotB, plotC, pcol,
       layout = l,
-      title = ["(a) empirical" "(b) MaxEnt" "(c) difference"],
+      dpi=1000,
+      size=(600,180),
+      title = ["(a) empirical" "(b) MaxEnt" "(c) difference" ""],
       titleloc=:right, 
-      titlefont=fonts)
+      titlefont=fonts,
+      margin=2Plots.mm)
       
 savefig(joinpath("figures","joint_degree_dist.png"))
 
 
+
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by out degree)
-plotA = scatter(kout_diff_sortedby_kout,
+plotA = histogram2d(kout_diff_sortedby_kout,
             kin_diff_sortedby_kout,
-            markersize=5,
-            alpha=0.2,
+            kin_diff_sortedby_ktot,
+            c=:turbo,
+            clims=(0,2050),
+            legend=:none,
             aspect_ratio=:equal,
             framestyle=:box, 
             grid=false,
@@ -414,10 +429,6 @@ plotA = scatter(kout_diff_sortedby_kout,
             ytickfont=fonts,
             foreground_color_legend=nothing, 
             background_color_legend=:white, 
-            legendfont=fonts,
-            legendfontpointsize=7,
-            legendfontfamily="Arial",
-            legend=:topleft,
             label="")
 xaxis!(xlim=(-1, 1), "\\Delta relative Kout")
 yaxis!(ylim=(-1, 1), "\\Delta relative Kin")
@@ -434,10 +445,11 @@ plot!([0],
       lab="")
 
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by in degree)
-plotB = scatter(kout_diff_sortedby_kin,
+plotB = histogram2d(kout_diff_sortedby_kin,
             kin_diff_sortedby_kin,
-            markersize=5,
-            alpha=0.2,
+            c=:turbo,
+            clims=(0,2050),
+            legend=:none,
             aspect_ratio=:equal,
             framestyle=:box, 
             grid=false,
@@ -450,10 +462,6 @@ plotB = scatter(kout_diff_sortedby_kin,
             ytickfont=fonts,
             foreground_color_legend=nothing, 
             background_color_legend=:white, 
-            legendfont=fonts,
-            legendfontpointsize=7,
-            legendfontfamily="Arial",
-            legend=:topleft,
             label="")
 xaxis!(xlim=(-1, 1), "\\Delta relative Kout")
 yaxis!(ylim=(-1, 1), "\\Delta relative Kin")
@@ -469,10 +477,15 @@ plot!([0],
       color=:black, 
       lab="")
 
+l = @layout [a  b  c{0.03w}]
 
-plot(plotA, plotB,
-      title = ["(a) sorted by Kout" "(b) sorted by Kin"],
-      titleloc=:right, titlefont=fonts)
+plot(plotA, plotB, pcol,
+      layout = l,
+      title = ["(a) sorted by Kout" "(b) sorted by Kin" ""],
+      titleloc=:right, titlefont=fonts, 
+      size=(400,180),
+      dpi=1000,
+      margin=2Plots.mm)
  
 savefig(joinpath("figures", "kin_kout_difference.png"))
  
