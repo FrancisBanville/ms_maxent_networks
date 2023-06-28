@@ -638,6 +638,7 @@ plotB = scatter(measures_all.C,
                   ylabel="\\Delta KL divergence")
 
 plot(plotA, plotB,  
+     dpi=1000, 
      title = ["(a)" "(b)"],
      titleloc=:right, titlefont=fonts)
 
@@ -736,11 +737,12 @@ plotD = scatter(measures_all.entropy,
                   legendfontpointsize=7,
                   legendfontfamily="Arial",
                   label="",
-                  xlabel="SVD-entropy (empirical)",
-                  ylabel="SVD-entropy (MaxEnt)")
+                  xlabel="SVD entropy (empirical)",
+                  ylabel="SVD entropy (MaxEnt)")
 plot!(LinRange(0.75, 1, 100), LinRange(0.75, 1, 100), lab="", color="grey", linestyle=:dot)
 
 plot(plotA, plotB, plotC, plotD, 
+     dpi=1000, 
      title = ["(a)" "(b)" "(c)" "(d)"],
      titleloc=:right, titlefont=fonts)
 
@@ -890,7 +892,7 @@ plotD = scatter(measures_all.S,
                   legendfontfamily="Arial",
                   label="Empirical",
                   xlabel="Species richness",
-                  ylabel="SVD-entropy")
+                  ylabel="SVD entropy")
 scatter!(measures_maxentjds_all.S,
             measures_maxentjds_all.entropy,
             alpha=0.3, 
@@ -902,6 +904,7 @@ scatter!(measures_maxentjds_all.S,
 xaxis!(:log, xticks=(a,a))
 
 plot(plotA, plotB, plotC, plotD, 
+     dpi=1000, 
      title = ["(a)" "(b)" "(c)" "(d)"],
      titleloc=:right, titlefont=fonts)
 
@@ -996,7 +999,7 @@ plotA = scatter(measures_all.S,
 xaxis!(:log, xticks=(a,a))
 
 
-# Divergence in degree sequence and SVD-entropy
+# Divergence in degree sequence and SVD entropy
 plotB = scatter(measures_all.entropy,
                   MSD_ds_maxent,
                   alpha=0.3,
@@ -1019,11 +1022,12 @@ plotB = scatter(measures_all.entropy,
                   legendfontpointsize=7,
                   legendfontfamily="Arial",
                   label="",
-                  xlabel="SVD-entropy (empirical)",
+                  xlabel="SVD entropy (empirical)",
                   ylabel="MSD of degree sequence",
                   ylims=(0,20.5))
 
 plot(plotA, plotB, 
+      dpi=1000, 
       title = ["(a)" "(b)"],
       titleloc=:right, titlefont=fonts)
              
@@ -1032,21 +1036,21 @@ savefig(joinpath("figures", "divergence_degree_sequence.png"))
 
 
 
-### Difference in SVD-entropy  ###
+### Difference in SVD entropy  ###
 
-# Difference in SVD-entropy and species richness
+# Difference in SVD entropy and species richness
 
 entropy_all = svd_entropy.(N_all)
 entropy_maxentjds_all = svd_entropy.(N_maxentjds_all)
 
 entropy_diffjds = entropy_maxentjds_all .- entropy_all
 
+a = (5, 10, 20, 50, 100)
 plotA = scatter(measures_all.S,
                   entropy_diffjds,
                   alpha=0.3,
                   markersize=6,
                   framestyle=:box, 
-                  smooth=true,
                   linealpha=0.9,
                   linewidth=2,
                   grid=false,
@@ -1064,17 +1068,16 @@ plotA = scatter(measures_all.S,
                   legendfontfamily="Arial",
                   label="",
                   xlabel="Species richness",
-                  ylabel="\\Delta SVD-entropy")
+                  ylabel="\\Delta SVD entropy")
 xaxis!(:log, xticks=(a,a))
 
 b = [10,100,1000,10000] # specified x-ticks 
-# Difference in SVD-entropy and number of links
+# Difference in SVD entropy and number of links
 plotB = scatter(measures_all.L,
                   entropy_diffjds,
                   alpha=0.3,
                   markersize=6,
                   framestyle=:box, 
-                  smooth=true,
                   linealpha=0.9,
                   linewidth=2,
                   grid=false,
@@ -1092,16 +1095,15 @@ plotB = scatter(measures_all.L,
                   legendfontfamily="Arial",
                   label="",
                   xlabel="Number of links",
-                  ylabel="\\Delta SVD-entropy")
+                  ylabel="\\Delta SVD entropy")
 xaxis!(:log, xticks=(b,b))
 
-# Difference in SVD-entropy and connectance
+# Difference in SVD entropy and connectance
 plotC = scatter(measures_all.C,
                   entropy_diffjds,
                   alpha=0.3,
                   markersize=6,
                   framestyle=:box, 
-                  smooth=true,
                   linealpha=0.9,
                   linewidth=2,
                   grid=false,
@@ -1119,11 +1121,39 @@ plotC = scatter(measures_all.C,
                   legendfontfamily="Arial",
                   label="",
                   xlabel="Connectance",
-                  ylabel="\\Delta SVD-entropy")
+                  ylabel="\\Delta SVD entropy")
 
-plot(plotA, plotB, plotC,
-      layout = grid(1,3),
-      title = ["(a)" "(b)" "(c)"],
+
+# Difference in SVD entropy (standardized by the number of species) and species richness
+plotD = scatter(measures_all.S,
+                  entropy_diffjds ./ measures_all.S,
+                  alpha=0.3,
+                  markersize=6,
+                  framestyle=:box, 
+                  linealpha=0.9,
+                  linewidth=2,
+                  grid=false,
+                  minorgrid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  legendfontpointsize=7,
+                  legendfontfamily="Arial",
+                  label="",
+                  xlabel="Species richness",
+                  ylabel="\\Delta SVD entropy per species")
+xaxis!(:log, xticks=(a,a))
+
+plot(plotB, plotC,, plotA, plotD,
+      dpi=1000, 
+      layout = grid(2,2),
+      title = ["(a)" "(b)" "(c)" "(d)"],
       titleloc=:right, titlefont=fonts)
              
 savefig(joinpath("figures", "difference_entropy.png"))
@@ -1151,7 +1181,7 @@ plotA = density(measures_all.entropy,
                   legendfontfamily="Arial",
                   legend=:topleft,
                   label="Empirical",
-                  xlabel="SVD-entropy",
+                  xlabel="SVD entropy",
                   ylabel="Density",
                   ylim=(0,21))
 density!(measures_maxentjds_all.entropy,
@@ -1186,7 +1216,7 @@ plotB = density(entropy_zscores,
                   legendfontpointsize=7,
                   legendfontfamily="Arial",
                   label="",
-                  xlabel="z-score of SVD-entropy",
+                  xlabel="z-score of SVD entropy",
                   ylabel="Density",
                   ylim=(0,0.27))
 plot!([entropy_zscores_500], 
@@ -1196,13 +1226,14 @@ plot!([entropy_zscores_500],
             lab="")
 
 plot(plotA, plotB,
+     dpi=1000, 
      title = ["(a)" "(b)"],
      titleloc=:right, titlefont=fonts)
 
 savefig(joinpath("figures", "entropy_distribution.png"))
 
 
-### Jaccard dissimilarity and difference in nestedness and SVD-entropy ###
+### Jaccard dissimilarity and difference in nestedness and SVD entropy ###
 
 ## Difference in nestedness (rho_diff)
 rho_diffjds = measures_maxentjds_all.rho .- measures_all.rho
@@ -1240,7 +1271,7 @@ plotA = scatter(entropy_diffjds,
             legendfontfamily="Arial",
             legend=:topleft,
             label="",
-            xlabel="\\Delta SVD-entropy",
+            xlabel="\\Delta SVD entropy",
             ylabel="\\Delta nestedness")
 
 plotB = scatter(entropy_diffjds,
@@ -1266,10 +1297,11 @@ plotB = scatter(entropy_diffjds,
                   legendfontfamily="Arial",
                   legend=:topleft,
                   label="",
-                  xlabel="\\Delta SVD-entropy",
+                  xlabel="\\Delta SVD entropy",
                   ylabel="Jaccard distance")
 
 plot(plotA, plotB,
+     dpi=1000, 
      title = ["(a)" "(b)"],
      titleloc=:right, titlefont=fonts)
 
@@ -1485,8 +1517,8 @@ scatter!(measures_maxentjds_all.S4,
             linealpha=0.9,
             linewidth=2)
 
-
 plot(plotA, plotB,
+     dpi=1000,
      title = ["(a)" "(b)"],
      titleloc=:right, titlefont=fonts)
 
