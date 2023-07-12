@@ -261,7 +261,8 @@ We acknowledge that this study was conducted on land within the traditional unce
 
 # References
 
-\bibliography{<references.bib>}
+::: {#refs}
+:::
 
 \pagebreak
 
