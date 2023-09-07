@@ -253,6 +253,41 @@
         "type": "article-journal"
     },
     {
+        "issue": "11",
+        "issued": {
+            "date-parts": [
+                [
+                    2022
+                ]
+            ]
+        },
+        "container-title": "Methods in Ecology and Evolution",
+        "author": [
+            {
+                "family": "Caruso",
+                "given": "Tancredi"
+            },
+            {
+                "family": "Clemente",
+                "given": "Giulio Virginio"
+            },
+            {
+                "family": "Rillig",
+                "given": "Matthias C."
+            },
+            {
+                "family": "Garlaschelli",
+                "given": "Diego"
+            }
+        ],
+        "id": "Caruso2022FluEco",
+        "DOI": "10.1111/2041-210X.13985",
+        "volume": "13",
+        "page": "2306-2317",
+        "title": "Fluctuating ecological networks: A synthesis of maximum-entropy approaches for pattern detection and process inference",
+        "type": "article-journal"
+    },
+    {
         "publisher": "Nature Publishing Group",
         "issue": "1",
         "issued": {
@@ -658,6 +693,36 @@
         "type": "article-journal"
     },
     {
+        "issued": {
+            "date-parts": [
+                [
+                    1987
+                ]
+            ]
+        },
+        "container-title": "Linear Algebra and its Applications",
+        "author": [
+            {
+                "family": "Golub",
+                "given": "G. H."
+            },
+            {
+                "family": "Hoffman",
+                "given": "Alan"
+            },
+            {
+                "family": "Stewart",
+                "given": "G. W."
+            }
+        ],
+        "id": "Golub1987GenEck",
+        "DOI": "10.1016/0024-3795(87)90114-5",
+        "volume": "88–89",
+        "page": "317-327",
+        "title": "A generalization of the Eckart-Young-Mirsky matrix approximation theorem",
+        "type": "article-journal"
+    },
+    {
         "publisher": "Public Library of Science",
         "issue": "1",
         "issued": {
@@ -780,8 +845,15 @@
         "type": "article-journal"
     },
     {
-        "DOI": "10.1146/annurev-ecolsys-112414-054400",
-        "volume": "46",
+        "issue": "1",
+        "issued": {
+            "date-parts": [
+                [
+                    2015
+                ]
+            ]
+        },
+        "container-title": "Annual Review of Ecology, Evolution, and Systematics",
         "author": [
             {
                 "family": "Hortal",
@@ -809,18 +881,11 @@
                 "given": "Richard J."
             }
         ],
-        "issue": "1",
         "id": "Hortal2015SevSho",
+        "DOI": "10.1146/annurev-ecolsys-112414-054400",
+        "volume": "46",
         "page": "523-549",
         "title": "Seven Shortfalls that Beset Large-Scale Knowledge of Biodiversity",
-        "issued": {
-            "date-parts": [
-                [
-                    2015
-                ]
-            ]
-        },
-        "container-title": "Annual Review of Ecology, Evolution, and Systematics",
         "type": "article-journal"
     },
     {
@@ -1001,6 +1066,66 @@
         "type": "book"
     },
     {
+        "publisher": "American Association for the Advancement of Science",
+        "issue": "4598",
+        "issued": {
+            "date-parts": [
+                [
+                    1983
+                ]
+            ]
+        },
+        "container-title": "Science",
+        "author": [
+            {
+                "family": "Kirkpatrick",
+                "given": "S."
+            },
+            {
+                "family": "Gelatt",
+                "given": "C. D."
+            },
+            {
+                "family": "Vecchi",
+                "given": "M. P."
+            }
+        ],
+        "id": "Kirkpatrick1983OptSim",
+        "DOI": "10.1126/science.220.4598.671",
+        "volume": "220",
+        "page": "671-680",
+        "title": "Optimization by Simulated Annealing",
+        "type": "article-journal"
+    },
+    {
+        "publisher": "Institute of Mathematical Statistics",
+        "issue": "1",
+        "issued": {
+            "date-parts": [
+                [
+                    1951
+                ]
+            ]
+        },
+        "container-title": "The Annals of Mathematical Statistics",
+        "author": [
+            {
+                "family": "Kullback",
+                "given": "S."
+            },
+            {
+                "family": "Leibler",
+                "given": "R. A."
+            }
+        ],
+        "id": "Kullback1951InfSuf",
+        "DOI": "10.1214/aoms/1177729694",
+        "volume": "22",
+        "page": "79-86",
+        "title": "On Information and Sufficiency",
+        "type": "article-journal"
+    },
+    {
         "publisher": "Elsevier",
         "issue": "0",
         "issued": {
@@ -1063,15 +1188,6 @@
     },
     {
         "publisher": "Princeton University Press",
-        "DOI": "10.1515/9781400840687",
-        "author": [
-            {
-                "family": "McCann",
-                "given": "Kevin S."
-            }
-        ],
-        "id": "McCann2011FooWeb",
-        "title": "Food Webs (MPB-50)",
         "issued": {
             "date-parts": [
                 [
@@ -1080,6 +1196,15 @@
             ]
         },
         "container-title": "Food Webs (MPB-50)",
+        "author": [
+            {
+                "family": "McCann",
+                "given": "Kevin S."
+            }
+        ],
+        "id": "McCann2011FooWeb",
+        "DOI": "10.1515/9781400840687",
+        "title": "Food Webs (MPB-50)",
         "type": "book"
     },
     {
@@ -1404,7 +1529,13 @@
     },
     {
         "publisher": "Dryad",
-        "DOI": "10.5061/DRYAD.K59M37F",
+        "issued": {
+            "date-parts": [
+                [
+                    2018
+                ]
+            ]
+        },
         "author": [
             {
                 "family": "Pomeranz",
@@ -1428,15 +1559,9 @@
             }
         ],
         "id": "Pomeranz2018DatInf",
+        "DOI": "10.5061/DRYAD.K59M37F",
         "page": "196520 bytes",
         "title": "Data from: Inferring predator-prey interactions in food webs",
-        "issued": {
-            "date-parts": [
-                [
-                    2018
-                ]
-            ]
-        },
         "type": ""
     },
     {
