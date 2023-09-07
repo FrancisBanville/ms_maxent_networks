@@ -33,8 +33,8 @@ L_all = links.(N_all)
 # number of flexible links that are realized
 R_all = L_all .- (S_all.-1) 
 
-# Hamiltonian Monte Carlo sampler with static trajectory
-chain = sample(FL(S_all, R_all), HMC(0.01,10), 3000)
+# Hamiltonian Monte Carlo sampler with static trajectory (4 chains)
+chain = sample(FL(S_all, R_all), HMC(0.01,10), MCMCThreads(), 3000, 4)
 
 # Diagnostic plot
 plot(chain[200:end,:,:])
