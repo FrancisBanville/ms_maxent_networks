@@ -30,7 +30,6 @@ measures_maxentjds_all = measures[measures.network .== "N_maxentjds_all",:]
 measures_nullco_all = measures[measures.network .== "N_nullco_all",:]
 measures_nulljds_all = measures[measures.network .== "N_nulljds_all",:]
 
-
 measures_abund = measures[measures.network .== "N_abund",:]
 measures_maxentco_abund = measures[measures.network .== "N_maxentco_abund",:]
 measures_maxentjds_abund = measures[measures.network .== "N_maxentjds_abund",:]
@@ -175,11 +174,12 @@ yaxis!(ylabel="p(k)",
       ylims=(0,0.23))
 
 plot(plotA, plotB,
+    dpi=1000,  
     title = ["(a)" "(b)"],
     titleloc=:right, 
     titlefont=fonts)
 
-savefig(joinpath("figures","maxent_degree_dist_fl"))
+savefig(joinpath("figures","maxent_degree_dist_fl.png"))
 
 
 ### Heatmap of disconnected species ###
@@ -261,19 +261,23 @@ k_emp_df = DataFrame(k_tot = k_emp,
                         kin = kin_emp,
                         kout_rel = kout_emp ./ S_id,
                         kin_rel = kin_emp ./ S_id,
+                        S = S_id,
                         N_id = N_id)
 k_maxent_df = DataFrame(k_tot = k_maxent,
                         kout = kout_maxent,
                         kin = kin_maxent,
                         kout_rel = kout_maxent ./ S_id,
                         kin_rel = kin_maxent ./ S_id,
+                        S = S_id,
                         N_id = N_id)
 
 # plot the association between in and out degrees for empirical and simulated data
-plotA = scatter(k_emp_df.kout_rel, 
+
+plotA = histogram2d(k_emp_df.kout_rel, 
                 k_emp_df.kin_rel, 
-                alpha=0.2, 
-                markersize=5, 
+                c=:turbo,
+                legend=:none,
+                clims=(0,2050),
                 label="",
                 framestyle=:box, 
                 grid=false,
@@ -281,22 +285,20 @@ plotA = scatter(k_emp_df.kout_rel,
                 dpi=1000, 
                 size=(800,500), 
                 aspect_ratio=:equal,
-                margin=5Plots.mm, 
                 guidefont=fonts, 
                 xtickfont=fonts, 
                 ytickfont=fonts,
+                margin=2Plots.mm, 
                 foreground_color_legend=nothing, 
-                background_color_legend=:white,
-                legendfont=fonts,
-                legendfontpointsize=7,
-                legendfontfamily="Arial")
+                background_color_legend=:white)
 xaxis!(xlim=(0, 1), "relative Kout")
 yaxis!(ylim=(0, 1), "relative Kin")
                 
-plotB = scatter(k_maxent_df.kout_rel, 
+plotB = histogram2d(k_maxent_df.kout_rel, 
                 k_maxent_df.kin_rel, 
-                alpha=0.2, 
-                markersize=5, 
+                c=:turbo,
+                legend=:none,
+                clims=(0,2050),
                 label="",
                 framestyle=:box, 
                 grid=false,
@@ -304,15 +306,12 @@ plotB = scatter(k_maxent_df.kout_rel,
                 dpi=1000, 
                 size=(800,500), 
                 aspect_ratio=:equal,
-                margin=5Plots.mm, 
                 guidefont=fonts, 
                 xtickfont=fonts, 
                 ytickfont=fonts,
+                margin=2Plots.mm, 
                 foreground_color_legend=nothing, 
-                background_color_legend=:white,
-                legendfont=fonts,
-                legendfontpointsize=7,
-                legendfontfamily="Arial")
+                background_color_legend=:white)
 xaxis!(xlim=(0, 1), "relative Kout")
 yaxis!(ylim=(0, 1), "relative Kin")
 
@@ -350,28 +349,25 @@ kin_diff_sortedby_kout = kin_kout_diff(k_emp_df, k_maxent_df, "kout", "kin_rel")
 kout_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kout_rel")
 kin_diff_sortedby_kin = kin_kout_diff(k_emp_df, k_maxent_df, "kin", "kin_rel")
 
+
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by total degree)
-plotC = scatter(kout_diff_sortedby_ktot,
+plotC = histogram2d(kout_diff_sortedby_ktot,
             kin_diff_sortedby_ktot,
-            markersize=5,
-            alpha=0.2,
+            c=:turbo,
+            clims=(0,2050),
+            legend=:none,
             aspect_ratio=:equal,
             framestyle=:box, 
             grid=false,
             minorgrid=false,
             dpi=1000, 
-            size=(800,500), 
-            margin=5Plots.mm, 
+            size=(1000,500), 
             guidefont=fonts, 
             xtickfont=fonts, 
             ytickfont=fonts,
+            margin=2Plots.mm, 
             foreground_color_legend=nothing, 
-            background_color_legend=:white, 
-            legendfont=fonts,
-            legendfontpointsize=7,
-            legendfontfamily="Arial",
-            legend=:topleft,
-            label="")
+            background_color_legend=:white)
 xaxis!(xlim=(-1, 1), "\\Delta relative Kout")
 yaxis!(ylim=(-1, 1), "\\Delta relative Kin")
             
@@ -386,22 +382,98 @@ plot!([0],
       color=:black, 
       lab="")
 
-l = @layout [[a ; b] c]
+# plot color bar
+pcol = heatmap((0:1:2050).*ones(2051,1), 
+            xticks=:none, 
+            legend=:none,
+            ymirror = true,
+            c=:turbo,
+            clims=(0,2050),
+            dpi=1000, 
+            size=(1000,500), 
+            guidefont=font("Arial",5), 
+            ytickfont=font("Arial",5))
+yaxis!("frequency")
 
-plot(plotA, plotB, plotC,
+l = @layout [a  b  c  d{0.02w}]
+
+plot(plotA, plotB, plotC, pcol,
       layout = l,
-      title = ["(a) empirical" "(b) MaxEnt" "(c) difference"],
+      dpi=1000,
+      size=(600,180),
+      title = ["(a) empirical" "(b) MaxEnt" "(c) difference" ""],
       titleloc=:right, 
-      titlefont=fonts)
+      titlefont=fonts,
+      margin=2Plots.mm)
       
 savefig(joinpath("figures","joint_degree_dist.png"))
 
 
+# stratify the relationship between the difference of kin and kout by the number of species
+
+# absolute difference of kin and kout and number of species
+kout_diff_strata = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kout")
+kin_diff_strata = kin_kout_diff(k_emp_df, k_maxent_df, "k_tot", "kin")
+S_strata = k_emp_df.S
+
+function plot_strata(Smin::Int64, Smax::Int64)
+      kout_diff_lim = kout_diff_strata[S_strata .>= Smin .&& S_strata .< Smax]
+      kin_diff_lim = kin_diff_strata[S_strata .>= Smin .&& S_strata .< Smax]
+
+      scatter(kout_diff_lim, 
+            kin_diff_lim, 
+            alpha=0.3, 
+            markersize=5, 
+            label="",
+            framestyle=:box, 
+            grid=false,
+            minorgrid=false,
+            dpi=1000, 
+            size=(500,500), 
+            aspect_ratio=:equal,
+            margin=5Plots.mm, 
+            guidefont=fonts, 
+            xtickfont=fonts, 
+            ytickfont=fonts,
+            foreground_color_legend=nothing, 
+            background_color_legend=:white,
+            legendfont=fonts,
+            legendfontpointsize=7,
+            legendfontfamily="Arial")
+      xaxis!("\\Delta Kout")
+      yaxis!("\\Delta Kin")
+end
+
+plotA = plot_strata(5, 15)
+plotB = plot_strata(15, 25)
+plotC = plot_strata(25, 35)
+plotD = plot_strata(35, 45)
+plotE = plot_strata(45, 55)
+plotF = plot_strata(55, 65)
+plotG = plot_strata(65, 75)
+plotH = plot_strata(75, 85)
+plotI = plot_strata(85, 95)
+
+plot(plotA, plotB, plotC, 
+      plotD, plotE, plotF, 
+      plotG, plotH, plotI,
+      dpi=1000,
+      size=(800,800),
+      title = ["[5, 15[ species" "[15, 25[ species" "[25, 35[ species" "[35, 45[ species" "[45, 55[ species" "[55, 65[ species" "[65, 75[ species" "[75, 85[ species" "[85, 95[ species"],
+      titleloc=:right, 
+      titlefont=fonts,
+      margin=2Plots.mm)
+
+savefig(joinpath("figures","kin_kout_difference_strata.png"))
+
+
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by out degree)
-plotA = scatter(kout_diff_sortedby_kout,
+plotA = histogram2d(kout_diff_sortedby_kout,
             kin_diff_sortedby_kout,
-            markersize=5,
-            alpha=0.2,
+            kin_diff_sortedby_ktot,
+            c=:turbo,
+            clims=(0,2050),
+            legend=:none,
             aspect_ratio=:equal,
             framestyle=:box, 
             grid=false,
@@ -414,10 +486,6 @@ plotA = scatter(kout_diff_sortedby_kout,
             ytickfont=fonts,
             foreground_color_legend=nothing, 
             background_color_legend=:white, 
-            legendfont=fonts,
-            legendfontpointsize=7,
-            legendfontfamily="Arial",
-            legend=:topleft,
             label="")
 xaxis!(xlim=(-1, 1), "\\Delta relative Kout")
 yaxis!(ylim=(-1, 1), "\\Delta relative Kin")
@@ -434,10 +502,11 @@ plot!([0],
       lab="")
 
 # plot differences of in and out degrees between empirical and MaxEnt networks (sorted by in degree)
-plotB = scatter(kout_diff_sortedby_kin,
+plotB = histogram2d(kout_diff_sortedby_kin,
             kin_diff_sortedby_kin,
-            markersize=5,
-            alpha=0.2,
+            c=:turbo,
+            clims=(0,2050),
+            legend=:none,
             aspect_ratio=:equal,
             framestyle=:box, 
             grid=false,
@@ -450,10 +519,6 @@ plotB = scatter(kout_diff_sortedby_kin,
             ytickfont=fonts,
             foreground_color_legend=nothing, 
             background_color_legend=:white, 
-            legendfont=fonts,
-            legendfontpointsize=7,
-            legendfontfamily="Arial",
-            legend=:topleft,
             label="")
 xaxis!(xlim=(-1, 1), "\\Delta relative Kout")
 yaxis!(ylim=(-1, 1), "\\Delta relative Kin")
@@ -469,10 +534,15 @@ plot!([0],
       color=:black, 
       lab="")
 
+l = @layout [a  b  c{0.03w}]
 
-plot(plotA, plotB,
-      title = ["(a) sorted by Kout" "(b) sorted by Kin"],
-      titleloc=:right, titlefont=fonts)
+plot(plotA, plotB, pcol,
+      layout = l,
+      title = ["(a) sorted by Kout" "(b) sorted by Kin" ""],
+      titleloc=:right, titlefont=fonts, 
+      size=(400,180),
+      dpi=1000,
+      margin=2Plots.mm)
  
 savefig(joinpath("figures", "kin_kout_difference.png"))
  
@@ -568,6 +638,7 @@ plotB = scatter(measures_all.C,
                   ylabel="\\Delta KL divergence")
 
 plot(plotA, plotB,  
+     dpi=1000, 
      title = ["(a)" "(b)"],
      titleloc=:right, titlefont=fonts)
 
@@ -666,11 +737,12 @@ plotD = scatter(measures_all.entropy,
                   legendfontpointsize=7,
                   legendfontfamily="Arial",
                   label="",
-                  xlabel="SVD-entropy (empirical)",
-                  ylabel="SVD-entropy (MaxEnt)")
+                  xlabel="SVD entropy (empirical)",
+                  ylabel="SVD entropy (MaxEnt)")
 plot!(LinRange(0.75, 1, 100), LinRange(0.75, 1, 100), lab="", color="grey", linestyle=:dot)
 
 plot(plotA, plotB, plotC, plotD, 
+     dpi=1000, 
      title = ["(a)" "(b)" "(c)" "(d)"],
      titleloc=:right, titlefont=fonts)
 
@@ -820,7 +892,7 @@ plotD = scatter(measures_all.S,
                   legendfontfamily="Arial",
                   label="Empirical",
                   xlabel="Species richness",
-                  ylabel="SVD-entropy")
+                  ylabel="SVD entropy")
 scatter!(measures_maxentjds_all.S,
             measures_maxentjds_all.entropy,
             alpha=0.3, 
@@ -832,6 +904,7 @@ scatter!(measures_maxentjds_all.S,
 xaxis!(:log, xticks=(a,a))
 
 plot(plotA, plotB, plotC, plotD, 
+     dpi=1000, 
      title = ["(a)" "(b)" "(c)" "(d)"],
      titleloc=:right, titlefont=fonts)
 
@@ -926,7 +999,7 @@ plotA = scatter(measures_all.S,
 xaxis!(:log, xticks=(a,a))
 
 
-# Divergence in degree sequence and SVD-entropy
+# Divergence in degree sequence and SVD entropy
 plotB = scatter(measures_all.entropy,
                   MSD_ds_maxent,
                   alpha=0.3,
@@ -949,11 +1022,12 @@ plotB = scatter(measures_all.entropy,
                   legendfontpointsize=7,
                   legendfontfamily="Arial",
                   label="",
-                  xlabel="SVD-entropy (empirical)",
+                  xlabel="SVD entropy (empirical)",
                   ylabel="MSD of degree sequence",
                   ylims=(0,20.5))
 
 plot(plotA, plotB, 
+      dpi=1000, 
       title = ["(a)" "(b)"],
       titleloc=:right, titlefont=fonts)
              
@@ -962,21 +1036,21 @@ savefig(joinpath("figures", "divergence_degree_sequence.png"))
 
 
 
-### Difference in SVD-entropy  ###
+### Difference in SVD entropy  ###
 
-# Difference in SVD-entropy and species richness
+# Difference in SVD entropy and species richness
 
 entropy_all = svd_entropy.(N_all)
 entropy_maxentjds_all = svd_entropy.(N_maxentjds_all)
 
 entropy_diffjds = entropy_maxentjds_all .- entropy_all
 
+a = (5, 10, 20, 50, 100)
 plotA = scatter(measures_all.S,
                   entropy_diffjds,
                   alpha=0.3,
                   markersize=6,
                   framestyle=:box, 
-                  smooth=true,
                   linealpha=0.9,
                   linewidth=2,
                   grid=false,
@@ -994,17 +1068,16 @@ plotA = scatter(measures_all.S,
                   legendfontfamily="Arial",
                   label="",
                   xlabel="Species richness",
-                  ylabel="\\Delta SVD-entropy")
+                  ylabel="\\Delta SVD entropy")
 xaxis!(:log, xticks=(a,a))
 
 b = [10,100,1000,10000] # specified x-ticks 
-# Difference in SVD-entropy and number of links
+# Difference in SVD entropy and number of links
 plotB = scatter(measures_all.L,
                   entropy_diffjds,
                   alpha=0.3,
                   markersize=6,
                   framestyle=:box, 
-                  smooth=true,
                   linealpha=0.9,
                   linewidth=2,
                   grid=false,
@@ -1022,16 +1095,15 @@ plotB = scatter(measures_all.L,
                   legendfontfamily="Arial",
                   label="",
                   xlabel="Number of links",
-                  ylabel="\\Delta SVD-entropy")
+                  ylabel="\\Delta SVD entropy")
 xaxis!(:log, xticks=(b,b))
 
-# Difference in SVD-entropy and connectance
+# Difference in SVD entropy and connectance
 plotC = scatter(measures_all.C,
                   entropy_diffjds,
                   alpha=0.3,
                   markersize=6,
                   framestyle=:box, 
-                  smooth=true,
                   linealpha=0.9,
                   linewidth=2,
                   grid=false,
@@ -1049,11 +1121,39 @@ plotC = scatter(measures_all.C,
                   legendfontfamily="Arial",
                   label="",
                   xlabel="Connectance",
-                  ylabel="\\Delta SVD-entropy")
+                  ylabel="\\Delta SVD entropy")
 
-plot(plotA, plotB, plotC,
-      layout = grid(1,3),
-      title = ["(a)" "(b)" "(c)"],
+
+# Difference in SVD entropy (standardized by the number of species) and species richness
+plotD = scatter(measures_all.S,
+                  entropy_diffjds ./ measures_all.S,
+                  alpha=0.3,
+                  markersize=6,
+                  framestyle=:box, 
+                  linealpha=0.9,
+                  linewidth=2,
+                  grid=false,
+                  minorgrid=false,
+                  dpi=1000, 
+                  size=(800,500), 
+                  margin=5Plots.mm, 
+                  guidefont=fonts, 
+                  xtickfont=fonts, 
+                  ytickfont=fonts,
+                  foreground_color_legend=nothing, 
+                  background_color_legend=:white, 
+                  legendfont=fonts,
+                  legendfontpointsize=7,
+                  legendfontfamily="Arial",
+                  label="",
+                  xlabel="Species richness",
+                  ylabel="\\Delta SVD entropy per species")
+xaxis!(:log, xticks=(a,a))
+
+plot(plotB, plotC,, plotA, plotD,
+      dpi=1000, 
+      layout = grid(2,2),
+      title = ["(a)" "(b)" "(c)" "(d)"],
       titleloc=:right, titlefont=fonts)
              
 savefig(joinpath("figures", "difference_entropy.png"))
@@ -1081,7 +1181,7 @@ plotA = density(measures_all.entropy,
                   legendfontfamily="Arial",
                   legend=:topleft,
                   label="Empirical",
-                  xlabel="SVD-entropy",
+                  xlabel="SVD entropy",
                   ylabel="Density",
                   ylim=(0,21))
 density!(measures_maxentjds_all.entropy,
@@ -1116,7 +1216,7 @@ plotB = density(entropy_zscores,
                   legendfontpointsize=7,
                   legendfontfamily="Arial",
                   label="",
-                  xlabel="z-score of SVD-entropy",
+                  xlabel="z-score of SVD entropy",
                   ylabel="Density",
                   ylim=(0,0.27))
 plot!([entropy_zscores_500], 
@@ -1126,13 +1226,14 @@ plot!([entropy_zscores_500],
             lab="")
 
 plot(plotA, plotB,
+     dpi=1000, 
      title = ["(a)" "(b)"],
      titleloc=:right, titlefont=fonts)
 
 savefig(joinpath("figures", "entropy_distribution.png"))
 
 
-### Jaccard dissimilarity and difference in nestedness and SVD-entropy ###
+### Jaccard dissimilarity and difference in nestedness and SVD entropy ###
 
 ## Difference in nestedness (rho_diff)
 rho_diffjds = measures_maxentjds_all.rho .- measures_all.rho
@@ -1170,7 +1271,7 @@ plotA = scatter(entropy_diffjds,
             legendfontfamily="Arial",
             legend=:topleft,
             label="",
-            xlabel="\\Delta SVD-entropy",
+            xlabel="\\Delta SVD entropy",
             ylabel="\\Delta nestedness")
 
 plotB = scatter(entropy_diffjds,
@@ -1196,10 +1297,11 @@ plotB = scatter(entropy_diffjds,
                   legendfontfamily="Arial",
                   legend=:topleft,
                   label="",
-                  xlabel="\\Delta SVD-entropy",
+                  xlabel="\\Delta SVD entropy",
                   ylabel="Jaccard distance")
 
 plot(plotA, plotB,
+     dpi=1000, 
      title = ["(a)" "(b)"],
      titleloc=:right, titlefont=fonts)
 
@@ -1415,8 +1517,8 @@ scatter!(measures_maxentjds_all.S4,
             linealpha=0.9,
             linewidth=2)
 
-
 plot(plotA, plotB,
+     dpi=1000,
      title = ["(a)" "(b)"],
      titleloc=:right, titlefont=fonts)
 
